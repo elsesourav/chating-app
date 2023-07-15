@@ -1,0 +1,17 @@
+@font-face {
+   font-family: Righteous; /* font32  */
+   src: url("../src/font/Righteous.ttf") format("truetype");  
+ }
+ @font-face {
+   font-family: Oswald; /* font20  */
+   src: url("../src/font/Oswald.ttf") format("truetype");     
+ }
+ @font-face {
+   font-family: Roboto; /* roboto  */
+   src: url("../src/font/Roboto.ttf") format("truetype"); 
+ }
+ @font-face {
+   font-family: Google; /* google  */
+   src: url("../src/font/Product.ttf") format("truetype"); 
+ }
+ 

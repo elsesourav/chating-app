@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			rel="shortcut icon"
+			type="image/png"
+			href="../src/img/icon_icon_icon_.png"
+		/>
+		<title>Live Chat</title>
+
+		<link rel="stylesheet" href="../icons/css/icon.css" />
+		<link rel="stylesheet" href="../css/font.css" />
+		<link rel="stylesheet" href="../css/utils.css" />
+		<link rel="stylesheet" href="../css/home.css" />
+		<link rel="stylesheet" href="../css/profile.css" />
+		<link rel="stylesheet" href="../css/chat.css" />
+
+		<script defer src="../js/utils.js"></script>
+		<script defer src="../js/data.js"></script>
+		<script defer src="../js/alert.js"></script>
+		<script defer src="../js/config.js"></script>
+		<script defer type="module" src="../js/home.js"></script>
+		<script defer type="module" src="../js/profile.js"></script>
+		<script defer type="module" src="../js/chat.js"></script>
+	</head>
+	<body>
+		<div id="pageLoad" class="active">
+			<div class="stars">
+				<i class="sbi-star-o"></i>
+				<i class="sbi-star-o"></i>
+				<i class="sbi-star-o"></i>
+				<i class="sbi-star-o"></i>
+				<i class="sbi-star-o"></i>
+				<i class="sbi-star-o"></i>
+			</div>
+			<p data-val="Loding">Loding</p>
+		</div>
+
+		<div id="scroll-box">
+			<div id="main-contant">
+				<div id="home-contaner">
+					<div class="wapping">
+						<header id="index-header" style="display: none" class="">
+							<div id="my-profile">
+								<div class="wrap">
+									<div class="center" id="profile-btn">
+										<i class="sbi-user1"></i>
+									</div>
+								</div>
+							</div>
+							<div id="add-new-content">
+								<div id="boundary" class="wrap">
+									<div id="toggle-content">
+										<div id="add-member-input-box">
+											<input
+												type="text"
+												id="add-member-input"
+												placeholder="Contact Id"
+												spellcheck="false"
+											/>
+										</div>
+										<div id="add-new-contact">
+											<button id="add-new-contact-btn">Add</button>
+										</div>
+									</div>
+									<div id="cancle-new-btn-box">
+										<button id="toggle-cancle-new-btn">
+											<p id="add-cancle">Cancle</p>
+											<p id="add-new">
+												<i class="sbi-search"></i> Find
+											</p>
+										</button>
+									</div>
+								</div>
+							</div>
+						</header>
+
+						<!-- ---------- profile and search ----------- -->
+						<div id="myProfileAndFindUser" class="">
+							<!-- "","show","one" "two" -->
+							<div id="userProfileBox">
+								<div id="profielImage">
+									<i class="sbi-user mn-i"></i>
+									<img
+										class="mn-img"
+										src=""
+										id="profileImg"
+										alt="prifile image"
+									/>
+									<div id="imageEdite">
+										<div id="imageEditeOptions" class="">
+											<div id="imageUpload" class="img-btn">
+												<i class="sbi-cloud_upload"></i>
+											</div>
+											<div id="imageDelete" class="img-btn">
+												<i class="sbi-delete"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div id="porfileSetting">
+									<div class="top-right">
+										<div id="closeProfile">
+											<i class="sbi-close_fullscreen"></i>
+										</div>
+									</div>
+									<div id="profileInformation">
+										<div class="option">
+											<div class="icon-box">
+												<p>ID</p>
+											</div>
+											<div class="input-box">
+												<div id="userId">LK3MZOL7</div>
+											</div>
+										</div>
+										<div class="option">
+											<div class="icon-box">
+												<i class="sbi-user1"></i>
+											</div>
+											<div class="input-box">
+												<input
+													type="text"
+													id=""
+													placeholder="Name"
+													spellcheck="false"
+												/>
+											</div>
+										</div>
+										<div class="option">
+											<div class="icon-box">
+												<i class="sbi-new_releases"></i>
+											</div>
+											<div class="input-box">
+												<textarea
+													id="aboutInput"
+													placeholder="About"
+													cols="30"
+													rows="3"
+													spellcheck="false"
+												></textarea>
+											</div>
+										</div>
+
+										<div id="updateInfo">
+											<div id="updateInsetInfo">
+												<div id="updateEmailBtn" class="update-btn">
+													<i class="sbi-email1"></i>
+												</div>
+												<div
+													id="updatePasswordBtn"
+													class="update-btn"
+												>
+													<i class="sbi-key"></i>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div id="updateAndLogout">
+										<div class="progile-btn" id="proUpdateButton">
+											<i class="sbi-save2"></i>
+											<p>Save</p>
+										</div>
+										<div class="progile-btn" id="logoutButton">
+											<i class="sbi-sign-out"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div id="searchUserBox">
+								<div id="searchIcon">
+									<i class="sbi-person_search"></i>
+								</div>
+								<div id="searchOption">
+									<div class="top-right">
+										<div id="closeSearch">
+											<i class="sbi-close_fullscreen"></i>
+										</div>
+									</div>
+
+									<div id="userAddAndInfo">
+										<div id="addUserName">
+											<i class="sbi-user"></i>
+											<p>User Name</p>
+										</div>
+										<div id="addUserBtn">
+											<i class="sbi-user-plus1"></i>
+											<p>Add</p>
+										</div>
+									</div>
+
+									<div id="userSearchBox">
+										<div id="userSearchInputBox">
+											<i class="sbi-search1"></i>
+											<input
+												type="text"
+												spellcheck="false"
+												id="userSearchInput"
+												placeholder="ID"
+											/>
+											<div id="pasteButton">
+												<i class="sbi-paste1"></i>
+											</div>
+										</div>
+									</div>
+
+									<div id="resultUserListBox">
+										<div class="scroll-list">
+											<div class="user-info">
+												<i class="sbi-user"></i>
+												<div class="user-name">Sourav Barui</div>
+												<p>ID</p>
+												<div class="user-id">LK3MZOL7</div>
+											</div>
+
+											<div class="user-info active">
+												<i class="sbi-user"></i>
+												<div class="user-name">Sourav Barui</div>
+												<p>ID</p>
+												<div class="user-id">LK3MZOL7</div>
+											</div>
+
+											<div class="user-info">
+												<i class="sbi-user"></i>
+												<div class="user-name">Sourav Barui</div>
+												<p>ID</p>
+												<div class="user-id">LK3MZOL7</div>
+											</div>
+
+											<div class="user-info">
+												<i class="sbi-user"></i>
+												<div class="user-name">Sourav Barui</div>
+												<p>ID</p>
+												<div class="user-id">LK3MZOL7</div>
+											</div>
+
+											<div class="user-info">
+												<i class="sbi-user"></i>
+												<div class="user-name">Sourav Barui</div>
+												<p>ID</p>
+												<div class="user-id">LK3MZOL7</div>
+											</div>
+
+											<div class="user-info">
+												<i class="sbi-user"></i>
+												<div class="user-name">Sourav Barui</div>
+												<p>ID</p>
+												<div class="user-id">LK3MZOL7</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="profileOpenClose">
+								<i class="sbi-chevron-down1"></i>
+							</div>
+
+							<div id="imageSelection" class="">
+								<div id="canvasBox">
+									<canvas id="cvs"></canvas>
+									<div id="selector">
+										<div class="corner" id="topLeft"></div>
+										<div class="corner" id="bottomLeft"></div>
+										<div class="corner" id="bottomRight"></div>
+										<div class="corner" id="topRight"></div>
+										<div id="midil"></div>
+									</div>
+								</div>
+
+								<div id="upload-close-btn-box">
+									<div class="button-upload">
+										<i class="sbi-close"></i>
+										<div id="uploadCancleBtn">Cancle</div>
+									</div>
+									<div class="button-upload">
+										<i class="sbi-upload-to-cloud"></i>
+										<div id="uploadImageBtn">Upload</div>
+									</div>
+								</div>
+
+								<input
+									type="file"
+									accept=".jpg,.jpeg,.gif,.png"
+									id="fileInput"
+								/>
+							</div>
+						</div>
+
+						<!-- --------- chat contact --------- -->
+						<div id="all-contacts">
+							<div id="wrap-contacts">
+								<div class="contact-box">
+									<div class="wrap">
+										<div class="contact-icon">
+											<i class="sbi-user-circle-o"></i>
+										</div>
+										<div class="contact-datas">
+											<div class="contact-name-time">
+												<div class="contact-name">Contact name</div>
+												<div class="last-chat-time">00:00</div>
+											</div>
+											<div class="last-chat-no-of-msg">
+												<div class="last-chat">Last Chat</div>
+												<div class="no-of-msg"><p>1</p></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- ----------- chat section ----------- -->
+				<div id="chat-contaner">
+					<div class="wapping">
+						<header>
+							<div class="wrap">
+								<div id="profile-back">
+									<i class="sbi-arrow_back"></i>
+								</div>
+								<div id="porfile-image">
+									<i class="sbi-user-circle-o"></i>
+								</div>
+								<div id="porfile-info">
+									<div id="pf-name">Arsalan</div>
+									<div id="pf-status">Online</div>
+								</div>
+								<div id="pf-manu">
+									<i class="sbi-dots-three-vertical"></i>
+								</div>
+							</div>
+						</header>
+
+						<div id="scroll-chat">
+							<div class="wrap" id="messages-">
+								<div class="chat-box other">
+									<div class="chat-content">
+										<div class="wrap">
+											<div class="c-name">Arsalan Vijan</div>
+											<div class="c-text">Hi</div>
+											<div class="c-time">19:32</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<footer>
+							<div class="wrap">
+								<div id="input-box">
+									<div id="msg-lvl" class="active">Message</div>
+									<div
+										contenteditable="true"
+										spellcheck="false"
+										id="input-div"
+									></div>
+								</div>
+								<div id="message-send-btn">
+									<button id="send-msg">
+										<i class="sbi-send"></i>
+									</button>
+								</div>
+							</div>
+						</footer>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,179 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* outline: solid 1px #f004; */
+  font-family: Righteous;
+}
+:root {
+  --cursor: pointer;
+
+  --mn-chat-w: max(min(80vw, 80vh), min(400px, 100vw));
+  /* --mn-chat-h: 694px; */
+  --mn-chat-h: 100vh;
+
+  --chat-header-h: 50px;
+  --chat-footer-h: 60px;
+
+  /* ---- chat profile ---- */
+  --pf-back-w: 30px;
+  --pf-icon-w: var(--chat-header-h);
+  --pf-info-nm-w: auto;
+  --pf-manu-w: 30px;
+
+  /* ---- chat box ---- */
+  --send-btn: var(--chat-header-h);
+
+  --chat-min-h: 40px;
+  --chat-max-h: 1000px;
+  --max-chat-w: 270px;
+  --min-chat-w: 60px;
+
+  --chat-name-h: 20px;
+  --chat-time-h: 12px;
+
+  --chat-gap: 5px;
+
+  /* ---- index header ---- */
+  --max-index-header-h: 150px;
+  --min-index-header-h: 30px;
+
+  /* --profile-r: 40px; */
+  --contact-h: 60px;
+  --contact-photo-r: 50px;
+
+}
+
+.i {
+  display: grid;
+  place-items: center;
+}
+
+/* ------------- scroll bar ------------- */
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+  background: transparent;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: none;
+  border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #0004;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #333;
+}
+
+body {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  user-select: none;
+  background: #fff;
+}   
+
+#scroll-box {
+  position: relative;
+  width: var(--mn-chat-w);
+  height: 100vh;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+#scroll-box::-webkit-scrollbar {
+  display: none;
+}
+#main-contant {
+  position: absolute;
+  width: auto;
+  height: 100%;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ------------ Star ------------ */
+.stars {
+	--time: 1s;
+  --min: min(50vw, 50vh);
+	position: absolute;
+	width: var(--min);
+	height: var(--min);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	opacity: 0.2;
+	animation: rotate calc(var(--time) * 10) infinite linear;
+}
+@keyframes rotate {
+	0% {
+		transform: rotate(0deg);
+	}
+	99% {
+		transform: rotate(359deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+.stars i {
+	position: absolute;
+	display: grid;
+	place-items: center;
+	animation-duration: var(--time);
+	animation-delay: calc(var(--time) * 0);
+	font-size: calc(var(--min) * 0.1);
+	animation-fill-mode: backwards;
+	color: transparent;
+	animation-name: stars;
+  opacity: 1;
+  color: #000000;
+	animation-timing-function: ease-in-out;
+	animation-iteration-count: infinite;
+	z-index: 5;
+}
+.stars i:nth-child(2) {
+	animation-delay: calc(var(--time) * 0.2);
+	font-size: calc(var(--min) * 0.3);
+	z-index: 4;
+}
+.stars i:nth-child(3) {
+	animation-delay: calc(var(--time) * 0.4);
+	font-size: calc(var(--min) * 0.5);
+	z-index: 3;
+}
+.stars i:nth-child(4) {
+	animation-delay: calc(var(--time) * 0.6);
+	font-size: calc(var(--min) * 0.7);
+	z-index: 2;
+}
+.stars i:nth-child(5) {
+	animation-delay: calc(var(--time) * 0.8);
+	font-size: calc(var(--min) * 0.9);
+	z-index: 1;
+}
+
+@keyframes stars {
+	0% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	99% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 0;
+	}
+}

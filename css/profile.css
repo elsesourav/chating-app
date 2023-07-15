@@ -1,0 +1,717 @@
+/* ----------------- profile and find user ---------------- */
+#myProfileAndFindUser {
+	--width-u: 100px;
+	---height-u: 40px;
+	--radius-u: 20px;
+	--img-width: 100px;
+	--img-margin: 20px;
+
+	position: absolute;
+	width: var(--width-u);
+	height: var(---height-u);
+	display: grid;
+	grid-auto-flow: column;
+	background: #dddddd;
+	outline: solid 1px #0007;
+	border-bottom-left-radius: var(--radius-u);
+	border-bottom-right-radius: var(--radius-u);
+	left: calc(50% - var(--width-u) / 2);
+	top: calc(var(---height-u) * -1 - 3px);
+	transition: ease-in-out 300ms top;
+	z-index: 2;
+}
+#myProfileAndFindUser.show {
+	top: 0;
+}
+#myProfileAndFindUser #userProfileBox,
+#myProfileAndFindUser #searchUserBox {
+	position: relative;
+	display: flex;
+	width: calc(var(--width-u) / 2);
+	height: calc(var(---height-u));
+	scale: 1;
+	justify-content: center;
+	align-items: center;
+	z-index: 3;
+	transition: linear 200ms scale, linear 200ms width, linear 200ms height;
+}
+#myProfileAndFindUser.show #userProfileBox,
+#myProfileAndFindUser.show #searchUserBox {
+	scale: 1;
+	display: flex;
+	width: auto;
+	height: auto;
+}
+#myProfileAndFindUser.one #searchUserBox,
+#myProfileAndFindUser.two #userProfileBox {
+	scale: 0;
+	width: auto;
+	height: auto;
+}
+#myProfileAndFindUser.two #userProfileBox {
+	width: 0;
+	height: 0;
+}
+
+#myProfileAndFindUser #profielImage,
+#myProfileAndFindUser #searchIcon {
+	position: relative;
+	width: 30px;
+	height: 30px;
+	display: grid;
+	place-items: center;
+	border: solid 2px #006eff;
+	border-radius: 100px;
+	box-shadow: 0 0 3px #000000;
+	background: #ffffff;
+	cursor: pointer;
+	overflow: hidden;
+	top: 0;
+	transition: linear 400ms width, linear 400ms height, linear 400ms top,
+		linear 400ms border-radius;
+	z-index: 3;
+}
+#myProfileAndFindUser.one #profielImage,
+#myProfileAndFindUser.two #searchIcon {
+	top: calc(var(--img-margin) + (max(500px, 100vh) - 500px) / 2);
+	border-radius: 10px;
+	width: 100px;
+	height: 100px;
+}
+#myProfileAndFindUser.one #profielImage,
+#myProfileAndFindUser.two #searchIcon {
+	top: calc(var(--img-margin) + (max(500px, 100vh) - 500px) / 2);
+	border-radius: 10px;
+	width: 100px;
+	height: 100px;
+	overflow: hidden;
+}
+#myProfileAndFindUser #profielImage #imageEdite {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: none;
+	place-items: center;
+	z-index: 1;
+}
+#myProfileAndFindUser.one #profielImage #imageEdite {
+	display: grid;
+}
+#profielImage #imageEdite #imageEditeOptions {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
+	background: transparent;
+	backdrop-filter: blur(0px);
+	cursor: pointer;
+	transition: linear 300ms background, linear 300ms backdrop-filter;
+}
+#profielImage #imageEdite #imageEditeOptions.active {
+	background: #00000077;
+	backdrop-filter: blur(3px);
+	cursor: auto;
+}
+#profielImage #imageEdite #imageEditeOptions .img-btn {
+	position: relative;
+	width: calc(var(--img-width) / 3);
+	height: calc(var(--img-width) / 3);
+	border-radius: 100px;
+	display: grid;
+	place-items: center;
+	background: #eeeeee;
+	scale: 0;
+	box-shadow: 1px 1px 3px #c5c5c5, inset 1px 1px 3px #ffffff,
+		-1px -1px 3px #ffffff, inset -1px -1px 3px #b4b4b4;
+	transition: linear 300ms scale;
+	cursor: pointer;
+}
+#profielImage #imageEdite #imageEditeOptions.active .img-btn {
+	scale: 1;
+}
+#profielImage #imageEdite #imageEditeOptions .img-btn i {
+	font-size: 24px;
+	text-shadow: 0 0 1px #000000;
+	color: #0029ff;
+}
+#profielImage #imageEdite #imageEditeOptions .img-btn:last-child i {
+	color: #ff0000;
+}
+#myProfileAndFindUser #profielImage i,
+#myProfileAndFindUser #searchIcon i {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: grid;
+	place-items: center;
+	font-size: 24px;
+	color: #006eff;
+	transition: linear 400ms font-size;
+}
+#myProfileAndFindUser.one #profielImage i,
+#myProfileAndFindUser.two #searchIcon i {
+	font-size: 60px;
+}
+#myProfileAndFindUser #profielImage.active .mn-img,
+#myProfileAndFindUser #profielImage .mn-i {
+	display: grid;
+}
+#myProfileAndFindUser #profielImage .mn-img,
+#myProfileAndFindUser #profielImage.active .mn-i {
+	display: none;
+}
+#myProfileAndFindUser #profielImage.active .mn-img {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-position: center;
+	background-size: cover;
+}
+#myProfileAndFindUser #profileOpenClose {
+	--sz-porfile: 26px;
+	position: absolute;
+	background: #dddddd;
+	left: calc(var(--width-u) / 2 - var(--sz-porfile) / 2);
+	top: var(---height-u);
+	width: calc(var(--sz-porfile) + 4px);
+	height: calc(var(--sz-porfile) - 4px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: solid 1px #0007;
+	border-top: none;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	cursor: pointer;
+	z-index: 1;
+}
+#myProfileAndFindUser #profileOpenClose i,
+#myProfileAndFindUser.show #profileOpenClose:hover i {
+	font-size: 24px;
+	transform: rotateX(0deg);
+	transition: linear 200ms transform;
+}
+#myProfileAndFindUser #profileOpenClose:hover i,
+#myProfileAndFindUser.show #profileOpenClose i {
+	transform: rotateX(180deg);
+}
+#myProfileAndFindUser #porfileSetting,
+#myProfileAndFindUser #searchOption {
+	position: absolute;
+	display: none;
+	width: 0;
+	height: 0;
+	top: 0;
+	scale: 0;
+	opacity: 0;
+	padding-top: calc(
+		var(--width-u) + var(--img-margin) * 2 + (max(500px, 100vh) - 500px) / 2
+	);
+	border-bottom-left-radius: 1000px;
+	border-bottom-right-radius: 1000px;
+	background: #eeeeee;
+	transition: linear 400ms width, linear 400ms height,
+		linear 400ms border-radius, linear 400ms opacity, linear 400ms scale;
+	flex-direction: column;
+	transition-delay: 100ms;
+	align-items: center;
+}
+#myProfileAndFindUser.one #porfileSetting,
+#myProfileAndFindUser.two #searchOption {
+	scale: 1;
+	opacity: 1;
+	width: var(--mn-chat-w);
+	height: 100vh;
+	border-radius: 0;
+	transition-delay: 0;
+}
+#myProfileAndFindUser.show #porfileSetting,
+#myProfileAndFindUser.show #searchOption {
+	display: flex;
+}
+#porfileSetting #profileInformation {
+	--gap: 10px;
+	position: relative;
+	width: auto;
+	height: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: var(--gap);
+}
+#profileInformation .option {
+	position: relative;
+	width: calc(var(--mn-chat-w) * 0.7);
+	display: flex;
+	padding: 10px 20px;
+	border-radius: 20px;
+	background: #ffffff;
+	box-shadow: inset 0 0 6px #00000033;
+	gap: var(--gap);
+}
+#profileInformation .option:first-child {
+	padding: 5px 20px;
+	width: min-content;
+}
+#profileInformation .option .icon-box {
+	position: relative;
+	width: 25px;
+	height: 25px;
+	border-radius: 100px;
+	display: grid;
+	place-items: center;
+}
+#profileInformation .option .icon-box i {
+	font-size: 20px;
+}
+#profileInformation .option .input-box {
+	display: grid;
+	place-items: center;
+}
+#profileInformation .option .input-box input {
+	position: relative;
+	outline: none;
+	border: none;
+	padding: 5px 10px;
+	font-family: Google;
+	font-size: 15px;
+	font-weight: 900;
+	color: #000000;
+}
+#profileInformation .option:nth-child(3) .input-box input {
+	font-size: 13px;
+}
+#porfileSetting #updateAndLogout {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	display: grid;
+	grid-template-columns: 4fr 1fr;
+	place-items: center;
+	padding: 15px 0;
+}
+#profileInformation .option .input-box textarea {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	outline: none;
+	border: none;
+	resize: none;
+	padding: 5px 10px;
+	font-family: Google;
+	font-size: 15px;
+	font-weight: 900;
+	color: #000000;
+}
+#updateAndLogout .progile-btn {
+	position: relative;
+	display: grid;
+	display: flex;
+	place-items: center;
+	gap: 10px;
+	padding: 8px 20px;
+	border-radius: 6px;
+	background: #0029ff;
+	color: #ffffff;
+	box-shadow: 0 0 3px #00000077;
+	transition: ease-in-out 300ms background;
+	cursor: pointer;
+}
+#updateAndLogout .progile-btn:hover {
+	background: #0030ad;
+}
+#updateAndLogout .progile-btn i {
+	font-size: 20px;
+}
+.top-right {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	padding: 5px 10px;
+	font-size: 20px;
+	border-radius: 100px;
+	background: #ffffff;
+	box-shadow: inset 0 0 5px #c8c8c8;
+	z-index: 5;
+	cursor: pointer;
+	transition: linear 300ms color, linear 300ms background;
+}
+.top-right:hover {
+	color: #ff0000;
+	background: #a9a9a9;
+}
+#porfileSetting #updateInfo {
+	position: relative;
+	width: var(--mn-chat-w);
+	display: grid;
+	place-items: center;
+	padding: 10px;
+}
+#porfileSetting #updateInsetInfo {
+	position: relative;
+	display: flex;
+	gap: 5vw;
+	padding: 16px 25px;
+	justify-content: center;
+	align-items: center;
+	box-shadow: inset 0 0 5px #00000033;
+	background: #ffffff;
+	border-radius: 20px;
+}
+#porfileSetting #updateInsetInfo::after {
+	content: "UPDATE";
+	position: absolute;
+	top: -10px;
+	padding: 3px 6px;
+	background: #ffffff;
+	border-radius: 100px;
+	font-size: 12px;
+}
+#porfileSetting .update-btn {
+	position: relative;
+	width: 30px;
+	height: 30px;
+	display: grid;
+	place-items: center;
+	border-radius: 10px;
+	background: #0029ff;
+	color: #ffffff;
+	cursor: pointer;
+	box-shadow: 0 0 3px #00000077;
+	transition: ease-in-out 300ms background;
+}
+#porfileSetting .update-btn:hover {
+	background: #002279;
+}
+
+/* ---------- search user section ------------ */
+#userAddAndInfo {
+	position: relative;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 10px 0;
+	gap: 10px;
+}
+#userAddAndInfo #addUserName,
+#userAddAndInfo #addUserBtn {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#userAddAndInfo #addUserName {
+	padding: 10px 15px;
+	border-radius: 20px;
+	gap: 10px;
+	font-family: Google;
+	background: #ffffff;
+	box-shadow: inset 0 0 6px #00000033;
+}
+#userAddAndInfo #addUserName p {
+	font-family: Google;
+	font-weight: 900;
+}
+#userAddAndInfo #addUserBtn {
+	gap: 5px;
+	padding: 6px 10px;
+	border-radius: 6px;
+	cursor: pointer;
+	background: #0029ff;
+	color: #ffffff;
+	box-shadow: 0 0 3px #00000077;
+	transition: ease-in-out 300ms background;
+}
+#userAddAndInfo #addUserBtn:hover {
+	background: #002279;
+}
+#searchOption #userSearchBox {
+	position: relative;
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+	padding: 10px 0;
+}
+#searchOption #userSearchInputBox {
+	position: relative;
+	display: grid;
+	width: calc(160px + 16px);
+	height: calc(36 + 16px);
+	grid-template-columns: 2fr 6fr 2fr;
+	box-shadow: inset 0 0 6px #00000033;
+	border-radius: 20px;
+	padding: 5px;
+	background: #ffffff;
+	place-items: center;
+}
+#userSearchInputBox input[type="text"] {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	font-size: 16px;
+	letter-spacing: 1px;
+	outline: none;
+	border: none;
+	font-family: Google;
+	font-weight: 900;
+	background: transparent;
+}
+#userSearchInputBox #pasteButton {
+	position: relative;
+	width: 30px;
+	height: 30px;
+	border-radius: 100px;
+	display: grid;
+	place-items: center;
+	cursor: pointer;
+	background: #0029ff;
+	color: #ffffff;
+	font-size: 14px;
+	box-shadow: 0 0 3px #00000077;
+	transition: ease-in-out 300ms background;
+}
+#userSearchInputBox #pasteButton:hover {
+	background: #002279;
+}
+#searchOption #resultUserListBox {
+	position: relative;
+	width: 320px;
+	height: 205px;
+	margin: 10px;
+	padding: 10px;
+	border-radius: 10px;
+	box-shadow: inset 0 0 6px #00000044;
+	background: #ffffff;
+}
+#searchOption #resultUserListBox::before {
+	content: "Search Results";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	display: grid;
+	place-items: center;
+	color: #00000044;
+	font-family: Google;
+}
+#resultUserListBox .scroll-list {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	border-radius: 6px;
+	z-index: 2;
+}
+#resultUserListBox .user-info {
+	position: relative;
+	width: 100%;
+	display: grid;
+	grid-template-columns: 2fr 14fr 2fr 9fr;
+	padding: 10px;
+	background: #e9e9e9;
+	border-bottom: solid 2px #00000033;
+	cursor: pointer;
+}
+#resultUserListBox .user-info.active {
+	background: #69b2ff;
+}
+#resultUserListBox .user-info:nth-child(odd) {
+	background: #e1e1e1;
+}
+#resultUserListBox .user-info:last-child {
+	border: none;
+}
+#resultUserListBox i,
+#resultUserListBox p {
+	display: grid;
+	place-items: center;
+	font-size: 18px;
+	background: #ffffff;
+	border-radius: 5px;
+}
+#resultUserListBox p {
+	font-size: 15px;
+}
+#resultUserListBox .user-name,
+#resultUserListBox .user-id {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	padding-left: 3px;
+	font-size: 15px;
+	font-family: Google;
+	font-weight: 900;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* --------------------- file input ------------- */
+#fileInput {
+	display: none;
+}
+/* -------------- upload image box -------------- */
+#imageSelection {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	z-index: 10;
+	left: 0;
+	background: rgba(0, 0, 0, 0.8);
+	backdrop-filter: blur(3px);
+	top: -150vh;
+	display: grid;
+	place-items: center;
+	transition: ease-in-out 0.3s top;
+}
+#imageSelection.active {
+	top: 0;
+}
+
+#imageSelection #canvasBox {
+	position: relative;
+	width: min(70vw, 70vh);
+	height: min(70vw, 70vh);
+	background: black;
+	outline: solid 10px #000000;
+	overflow: hidden;
+}
+#canvasBox #selector {
+	--whide: 2px;
+	--sz: 20px;
+	--out: 3rem;
+
+	position: absolute;
+	top: var(--out);
+	bottom: var(--out);
+	left: var(--out);
+	right: var(--out);
+	outline: 200vw solid #0006;
+	border: solid 1px #fff9;
+	background: transparent;
+	z-index: 5;
+	overflow: hidden;
+}
+#canvasBox #selector::after,
+#canvasBox #selector::before {
+	position: absolute;
+	content: "";
+	width: 100%;
+	height: 33.333%;
+	top: 33.333%;
+	border-top: dotted 1px #0007;
+	border-bottom: dotted 1px #0007;
+}
+#canvasBox #selector::after {
+	transform: rotate(90deg);
+}
+#canvasBox #cvs {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	z-index: 2;
+}
+#selector .corner {
+	position: absolute;
+	width: var(--sz);
+	height: var(--sz);
+	left: 0;
+	top: 0;
+	z-index: 10;
+}
+#selector .corner::after {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	border-style: solid;
+	border-width: var(--whide);
+	border-color: #fff transparent transparent #fff;
+	left: 0;
+	top: 0;
+	cursor: nw-resize;
+}
+#selector .corner:nth-child(2) {
+	top: auto;
+	bottom: 0;
+}
+#selector .corner:nth-child(2)::after {
+	border-color: transparent transparent #fff #fff;
+	top: auto;
+	bottom: 0;
+	cursor: ne-resize;
+}
+#selector .corner:nth-child(3) {
+	top: auto;
+	left: auto;
+	right: 0;
+	bottom: 0;
+}
+#selector .corner:nth-child(3)::after {
+	border-color: transparent #fff #fff transparent;
+	top: auto;
+	left: auto;
+	right: 0;
+	bottom: 0;
+}
+#selector .corner:nth-child(4) {
+	left: auto;
+	right: 0;
+}
+#selector .corner:nth-child(4)::after {
+	border-color: #fff #fff transparent transparent;
+	left: auto;
+	right: 0;
+	cursor: ne-resize;
+}
+#selector #midil {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
+#upload-close-btn-box {
+	position: absolute;
+	height: 80px;
+	width: 100vw;
+	z-index: 11;
+	bottom: 0;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+#upload-close-btn-box .button-upload {
+	position: relative;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	background: #0029ff;
+	color: #ffffff;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 5px;
+	box-shadow: 0 0 3px #00000077;
+	transition: ease-in-out 300ms background;
+}
+#upload-close-btn-box .button-upload:hover {
+	background: #002ea2;
+}

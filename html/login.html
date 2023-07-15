@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account</title>
+
+    <link rel="stylesheet"href="../icons/css/icon.css">
+    <link rel="stylesheet" href="../css/font.css" />
+    <link rel="stylesheet" href="../css/login.css" />
+    <script defer src="../js/alert.js"></script>
+    <script defer src="../js/config.js"></script>
+    <script defer type="module" src="../js/login.js"></script>
+  </head>
+  <body class="active">
+    <div id="login-window">
+      <div class="login_fild dja">
+        <form class="contaner dja">
+          <div class="heading dja">
+            <div class="back" id="go-home">
+              <!-- <i class="sbi-arrow_back"></i> -->
+            </div>
+            <p class="m-title">Login</p>
+          </div>
+          <br /><br />
+          <div class="cover">
+            <div class="m-input dja">
+              <input
+                type="email"
+                spellcheck="false"
+                id="user_or_email"
+                autocomplete="off"
+              />
+              <div class="out"></div>
+            </div>
+            <p>Username / Email</p>
+          </div>
+          <div class="cover">
+            <div class="m-input dja">
+              <input type="password" id="password" autocomplete="off" />
+              <div class="out"></div>
+            </div>
+            <p>Password</p>
+          </div>
+          <br />
+          <div class="login-button dja" id="login-button">LOGIN</div>
+          <br />
+          <p class="next_page dja">
+            Don't Have an account? <a id="create-one"> Create one</a>
+          </p>
+          <br />
+        </form>
+      </div>
+    </div>
+
+    <div id="create-user-window">
+      <div class="login_fild dja">
+        <form class="contaner dja">
+          <div class="heading dja">
+            <div id="go-login-pag" class="back">
+              <i class="sbi-arrow_back"></i>
+            </div>
+            <p class="m-title">Sign Up</p>
+          </div>
+          <br />
+
+          <div class="cover">
+            <div class="m-input dja">
+              <input type="text" id="name" spellcheck="false" autocomplete="off" />
+              <div class="out"></div>
+            </div>
+            <p>Your Name</p>
+          </div>
+
+          <div class="cover">
+            <div class="m-input dja">
+              <input type="email" id="username" spellcheck="false" autocomplete="off" />
+              <div class="out"></div>
+            </div>
+            <p class="status_user">Username / Email</p> 
+          </div>
+
+          <div class="cover">
+            <div class="m-input dja">
+              <input type="password" id="_password" autocomplete="off" />
+              <div class="out"></div>
+            </div>
+            <p>Create New Password</p>
+          </div>
+
+          <div class="cover">
+            <div class="m-input dja">
+              <input type="password" id="coPassword" autocomplete="off" />
+              <div class="out"></div>
+            </div>
+            <p>Confirm Password</p>
+          </div>
+
+          <br />
+          <div class="signup-button dja" id="signup-button">Continue</div>
+          <br />
+          <p class="next_page dja">
+            Have an account?<a id="login-window-button">Login account</a>
+          </p>
+          <br />
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

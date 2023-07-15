@@ -1,0 +1,71 @@
+:root {
+	--min: min(50vw, 50vh);
+}
+body {
+	position: relative;
+	display: block;
+	text-align: center;
+	width: 100vw;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+h1 {
+	font-weight: 900;
+	text-align: center;
+	font-size: 2rem;
+	text-shadow: 0 0 1px #000;
+	color: #ff6a00;
+	margin: calc(var(--min) / 2.5) auto;
+}
+
+/* -------------- buttons ---------------- */
+#member-buttons {
+	display: flex;
+	gap: 1rem;
+}
+button {
+	position: relative;
+	outline: none;
+	border: none;
+	padding: 8px 20px;
+	border-radius: 5px;
+	cursor: pointer;
+	font-family: Google;
+	font-weight: 600;
+	background: #00c244;
+	color: #ffffff;
+	font-size: 1rem;
+	box-shadow: 1px 1px 2px #444;
+	transition: ease-in-out 200ms background, ease-in-out 200ms color;
+}
+button:hover {
+	background: #00ff59;
+	color: #000000;
+}
+button#guestBtn {
+	color: #ffffff;
+	background: #002aff;
+	margin: 25vh auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: ease-in-out 200ms background, ease-in-out 200ms color;
+}
+button#guestBtn i {
+	position: relative;
+	font-size: 1.3rem;
+	left: 1px;
+	transition: ease-out-out 300ms left;
+}
+button#guestBtn:hover {
+	color: #ffffff;
+	background: #001687;
+}
+button#guestBtn:hover i {
+	left: 10px;
+}
+button#guestBtn p {
+   font-family: Google;
+   font-weight: 500;
+}

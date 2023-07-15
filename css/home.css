@@ -1,0 +1,274 @@
+#home-contaner {
+	position: relative;
+	width: var(--mn-chat-w);
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	user-select: none;
+}
+
+#home-contaner .wapping {
+	position: relative;
+	width: 100%;
+	height: 100vh;
+	display: grid;
+	grid-template-rows: auto;
+	background: #ffffff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ------------ contacts list --------------- */
+#home-contaner #all-contacts {
+	position: relative;
+	width: 100%;
+	height: auto;
+	margin: calc(var(--chat-gap) * 1.5) 0;
+	border-radius: 20px;
+	overflow-y: scroll;
+	touch-action: auto;
+}
+#home-contaner #wrap-contacts {
+	position: relative;
+	width: 100%;
+	height: min-content;
+	display: flex;
+	flex-direction: column;
+	background: #eeeeee;
+}
+#wrap-contacts .contact-box {
+	--side: 5px;
+	position: relative;
+	width: 100%;
+	height: var(--contact-h);
+	padding: var(--side);
+	user-select: none;
+}
+#wrap-contacts .contact-box::before {
+	position: absolute;
+	content: "";
+	width: calc(100% - var(--contact-h));
+	height: 1px;
+	bottom: -0.5px;
+	right: 0;
+	background: #ffffff;
+}
+#wrap-contacts .contact-box:last-child:before {
+	display: none;
+}
+#wrap-contacts .contact-box:nth-child(odd) {
+	background: #00000003;
+}
+#wrap-contacts .contact-box .wrap {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: grid;
+	place-items: center;
+	grid-template-columns: max-content auto;
+}
+
+.contact-box .contact-icon {
+	position: relative;
+	width: var(--contact-photo-r);
+	height: var(--contact-photo-r);
+	margin: 0 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.contact-box .contact-icon i {
+	font-size: 1.5rem;
+}
+.contact-box .contact-icon span {
+	position: relative;
+	width: 80%;
+	height: 80%;
+	border-radius: 100px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	border: solid 1px #ffffff;
+}
+.contact-box .contact-icon i,
+.contact-box .contact-icon img {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: linear-gradient(120deg, #ff00c7 0%, #51003f 100%),
+		linear-gradient(120deg, #0030ad 0%, #00071a 100%),
+		linear-gradient(180deg, #000346 0%, #ff0000 100%),
+		linear-gradient(60deg, #0029ff 0%, #aa0014 100%),
+		radial-gradient(100% 165% at 100% 100%, #ff00a8 0%, #00ff47 100%),
+		radial-gradient(100% 150% at 0% 0%, #fff500 0%, #51d500 100%);
+	background-blend-mode: overlay, color-dodge, overlay, overlay, difference,
+		normal;
+}
+.contact-box .contact-icon i {
+	font-size: 1.5rem;
+	color: #ffffff;
+}
+.contact-box .contact-icon i,
+.contact-box .contact-icon.active img {
+	display: flex;
+}
+.contact-box .contact-icon.active i,
+.contact-box .contact-icon img {
+	display: none;
+}
+.contact-box .contact-datas {
+	position: relative;
+	width: 100%;
+	height: 95%;
+	display: grid;
+	padding-left: 5px;
+	grid-template-rows: 5fr 5fr;
+}
+
+.contact-box .contact-name-time {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: grid;
+	grid-template-columns: auto min-content;
+}
+.contact-box .contact-name {
+	position: relative;
+	display: flex;
+	justify-content: flex-start;
+	align-items: end;
+	font-size: 15px;
+	font-family: Google;
+	font-weight: bold;
+}
+.contact-box .last-chat-time {
+	position: relative;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	font-size: 12px;
+	padding: 0 3px;
+	font-weight: 300;
+}
+.contact-box .last-chat-no-of-msg {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: grid;
+	align-items: center;
+	grid-template-columns: auto calc(var(--contact-h) / 2);
+}
+.contact-box .last-chat {
+	position: relative;
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	font-size: 0.7rem;
+}
+.contact-box .no-of-msg {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: grid;
+	place-items: center;
+}
+.contact-box .no-of-msg p {
+	position: relative;
+	font-size: 0.6rem;
+	font-weight: 500;
+	padding: 1px 5px;
+	background: #0ff;
+	border-radius: 20px;
+}
+
+/* ------------ loding -------------- */
+#pageLoad {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	inset: 0;
+	background: #ffffff;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	z-index: 10;
+}
+#pageLoad.active {
+	display: flex;
+}
+#pageLoad .stars {
+	position: relative;
+	opacity: 0.7;
+}
+#pageLoad .stars i {
+	color: #55ff00;
+}
+#pageLoad .stars i:nth-child(2) {
+	color: #04ff00;
+}
+#pageLoad .stars i:nth-child(3) {
+	color: #00ff33;
+}
+#pageLoad .stars i:nth-child(4) {
+	color: #00ff7b;
+}
+#pageLoad .stars i:nth-child(5) {
+	color: #0ff0ff;
+}
+
+#pageLoad p {
+	color: #000000;
+	font-size: 1.5rem;
+}
+#pageLoad p::before {
+	content: attr(data-val) ".";
+	position: absolute;
+	color: #000000;
+	font-weight: 700;
+	font-size: 1.5rem;
+	animation: loding linear 1s infinite;
+}
+@keyframes loding {
+	0% {
+		content: attr(data-val);
+	}
+	25% {
+		content: attr(data-val) ".";
+	}
+	50% {
+		content: attr(data-val) "..";
+	}
+	100% {
+		content: attr(data-val)"...";
+	}
+}
