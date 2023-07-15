@@ -177,3 +177,66 @@ body {
 		opacity: 0;
 	}
 }
+
+/* ------------ loding -------------- */
+#pageLoad {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	inset: 0;
+	background: #ffffff;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	z-index: 10;
+}
+#pageLoad.active {
+	display: flex;
+}
+#pageLoad .stars {
+	position: relative;
+	opacity: 0.7;
+}
+#pageLoad .stars i {
+	color: #55ff00;
+}
+#pageLoad .stars i:nth-child(2) {
+	color: #04ff00;
+}
+#pageLoad .stars i:nth-child(3) {
+	color: #00ff33;
+}
+#pageLoad .stars i:nth-child(4) {
+	color: #00ff7b;
+}
+#pageLoad .stars i:nth-child(5) {
+	color: #0ff0ff;
+}
+
+#pageLoad p {
+	color: #000000;
+	font-size: 1.5rem;
+}
+#pageLoad p::before {
+	content: attr(data-val) ".";
+	position: absolute;
+	color: #000000;
+	font-weight: 700;
+	font-size: 1.5rem;
+	animation: loding linear 1s infinite;
+}
+@keyframes loding {
+	0% {
+		content: attr(data-val);
+	}
+	25% {
+		content: attr(data-val) ".";
+	}
+	50% {
+		content: attr(data-val) "..";
+	}
+	100% {
+		content: attr(data-val)"...";
+	}
+}
