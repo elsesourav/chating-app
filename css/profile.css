@@ -270,6 +270,7 @@
 #profileInformation .option .input-box {
 	display: grid;
 	place-items: center;
+	overflow: hidden;
 }
 #profileInformation .option .input-box input {
 	position: relative;
@@ -277,6 +278,7 @@
 	border: none;
 	padding: 5px 10px;
 	font-family: Google;
+	background: transparent url;
 	font-size: 15px;
 	font-weight: 900;
 	color: #000000;
