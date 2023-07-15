@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="../src/img/icon_icon_icon_.png"
+    />
+    <title>Live Chat</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="../css/icon.css" />
+    <link rel="stylesheet" href="../css/utils.css" />
+    <link rel="stylesheet" href="../css/index.css" />
+    <link rel="stylesheet" href="../css/chat.css" />
+    <script defer src="../js/data.js"></script>
+    <script defer src="../js/utils.js"></script>
+    <script defer src="../js/index.js"></script>
+    <script defer src="../js/chat.js"></script>
+  </head>
+  <body class="">
+    <div id="scroll-box">
+      <div id="main-contant">
+        <div id="home-contaner">
+          <div class="wapping">
+            <header id="index-header" class="">
+              <div id="add-new-content">
+                <div id="boundary" class="wrap">
+                  <div id="toggle-content">
+                    <div id="add-member-input-box">
+                      <input
+                        type="text"
+                        id="add-member-input"
+                        placeholder="Contact Id"
+                        spellcheck="false"
+                      />
+                    </div>
+                    <div id="add-new-contact">
+                      <button id="add-new-contact-btn">Add</button>
+                    </div>
+                  </div>
+                  <div id="cancle-new-btn-box">
+                    <button id="toggle-cancle-new-btn">
+                      <p id="add-cancle">Cancle</p>
+                      <p id="add-new"><i class="sbi-search"></i> Find</p>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div id="my-profile">
+                <div class="wrap">
+                  <div class="center">
+                    <i class="sbi-user1"></i>
+                  </div>
+                </div>
+              </div>
+            </header>
+
+            <div id="all-contacts">
+              <div id="wrap-contacts">
+                <div class="contact-box">
+                  <div class="wrap">
+                    <div class="contact-icon">
+                      <i class="sbi-user-circle"></i>
+                    </div>
+                    <div class="contact-datas">
+                      <div class="contact-name-time">
+                        <div class="contact-name">Contact name</div>
+                        <div class="last-chat-time">00:00</div>
+                      </div>
+                      <div class="last-chat-no-of-msg">
+                        <div class="last-chat">Last Chat</div>
+                        <div class="no-of-msg"><p>1</p></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer id="index-footer"></footer>
+          </div>
+        </div>
+
+        <div id="chat-contaner">
+          <div class="wapping">
+            <header>
+              <div class="wrap">
+                <div id="profile-back">
+                  <i class="sbi-arrow_back"></i>
+                </div>
+                <div id="porfile-image">
+                  <i class="sbi-user-circle-o"></i>
+                </div>
+                <div id="porfile-info">
+                  <div id="pf-name">Arsalan</div>
+                  <div id="pf-status">Online</div>
+                </div>
+                <div id="pf-manu">
+                  <i class="sbi-dots-three-vertical"></i>
+                </div>
+              </div>
+            </header>
+
+            <div id="scroll-chat">
+              <div class="wrap" id="messages-">
+                <div class="chat-box other">
+                  <div class="chat-content">
+                    <div class="wrap">
+                      <div class="c-name">Arsalan Vijan</div>
+                      <div class="c-text">Hi</div>
+                      <div class="c-time">19:32</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <footer>
+              <div class="wrap">
+                <div id="input-box">
+                  <div id="msg-lvl" class="active">Message</div>
+                  <div
+                    contenteditable="true"
+                    spellcheck="false"
+                    id="input-div"
+                  ></div>
+                </div>
+                <div id="message-send-btn">
+                  <button id="send-msg">
+                    <i class="sbi-send"></i>
+                  </button>
+                </div>
+              </div>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

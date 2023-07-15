@@ -1,0 +1,16 @@
+@font-face {
+  font-family: "font32"; 
+  src: url("../src/font/font32.ttf") format("truetype");  
+}
+@font-face {
+  font-family: "font20";
+  src: url("../src/font/font20.ttf") format("truetype");     
+}
+@font-face {
+  font-family: "roboto";
+  src: url("../src/font/roboto-Thin.ttf") format("truetype"); 
+}
+@font-face {
+  font-family: "google";
+  src: url("../src/font/Product\ Sans\ Regular.ttf") format("truetype"); 
+}
