@@ -4,7 +4,6 @@
   box-sizing: border-box;
   /* outline: solid 1px #f004; */
   user-select: none;
-  touch-action: none;
   font-family: Righteous;
 }
 :root {

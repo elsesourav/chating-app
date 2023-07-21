@@ -88,6 +88,9 @@
 	height: 100px;
 	overflow: hidden;
 }
+#myProfileAndFindUser #profielImage .mn-i {
+	font-size: 19px;
+}
 #myProfileAndFindUser #profielImage #imageEdite {
 	position: absolute;
 	width: 100%;
