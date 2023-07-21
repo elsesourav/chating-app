@@ -7,8 +7,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
 import { set, get, getDatabase, query, ref, update, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
-const userId = getCookie("liveChatGuestId");
-if (isMobile) cssRoot.style.setProperty("--cursor", "auto");
+const userID = getCookie("liveChatGuestId");
 
 let info, friends;
 
@@ -19,9 +18,10 @@ window.onload = async () => {
    const auth = getAuth();
    const db = getDatabase();
 
-   const dbRefInfo = ref(db, `users_data/info/${userId}`);
-   const dbRefStatus = ref(db, `users_data/status/${userId}`);
-   const dbRefFriends = ref(db, `users_data/friends/${userId}`);
+   const dbRefInfo = ref(db, `users_data/info/${userID}`);
+   const dbRefStatus = ref(db, `users_data/status/${userID}`);
+   const dbRefFriends = ref(db, `users_data/friends/${userID}`);
+   const dbRefImage = ref(db, `users_data/image/${userID}`);
 
    // await get(dbRefInfo).then((snapshot) => {
    //    if (snapshot.exists()) {
@@ -43,6 +43,7 @@ window.onload = async () => {
    // console.log(info, friends);
 
    pageLoad.classList.remove("active");
+   
 
    // pointer events for mobile devices
    if (isMobile) {
@@ -101,13 +102,13 @@ window.onload = async () => {
       document.body.classList.add("active");
       bodyMaxScroll = scrollBox.scrollWidth - scrollBox.clientWidth;
       smoothScroll(scrollBox, "scrollLeft", bodyMaxScroll, 100);
-   })
+   });
 
    profileBack.on(() => {
       smoothScroll(scrollBox, "scrollLeft", -bodyMaxScroll, 100);
-   })
+   });
 
    profileBtn.addEventListener("click", () => {
       window.location.replace("profile.html")
-   })
+   });
 }
