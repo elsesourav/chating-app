@@ -12,7 +12,7 @@ window.onload = () => {
    const db = getDatabase();
 
    // setDataFromLocalStorage()
-   // pageLoad.classList.remove("active");
+   pageLoad.classList.remove("active");
 
    guestBtn.addEventListener('click', async () => {
       const oldGuestId = getCookie("liveChatGuestId");
