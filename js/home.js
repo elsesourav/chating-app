@@ -44,6 +44,11 @@ window.onload = async () => {
 
    pageLoad.classList.remove("active");
 
+   // pointer events for mobile devices
+   if (isMobile) {
+      document.head.append(`<style>* { pointer-events: none; }</style>`)
+   }
+
    const toggleCancleNewBtn = ID("toggle-cancle-new-btn");
    const indexHeader = ID("index-header");
    const scrollBox = ID("scroll-box");

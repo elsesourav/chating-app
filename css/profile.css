@@ -1,8 +1,8 @@
 /* ----------------- profile and find user ---------------- */
 #myProfileAndFindUser {
-	--width-u: 100px;
-	---height-u: 40px;
-	--radius-u: 20px;
+	--width-u: 120px;
+	---height-u: 50px;
+	--radius-u: 25px;
 	--img-width: 100px;
 	--img-margin: 20px;
 
@@ -47,10 +47,12 @@
 	scale: 0;
 	width: auto;
 	height: auto;
+	opacity: 1;
 }
 #myProfileAndFindUser.two #userProfileBox {
 	width: 0;
 	height: 0;
+	opacity: 0;
 }
 
 #myProfileAndFindUser #profielImage,
@@ -170,7 +172,7 @@
 	background-size: cover;
 }
 #myProfileAndFindUser #profileOpenClose {
-	--sz-porfile: 26px;
+	--sz-porfile: 30px;
 	position: absolute;
 	background: #dddddd;
 	left: calc(var(--width-u) / 2 - var(--sz-porfile) / 2);
@@ -185,6 +187,7 @@
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
 	cursor: pointer;
+	color: #0029ff;
 	z-index: 1;
 }
 #myProfileAndFindUser #profileOpenClose i,
@@ -196,6 +199,9 @@
 #myProfileAndFindUser #profileOpenClose:hover i,
 #myProfileAndFindUser.show #profileOpenClose i {
 	transform: rotateX(180deg);
+}
+#myProfileAndFindUser #profileOpenClose:hover i {
+	color: #002279;
 }
 #myProfileAndFindUser #porfileSetting,
 #myProfileAndFindUser #searchOption {
@@ -271,6 +277,10 @@
 	display: grid;
 	place-items: center;
 	overflow: hidden;
+}
+#profileInformation .option #userId {
+	color: #0029ff;
+	cursor: pointer;
 }
 #profileInformation .option .input-box input {
 	position: relative;
@@ -554,16 +564,6 @@
 	overflow: hidden;
 	white-space: nowrap;
 }
-
-
-
-
-
-
-
-
-
-
 
 /* --------------------- file input ------------- */
 #fileInput {

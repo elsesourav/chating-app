@@ -3,10 +3,11 @@
   padding: 0;
   box-sizing: border-box;
   /* outline: solid 1px #f004; */
+  user-select: none;
+  touch-action: none;
   font-family: Righteous;
 }
 :root {
-  --cursor: pointer;
 
   --mn-chat-w: max(min(80vw, 80vh), min(400px, 100vw));
   /* --mn-chat-h: 694px; */

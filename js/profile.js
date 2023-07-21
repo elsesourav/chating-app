@@ -56,11 +56,16 @@ imageEditeOptions.addEventListener("click", () => {
     imageEditeOptions.classList.toggle("active");
 });
 
-// search input
+// paste button
 pasteButton.addEventListener("click", async () => {
     const text = await navigator.clipboard.readText();
     userSearchInput.value = text.substring(0, 8);
 });
+// copy buttton 
+userId.addEventListener("click", async () => {
+    await navigator.clipboard.writeText(userId.innerText);
+});
+// search input
 userSearchInput.addEventListener("keyup", (e) => {
     userSearchInput.value = e.target.value.toUpperCase();
 });

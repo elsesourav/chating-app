@@ -1,4 +1,4 @@
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js";
+sstimport { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
 import { set, get, getDatabase, query, ref, update, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
@@ -13,6 +13,11 @@ window.onload = () => {
 
    // setDataFromLocalStorage()
    pageLoad.classList.remove("active");
+
+   // pointer events for mobile devices
+   if (isMobile) {
+      document.head.append(`<style>* { pointer-events: none; }</style>`)
+   }
 
    guestBtn.addEventListener('click', async () => {
       const oldGuestId = getCookie("liveChatGuestId");
