@@ -42,8 +42,20 @@ window.onload = async () => {
 
    // console.log(info, friends);
 
+   setInterval(async () => {
+      try {
+         await update(dbRefStatus, {
+            lastOnline: Date.now()
+         })
+      } catch (error) {
+         console.log("Something went wrong!");
+         console.log(error);
+      }
+
+   }, 60_000);
+
    pageLoad.classList.remove("active");
-   
+
 
    // pointer events for mobile devices
    if (isMobile) {

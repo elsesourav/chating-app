@@ -31,6 +31,8 @@ const sides = {
 const { width: Width, height: Height } = canvasBox.getBoundingClientRect();
 const minSelectorSize = 60;
 
+let currentSearchSelection = null; // for search user click detials
+
 /* -------------- global variable end ------------ */
 const userID = getCookie("liveChatGuestId");
 
@@ -40,13 +42,13 @@ const userID = getCookie("liveChatGuestId");
     const analytics = getAnalytics(app);
     const auth = getAuth();
     const db = getDatabase();
-    
+
     const dbRefInfo = ref(db, `users_data/info/${userID}`);
     const dbRefStatus = ref(db, `users_data/status/${userID}`);
     const dbRefFriends = ref(db, `users_data/friends/${userID}`);
     const dbRefImage = ref(db, `users_data/image/${userID}`);
-    
-    
+
+
 
     imageUpload.addEventListener("click", () => {
         fileInput.click();
@@ -74,24 +76,19 @@ const userID = getCookie("liveChatGuestId");
     });
     closeSearch.addEventListener("click", () => {
         myProfileAndFindUser.classList.remove("two");
+        currentSearchSelection = null;
+        userSearchInput.value = "";
+        searchUserName.innerText = "User Name";
+        userAddAndInfo.classList.remove("active");
+        allSearchResult.innerHTML = "";
     });
 
     imageEditeOptions.addEventListener("click", () => {
         imageEditeOptions.classList.toggle("active");
     });
-
-    // paste button
-    pasteButton.addEventListener("click", async () => {
-        const text = await navigator.clipboard.readText();
-        userSearchInput.value = text.substring(0, 8);
-    });
     // copy buttton 
     userId.addEventListener("click", async () => {
         await navigator.clipboard.writeText(userId.innerText);
-    });
-    // search input
-    userSearchInput.addEventListener("keyup", (e) => {
-        userSearchInput.value = e.target.value.toUpperCase();
     });
 
 
@@ -170,23 +167,30 @@ const userID = getCookie("liveChatGuestId");
 
                 IMAGE_URL.low = cvs.toDataURL("image/jpeg", 1.0);
 
-                console.log(IMAGE_URL.high);
-                console.log(IMAGE_URL.low);
                 profielImage.classList.add("active");
-                profileImg.src = IMAGE_URL.low;
                 imageSelection.classList.remove("active");
                 uploadImageBtn.removeEventListener("click", eventHandler, true);
 
+                uploadProcess.classList.add("active");
+                const MS = Date.now();
+
                 await set(dbRefImage, {
-                    userId: newGuest.id,
-                    date: newGuest.date,
-                    friends: 0
-                 }).then(() => {
-                    console.log("Data sended successfully");
-                    location.replace("./html/home.html");
-                 }).catch((error) => {
-                    alert(error.message);
-                 });
+                    imgHigh: IMAGE_URL.high,
+                    time: MS
+                }).then(async () => {
+
+                    await update(dbRefInfo, {
+                        imgLow: IMAGE_URL.low
+                    }).then(() => {
+                        console.log("Data sended successfully");
+                        uploadProcess.classList.remove("active");
+                        profileImg.src = IMAGE_URL.high;
+                    }).catch((error) => {
+                        uploadProcess.classList.remove("active");
+                    });
+                }).catch((error) => {
+                    uploadProcess.classList.remove("active");
+                });
             }
             uploadImageBtn.addEventListener("click", eventHandler, true);
 
@@ -331,4 +335,98 @@ const userID = getCookie("liveChatGuestId");
         pre.x = x;
         pre.y = y;
     }
+
+
+
+    /* ------------ search in user datas  ----------------*/
+    // search input
+    userSearchInput.addEventListener("input", debounce(() => {
+        let ID = userSearchInput.value;
+        manageSearchUsers(ID);
+    }, 500));
+
+    // paste button
+    pasteButton.addEventListener("click", debounce(async () => {
+        const text = await navigator.clipboard.readText();
+        const ID = text.substring(0, 8);
+        userSearchInput.value = ID;
+        manageSearchUsers(ID);
+    }, 500));
+
+
+    // search and manage users
+    function manageSearchUsers(ID) {
+        if (ID.length < 5) return;
+
+        ID = ID.toUpperCase();
+        const sorted = members.filter(({ id }) => id.includes(ID))
+
+        allSearchResult.innerHTML = "";
+        let strElement = "";
+
+        sorted.forEach(e => {
+            const isYou = e.id === myDtls.id;
+            strElement += `
+            <div class="search-user ${isYou ? "have" : ""}">
+				<i class="sbi-user"></i>
+				<div class="user-name">${isYou ? "You" : e.name}</div>
+				<p>ID</p>
+				<div class="user-id">${e.id}</div>
+            </div>
+        `;
+        });
+
+        allSearchResult.innerHTML = strElement;
+        const allFindUsers = document.querySelectorAll(".search-user");
+        allFindUsers.forEach((findUser, i) => {
+            findUser.addEventListener("click", () => {
+                removeClass(allFindUsers);
+                addClass(findUser);
+
+                // set in search view elements
+                userAddAndInfo.classList.add("active");
+                userAddAndInfo.classList.remove("have");
+                if (myDtls.id === sorted[i].id) {
+                    userAddAndInfo.classList.add("have");
+                }
+                searchUserName.innerText = sorted[i].name;
+
+                // add image url when have image
+                searchIcon.classList.remove("active");
+                if (sorted[i].imgLow) {
+                    searchUserImage.src = sorted[i].imgLow;
+                    searchIcon.classList.add("active");
+                }
+                currentSearchSelection = sorted[i];
+            });
+        });
+    }
+
+    addUserBtn.addEventListener("click", debounce(async () => {
+        if (!currentSearchSelection) return;
+        uploadProcess.classList.add("active");
+
+        try {
+            await update(dbRefFriends, {
+                [currentSearchSelection.id]: Date.now()
+            })
+            const snapshot = await get(dbRefFriends);
+    
+            const len = Object.keys(snapshot.val()).length;
+    
+            await update(dbRefInfo, {
+                friends: len
+            })
+    
+            uploadProcess.classList.remove("active");
+            currentSearchSelection = null;
+            userSearchInput.value = "";
+            allSearchResult.innerHTML = "";
+        } catch (error) {
+            console.log("something went wrong!!");
+            console.log(error);
+        }
+
+    }, 700));
 })();
+

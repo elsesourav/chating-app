@@ -327,3 +327,12 @@ function getCookie(name) {
 function eraseCookie(name) {
    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
+
+// delay input run function
+function debounce(callback, delay = 1000) {
+   let timeout;
+   return function () {
+       clearTimeout(timeout);
+       timeout = setTimeout(callback, delay);
+   };
+}

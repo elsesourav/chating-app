@@ -30,17 +30,22 @@ window.onload = () => {
       }
 
       // database reference
-      const dbRef = ref(db, `users_data/info/${oldGuestId || newGuest.id}`);
+      const dbRefInfo = ref(db, `users_data/info/${oldGuestId || newGuest.id}`);
+      const dbRefStatus = ref(db, `users_data/status/${oldGuestId || newGuest.id}`);
 
-      
-      if (!oldGuestId) { // create new guest
-         await set(dbRef, {
+      if (!dbRefInfo) { // create new guest
+         await set(dbRefInfo, {
             userId: newGuest.id,
             date: newGuest.date,
             friends: 0
-         }).then(() => {
-            console.log("Data sended successfully");
-            location.replace("./html/home.html");
+         }).then(async () => {
+            await set(dbRefStatus, {
+               lastOnline: newGuest.date,
+               lastProfileUpdated: null
+            }).then(() => {
+               console.log("Data sended successfully");
+               location.replace("./html/home.html");
+            })
          }).catch((error) => {
             alert(error.message);
          });
@@ -51,6 +56,8 @@ window.onload = () => {
                location.replace("./html/home.html");
             } else {
                console.log("No data available");
+               setCookie("liveChatGuestId", "", 0);
+               location.reload();
             }
          }).catch((error) => {
             alert(error.message);

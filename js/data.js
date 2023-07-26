@@ -1,17 +1,33 @@
 let myDtls = {
-    id: 01,
+    id: "LKGZ413E",
     name: "Sourav Barui",
     contacts: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 }
 // types "one", "many"
 let members = [
     {
-        id: 01,
+        id: "LKGZ413E",
         name: "Sourav Barui",
     },
     {
-        id: 02,
+        id: "LKGZ417E",
         name: "Arsalan",
+    },
+    {
+        id: "LKGZ41EE",
+        name: "Shuvankar",
+    },
+    {
+        id: "LKGZ410E",
+        name: "Subrata Barui",
+    },
+    {
+        id: "LKGZ41E5",
+        name: "Santanu",
+    },
+    {
+        id: "LKGZ419E",
+        name: "Babusona",
     }
 ]
 
@@ -20,24 +36,30 @@ let messages = [
         type: "one",
         message: "Hi",
         time: "19:32",
-        id: 01,
-        senderId: 02,
+        id: 1,
+        senderId: 2,
         name: "Arsalan",
     },
     {
         type: "one",
         message: "Hello",
         time: "19:32",
-        id: 02,
-        senderId: 01,
+        id: 2,
+        senderId: 1,
         name: "Sourav Barui",
     },
     {
         type: "one",
         message: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
         time: "19:32",
-        id: 03,
-        senderId: 02,
+        id: 3,
+        senderId: 2,
         name: "Arsalan",
     }
+]
+
+const friends = [
+   {
+
+   } 
 ]

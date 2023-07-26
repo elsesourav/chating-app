@@ -39,6 +39,17 @@
 			<p data-val="Loding">Loding</p>
 		</div>
 
+		<div id="uploadProcess" class="">
+			<div class="stars">
+				<i class="i-star"></i>
+				<i class="i-star"></i>
+				<i class="i-star"></i>
+				<i class="i-star"></i>
+				<i class="i-star"></i>
+				<i class="i-star"></i>
+			</div>
+		</div>
+
 		<div id="scroll-box">
 			<div id="main-contant">
 				<div id="home-contaner">
@@ -172,7 +183,13 @@
 
 							<div id="searchUserBox">
 								<div id="searchIcon">
-									<i class="sbi-person_search"></i>
+									<i class="sbi-person_search mn-i"></i>
+									<img
+										class="mn-img"
+										src=""
+										id="searchUserImage"
+										alt="user image"
+									/>
 								</div>
 								<div id="searchOption">
 									<div class="top-right">
@@ -181,10 +198,10 @@
 										</div>
 									</div>
 
-									<div id="userAddAndInfo">
+									<div id="userAddAndInfo" class="">
 										<div id="addUserName">
 											<i class="sbi-user"></i>
-											<p>User Name</p>
+											<p id="searchUserName">User Name</p>
 										</div>
 										<div id="addUserBtn">
 											<i class="sbi-user-plus1"></i>
@@ -208,49 +225,7 @@
 									</div>
 
 									<div id="resultUserListBox">
-										<div class="scroll-list">
-											<div class="user-info">
-												<i class="sbi-user"></i>
-												<div class="user-name">Sourav Barui</div>
-												<p>ID</p>
-												<div class="user-id">LK3MZOL7</div>
-											</div>
-
-											<div class="user-info active">
-												<i class="sbi-user"></i>
-												<div class="user-name">Sourav Barui</div>
-												<p>ID</p>
-												<div class="user-id">LK3MZOL7</div>
-											</div>
-
-											<div class="user-info">
-												<i class="sbi-user"></i>
-												<div class="user-name">Sourav Barui</div>
-												<p>ID</p>
-												<div class="user-id">LK3MZOL7</div>
-											</div>
-
-											<div class="user-info">
-												<i class="sbi-user"></i>
-												<div class="user-name">Sourav Barui</div>
-												<p>ID</p>
-												<div class="user-id">LK3MZOL7</div>
-											</div>
-
-											<div class="user-info">
-												<i class="sbi-user"></i>
-												<div class="user-name">Sourav Barui</div>
-												<p>ID</p>
-												<div class="user-id">LK3MZOL7</div>
-											</div>
-
-											<div class="user-info">
-												<i class="sbi-user"></i>
-												<div class="user-name">Sourav Barui</div>
-												<p>ID</p>
-												<div class="user-id">LK3MZOL7</div>
-											</div>
-										</div>
+										<div class="scroll-list" id="allSearchResult"></div>
 									</div>
 								</div>
 							</div>

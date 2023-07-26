@@ -159,21 +159,7 @@
 #myProfileAndFindUser.two #searchIcon i {
 	font-size: 60px;
 }
-#myProfileAndFindUser #profielImage.active .mn-img,
-#myProfileAndFindUser #profielImage .mn-i {
-	display: grid;
-}
-#myProfileAndFindUser #profielImage .mn-img,
-#myProfileAndFindUser #profielImage.active .mn-i {
-	display: none;
-}
-#myProfileAndFindUser #profielImage.active .mn-img {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	background-position: center;
-	background-size: cover;
-}
+
 #myProfileAndFindUser #profileOpenClose {
 	--sz-porfile: 30px;
 	position: absolute;
@@ -405,12 +391,19 @@
 /* ---------- search user section ------------ */
 #userAddAndInfo {
 	position: relative;
-	width: 100%;
+	width: 0;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	padding: 10px 0;
 	gap: 10px;
+	opacity: 0;
+	transition: linear 300ms opacity, linear 300ms width;
+	overflow: hidden;
+}
+#userAddAndInfo.active {
+	opacity: 1;
+	width: 100%;
 }
 #userAddAndInfo #addUserName,
 #userAddAndInfo #addUserBtn {
@@ -420,12 +413,14 @@
 	align-items: center;
 }
 #userAddAndInfo #addUserName {
+	width: auto;
 	padding: 10px 15px;
 	border-radius: 20px;
 	gap: 10px;
 	font-family: Google;
 	background: #ffffff;
 	box-shadow: inset 0 0 6px #00000033;
+	transition: linear 300ms width;
 }
 #userAddAndInfo #addUserName p {
 	font-family: Google;
@@ -434,12 +429,18 @@
 #userAddAndInfo #addUserBtn {
 	gap: 5px;
 	padding: 6px 10px;
+	width: auto;
 	border-radius: 6px;
 	cursor: pointer;
 	background: #0029ff;
 	color: #ffffff;
+	overflow: hidden;
 	box-shadow: 0 0 3px #00000077;
 	transition: ease-in-out 300ms background;
+}
+#userAddAndInfo.have #addUserBtn {
+	padding: 0;
+	width: 0;
 }
 #userAddAndInfo #addUserBtn:hover {
 	background: #002279;
@@ -496,7 +497,8 @@
 #searchOption #resultUserListBox {
 	position: relative;
 	width: 320px;
-	height: 205px;
+	min-height: 100px;
+	max-height: 205px;
 	margin: 10px;
 	padding: 10px;
 	border-radius: 10px;
@@ -508,10 +510,11 @@
 	position: absolute;
 	width: 100%;
 	height: 100%;
+	inset: 0;
 	z-index: 1;
 	display: grid;
 	place-items: center;
-	color: #00000044;
+	color: #00000022;
 	font-family: Google;
 }
 #resultUserListBox .scroll-list {
@@ -521,9 +524,12 @@
 	overflow-y: scroll;
 	overflow-x: hidden;
 	border-radius: 6px;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
 	z-index: 2;
 }
-#resultUserListBox .user-info {
+#resultUserListBox .search-user {
 	position: relative;
 	width: 100%;
 	display: grid;
@@ -532,15 +538,16 @@
 	background: #e9e9e9;
 	border-bottom: solid 2px #00000033;
 	cursor: pointer;
+	border-radius: 5px;
 }
-#resultUserListBox .user-info.active {
-	background: #69b2ff;
-}
-#resultUserListBox .user-info:nth-child(odd) {
+#resultUserListBox .search-user:nth-child(odd) {
 	background: #e1e1e1;
 }
-#resultUserListBox .user-info:last-child {
-	border: none;
+#resultUserListBox .search-user.have {
+	background: #00ff7381;
+}
+#resultUserListBox .search-user.active {
+	background: #69b2ff;
 }
 #resultUserListBox i,
 #resultUserListBox p {
@@ -720,3 +727,47 @@
 #upload-close-btn-box .button-upload:hover {
 	background: #002ea2;
 }
+
+/* ----------- upload Process ------------ */
+#uploadProcess {
+	position: fixed;
+	background: #ffffff77;
+	backdrop-filter: blur(4px);
+	width: 100vw;
+	height: 0;
+	display: grid;
+	place-items: center;
+	z-index: 12;
+	opacity: 0;
+	overflow: hidden;
+	transition: height 0ms 300ms, opacity 300ms 0ms;
+}
+#uploadProcess.active {
+	opacity: 1;
+	height: 100vh; 
+	transition: height 0ms 0ms, opacity 300ms 0ms;
+}
+
+
+/* --------- global ----------- */
+#profielImage.active .mn-img,
+#profielImage .mn-i,
+#myProfileAndFindUser #searchIcon.active .mn-img,
+#myProfileAndFindUser #searchIcon .mn-i  {
+	display: grid;
+}
+#profielImage .mn-img,
+#profielImage.active .mn-i ,
+#myProfileAndFindUser #searchIcon .mn-img,
+#myProfileAndFindUser #searchIcon.active .mn-i {
+	display: none;
+}
+#profielImage.active .mn-img,
+#myProfileAndFindUser #searchIcon.active .mn-img  {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	background-position: center;
+	background-size: cover;
+}
+/* --------- end ----------- */
