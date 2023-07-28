@@ -7,9 +7,8 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
 import { set, get, getDatabase, query, ref, update, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
-const userID = getCookie("liveChatGuestId");
-
-let info, friends;
+userId = getCookie("liveChatUserId");
+data = getDataFromLocalStorage("liveChatUserData");
 
 window.onload = async () => {
    // Initialize Firebase
@@ -18,29 +17,34 @@ window.onload = async () => {
    const auth = getAuth();
    const db = getDatabase();
 
-   const dbRefInfo = ref(db, `users_data/info/${userID}`);
-   const dbRefStatus = ref(db, `users_data/status/${userID}`);
-   const dbRefFriends = ref(db, `users_data/friends/${userID}`);
-   const dbRefImage = ref(db, `users_data/image/${userID}`);
+   const dbRefInfo = ref(db, `users_data/info/${userId}`);
+   const dbRefStatus = ref(db, `users_data/status/${userId}`);
+   const dbRefFriends = ref(db, `users_data/friends/${userId}`);
+   const dbRefImage = ref(db, `users_data/image/${userId}`);
 
-   // await get(dbRefInfo).then((snapshot) => {
-   //    if (snapshot.exists()) {
-   //       info = snapshot.val();
-   //    } else {
-   //       location.reload();
-   //    }
-   // })
-   // await get(dbRefFriends).then((snapshot) => {
-   //    if (snapshot.exists()) {
-   //       friends = snapshot.val();
-   //    } else if (info.friends == 0) {
-   //       friends = null;
-   //    } else {
-   //       location.reload();
-   //    }
-   // })
+   if (!data) {
+      try {
+         const info = await get(dbRefInfo);
+         const status = await get(dbRefStatus);
+         const friends = await get(dbRefFriends);
+         const image = await get(dbRefImage);
+         const obj = {
+            info: info.val(),
+            status: status.val(),
+            friends: friends.val(),
+            image: image.val(),
+         }
+         data = structuredClone(obj);
+         updateLocalStorage();
+      } catch (e) {
+         location.reload();
+      }
+   }
 
-   // console.log(info, friends);
+   console.log(data.imgLow);
+   if (data.imgLow) {
+
+   }
 
    setInterval(async () => {
       try {

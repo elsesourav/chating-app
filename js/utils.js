@@ -336,3 +336,4 @@ function debounce(callback, delay = 1000) {
        timeout = setTimeout(callback, delay);
    };
 }
+

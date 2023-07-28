@@ -5,7 +5,7 @@ import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
-import { set, get, getDatabase, query, ref, update, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
+import { set, get, getDatabase, query, ref, update, orderByChild, equalTo, startAt, endAt } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
 
 /* -------------- global variable start ------------ */
@@ -34,7 +34,6 @@ const minSelectorSize = 60;
 let currentSearchSelection = null; // for search user click detials
 
 /* -------------- global variable end ------------ */
-const userID = getCookie("liveChatGuestId");
 
 (async () => {
     // Initialize Firebase
@@ -43,10 +42,12 @@ const userID = getCookie("liveChatGuestId");
     const auth = getAuth();
     const db = getDatabase();
 
-    const dbRefInfo = ref(db, `users_data/info/${userID}`);
-    const dbRefStatus = ref(db, `users_data/status/${userID}`);
-    const dbRefFriends = ref(db, `users_data/friends/${userID}`);
-    const dbRefImage = ref(db, `users_data/image/${userID}`);
+    const dbRefInfo = ref(db, `users_data/info/${userId}`);
+    const dbRefStatus = ref(db, `users_data/status/${userId}`);
+    const dbRefFriends = ref(db, `users_data/friends/${userId}`);
+    const dbRefImage = ref(db, `users_data/image/${userId}`);
+
+    let allUserInfo = null;
 
 
 
@@ -70,10 +71,18 @@ const userID = getCookie("liveChatGuestId");
     closeProfile.addEventListener("click", () => {
         myProfileAndFindUser.classList.remove("one");
     });
-    searchIcon.addEventListener("click", () => {
+    searchIcon.addEventListener("click", async () => {
         myProfileAndFindUser.classList.remove("one");
         myProfileAndFindUser.classList.add("two");
+
+        try {
+            const r = ref(db, `users_data/info/`);
+            allUserInfo = (await get(r)).val();
+        } catch (error) {
+            console.log(error);
+        }
     });
+
     closeSearch.addEventListener("click", () => {
         myProfileAndFindUser.classList.remove("two");
         currentSearchSelection = null;
@@ -87,7 +96,7 @@ const userID = getCookie("liveChatGuestId");
         imageEditeOptions.classList.toggle("active");
     });
     // copy buttton 
-    userId.addEventListener("click", async () => {
+    userID.addEventListener("click", async () => {
         await navigator.clipboard.writeText(userId.innerText);
     });
 
@@ -176,18 +185,13 @@ const userID = getCookie("liveChatGuestId");
 
                 await set(dbRefImage, {
                     imgHigh: IMAGE_URL.high,
+                    imgLow: IMAGE_URL.low,
                     time: MS
-                }).then(async () => {
+                }).then(() => {
+                    console.log("Data sended successfully");
+                    uploadProcess.classList.remove("active");
+                    profileImg.src = IMAGE_URL.high;
 
-                    await update(dbRefInfo, {
-                        imgLow: IMAGE_URL.low
-                    }).then(() => {
-                        console.log("Data sended successfully");
-                        uploadProcess.classList.remove("active");
-                        profileImg.src = IMAGE_URL.high;
-                    }).catch((error) => {
-                        uploadProcess.classList.remove("active");
-                    });
                 }).catch((error) => {
                     uploadProcess.classList.remove("active");
                 });
@@ -355,23 +359,28 @@ const userID = getCookie("liveChatGuestId");
 
 
     // search and manage users
-    function manageSearchUsers(ID) {
+    async function manageSearchUsers(ID) {
         if (ID.length < 5) return;
 
         ID = ID.toUpperCase();
-        const sorted = members.filter(({ id }) => id.includes(ID))
+        console.log(allUserInfo);
+        // const sorted = allUserInfo.filter(({ id }) => id.includes(ID))
+        const sorted = objectFilter(allUserInfo, ID);
+
+        console.log(sorted);
 
         allSearchResult.innerHTML = "";
         let strElement = "";
 
         sorted.forEach(e => {
-            const isYou = e.id === myDtls.id;
+            const isYou = userId === e.userId;
+            const isMyFriend = isMyFriend(data.friends, e.userId);
             strElement += `
-            <div class="search-user ${isYou ? "have" : ""}">
+            <div class="search-user ${isYou || isMyFriend ? "have" : ""}">
 				<i class="sbi-user"></i>
-				<div class="user-name">${isYou ? "You" : e.name}</div>
+				<div class="user-name">${isYou ? "You" : e.name ? e.name : "Guest"}</div>
 				<p>ID</p>
-				<div class="user-id">${e.id}</div>
+				<div class="user-id">${e.userId}</div>
             </div>
         `;
         });
@@ -386,7 +395,7 @@ const userID = getCookie("liveChatGuestId");
                 // set in search view elements
                 userAddAndInfo.classList.add("active");
                 userAddAndInfo.classList.remove("have");
-                if (myDtls.id === sorted[i].id) {
+                if (userId === sorted[i].userId || isMyFriend(data.friends, sorted[i].userId)) {
                     userAddAndInfo.classList.add("have");
                 }
                 searchUserName.innerText = sorted[i].name;
@@ -411,13 +420,13 @@ const userID = getCookie("liveChatGuestId");
                 [currentSearchSelection.id]: Date.now()
             })
             const snapshot = await get(dbRefFriends);
-    
+
             const len = Object.keys(snapshot.val()).length;
-    
+
             await update(dbRefInfo, {
                 friends: len
             })
-    
+
             uploadProcess.classList.remove("active");
             currentSearchSelection = null;
             userSearchInput.value = "";

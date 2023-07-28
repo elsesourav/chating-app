@@ -267,7 +267,7 @@
 	place-items: center;
 	overflow: hidden;
 }
-#profileInformation .option #userId {
+#profileInformation .option #userID {
 	color: #0029ff;
 	cursor: pointer;
 }

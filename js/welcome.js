@@ -20,50 +20,51 @@ window.onload = () => {
    }
 
    guestBtn.addEventListener('click', async () => {
-      const oldGuestId = getCookie("liveChatGuestId");
+      const oldGuestId = getCookie("liveChatUserId");
       let newGuest = null;
 
       // when no guest account exist then create a new one
       if (!oldGuestId) {
          newGuest = getGuestId();
-         setCookie("liveChatGuestId", newGuest.id, 30);
+         setCookie("liveChatUserId", newGuest.id, 30);
       }
 
       // database reference
       const dbRefInfo = ref(db, `users_data/info/${oldGuestId || newGuest.id}`);
       const dbRefStatus = ref(db, `users_data/status/${oldGuestId || newGuest.id}`);
 
-      if (!dbRefInfo) { // create new guest
-         await set(dbRefInfo, {
-            userId: newGuest.id,
-            date: newGuest.date,
-            friends: 0
-         }).then(async () => {
+      try {
+         const user = await get(dbRefInfo);
+
+         if (!user.exists()) { // create new guest
+            await set(dbRefInfo, {
+               userId: newGuest.id,
+               date: newGuest.date,
+               friends: 0
+            }).then(async () => {
+               await set(dbRefStatus, {
+                  lastOnline: Date.now(),
+                  lastProfileUpdated: null
+               }).then(() => {
+                  console.log("Data sended successfully");
+                  location.replace("./html/home.html");
+               })
+            }).catch((error) => {
+               alert(error.message);
+            });
+
+         } else { // continue old guest
             await set(dbRefStatus, {
-               lastOnline: newGuest.date,
+               lastOnline: Date.now(),
                lastProfileUpdated: null
             }).then(() => {
                console.log("Data sended successfully");
                location.replace("./html/home.html");
             })
-         }).catch((error) => {
-            alert(error.message);
-         });
-
-      } else { // continue old guest
-         await get(dbRef).then((snapshot) => {
-            if (snapshot.exists()) {
-               location.replace("./html/home.html");
-            } else {
-               console.log("No data available");
-               setCookie("liveChatGuestId", "", 0);
-               location.reload();
-            }
-         }).catch((error) => {
-            alert(error.message);
-         });
-
+         }
+      } catch (error) {
+         console.log(error);
       }
 
-   })
+   });
 }
