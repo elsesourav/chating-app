@@ -374,9 +374,9 @@ let currentSearchSelection = null; // for search user click detials
 
         sorted.forEach(e => {
             const isYou = userId === e.userId;
-            const isMyFriend = isMyFriend(data.friends, e.userId);
+            const isFriend = isMyFriend(data.friends, e.userId);
             strElement += `
-            <div class="search-user ${isYou || isMyFriend ? "have" : ""}">
+            <div class="search-user ${isYou || isFriend ? "have" : ""}">
 				<i class="sbi-user"></i>
 				<div class="user-name">${isYou ? "You" : e.name ? e.name : "Guest"}</div>
 				<p>ID</p>
