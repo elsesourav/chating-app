@@ -1,3 +1,8 @@
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
+import { set, get, getDatabase, query, ref, update, orderByChild, equalTo, onValue } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
+
+
 if (isMobile) {
     cssRoot.style.setProperty("--cursor", "auto");
 }

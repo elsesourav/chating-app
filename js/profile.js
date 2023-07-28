@@ -5,7 +5,10 @@ import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
-import { set, get, getDatabase, query, ref, update, orderByChild, equalTo, startAt, endAt } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
+import {
+    set, get, getDatabase, query, ref, update, orderByChild,
+    equalTo, startAt, endAt, onValue
+} from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
 
 /* -------------- global variable start ------------ */
@@ -36,6 +39,7 @@ let currentSearchSelection = null; // for search user click detials
 /* -------------- global variable end ------------ */
 
 (async () => {
+
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
@@ -48,6 +52,31 @@ let currentSearchSelection = null; // for search user click detials
     const dbRefImage = ref(db, `users_data/image/${userId}`);
 
     let allUserInfo = null;
+
+
+    // initial run
+    try {
+        if (data.image.imgLow) {
+
+        }
+    } catch (error) {
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -181,12 +210,12 @@ let currentSearchSelection = null; // for search user click detials
                 uploadImageBtn.removeEventListener("click", eventHandler, true);
 
                 uploadProcess.classList.add("active");
-                const MS = Date.now();
+                const dt = Date.now();
 
                 await set(dbRefImage, {
-                    imgHigh: IMAGE_URL.high,
-                    imgLow: IMAGE_URL.low,
-                    time: MS
+                    high: IMAGE_URL.high,
+                    low: IMAGE_URL.low,
+                    time: dt
                 }).then(() => {
                     console.log("Data sended successfully");
                     uploadProcess.classList.remove("active");
@@ -346,6 +375,11 @@ let currentSearchSelection = null; // for search user click detials
     // search input
     userSearchInput.addEventListener("input", debounce(() => {
         let ID = userSearchInput.value;
+        allSearchResult.innerHTML = "";
+
+        if (ID.length > 8) userSearchInput.value = ID.substring(0, 8);
+        else if (ID.length < 5) return;
+
         manageSearchUsers(ID);
     }, 500));
 
@@ -354,6 +388,7 @@ let currentSearchSelection = null; // for search user click detials
         const text = await navigator.clipboard.readText();
         const ID = text.substring(0, 8);
         userSearchInput.value = ID;
+        allSearchResult.innerHTML = "";
         manageSearchUsers(ID);
     }, 500));
 
@@ -369,7 +404,6 @@ let currentSearchSelection = null; // for search user click detials
 
         console.log(sorted);
 
-        allSearchResult.innerHTML = "";
         let strElement = "";
 
         sorted.forEach(e => {
@@ -377,7 +411,7 @@ let currentSearchSelection = null; // for search user click detials
             const isFriend = isMyFriend(data.friends, e.userId);
             strElement += `
             <div class="search-user ${isYou || isFriend ? "have" : ""}">
-				<i class="sbi-user"></i>
+                <i class="sbi-user"></i>
 				<div class="user-name">${isYou ? "You" : e.name ? e.name : "Guest"}</div>
 				<p>ID</p>
 				<div class="user-id">${e.userId}</div>
@@ -388,22 +422,32 @@ let currentSearchSelection = null; // for search user click detials
         allSearchResult.innerHTML = strElement;
         const allFindUsers = document.querySelectorAll(".search-user");
         allFindUsers.forEach((findUser, i) => {
-            findUser.addEventListener("click", () => {
+            findUser.addEventListener("click", async () => {
                 removeClass(allFindUsers);
                 addClass(findUser);
 
                 // set in search view elements
                 userAddAndInfo.classList.add("active");
                 userAddAndInfo.classList.remove("have");
-                if (userId === sorted[i].userId || isMyFriend(data.friends, sorted[i].userId)) {
+                friendOrNot.classList = [];
+
+                if (userId === sorted[i].userId) {
                     userAddAndInfo.classList.add("have");
+                    friendOrNot.classList.add("sbi-user");
+                } else if (isMyFriend(data.friends, sorted[i].userId)) {
+                    userAddAndInfo.classList.add("have");
+                    friendOrNot.classList.add("sbi-user-check");
+                } else {
+                    friendOrNot.classList.add("sbi-user");
                 }
-                searchUserName.innerText = sorted[i].name;
+                searchUserName.innerText = sorted[i].name || sorted[i].userId;
 
                 // add image url when have image
                 searchIcon.classList.remove("active");
-                if (sorted[i].imgLow) {
-                    searchUserImage.src = sorted[i].imgLow;
+                const imgs = (await get(dbRefImage)).val();
+
+                if (imgs) {
+                    searchUserImage.src = imgs.high;
                     searchIcon.classList.add("active");
                 }
                 currentSearchSelection = sorted[i];
@@ -411,14 +455,27 @@ let currentSearchSelection = null; // for search user click detials
         });
     }
 
+    // when add an new friend
     addUserBtn.addEventListener("click", debounce(async () => {
         if (!currentSearchSelection) return;
         uploadProcess.classList.add("active");
 
         try {
+            const dt = Date.now();
             await update(dbRefFriends, {
-                [currentSearchSelection.id]: Date.now()
+                [currentSearchSelection.userId]: dt
             })
+
+            const dbRefChat = ref(db, `users_data/chats/${userId}/${currentSearchSelection.userId}/${new Date().getHours()}`);
+            // set first chat
+            await update(dbRefChat, {
+                [dt]: {
+                    type: "status",
+                    message: "Welcome to Live Chat",
+                    time: getChatDate().time,
+                }
+            })
+
             const snapshot = await get(dbRefFriends);
 
             const len = Object.keys(snapshot.val()).length;
@@ -427,7 +484,12 @@ let currentSearchSelection = null; // for search user click detials
                 friends: len
             })
 
+            data.friends[currentSearchSelection.userId] = dt;
+            updateLocalStorage();
+
+            friendOrNot.classList.add("sbi-user-check");
             uploadProcess.classList.remove("active");
+            userAddAndInfo.classList.add("have");
             currentSearchSelection = null;
             userSearchInput.value = "";
             allSearchResult.innerHTML = "";

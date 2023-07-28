@@ -5,10 +5,12 @@ import {
    signInWithEmailAndPassword,
    createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
-import { set, get, getDatabase, query, ref, update, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
+import { set, get, getDatabase, query, ref, update,
+    orderByChild, equalTo, onValue, onChildChanged } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
 userId = getCookie("liveChatUserId");
 data = getDataFromLocalStorage("liveChatUserData");
+// setDataFromLocalStorage("liveChatUserData", "");
 
 window.onload = async () => {
    // Initialize Firebase
@@ -21,6 +23,7 @@ window.onload = async () => {
    const dbRefStatus = ref(db, `users_data/status/${userId}`);
    const dbRefFriends = ref(db, `users_data/friends/${userId}`);
    const dbRefImage = ref(db, `users_data/image/${userId}`);
+   const dbRefChats = ref(db, `users_data/chats/${userId}`);
 
    if (!data) {
       try {
@@ -28,22 +31,20 @@ window.onload = async () => {
          const status = await get(dbRefStatus);
          const friends = await get(dbRefFriends);
          const image = await get(dbRefImage);
+         const chats = await get(dbRefChats);
+
          const obj = {
             info: info.val(),
             status: status.val(),
-            friends: friends.val(),
-            image: image.val(),
+            friends: friends.val() || null,
+            image: image.val() || null,
+            chats: chats.val() || null
          }
          data = structuredClone(obj);
          updateLocalStorage();
       } catch (e) {
          location.reload();
       }
-   }
-
-   console.log(data.imgLow);
-   if (data.imgLow) {
-
    }
 
    setInterval(async () => {
@@ -61,6 +62,53 @@ window.onload = async () => {
    pageLoad.classList.remove("active");
 
 
+   // Friends Update Changes Realtime 
+
+   // Friends
+   onValue(dbRefFriends, (snapshot) => {
+      data.friends = snapshot.val() || null;
+      updateLocalStorage();
+   });
+
+   // Info
+   onValue(dbRefInfo, (snapshot) => {
+      data.info = snapshot.val();
+      updateLocalStorage();
+   });
+
+   // Images
+   onValue(dbRefImage, (snapshot) => {
+      data.image = snapshot.val();
+      updateLocalStorage();
+   });
+
+   // Status
+   onValue(dbRefStatus, (snapshot) => {
+      data.status = snapshot.val();
+      updateLocalStorage();
+   });
+
+   // Chat
+   try {
+      for (const key in data.friends) {
+         
+         const rf = ref(db, `users_data/chats/${userId}/${key}`);
+         onChildChanged(rf, (snapshot) => {
+            data.chats[key][new Date().getHours()] = snapshot.val();
+            updateLocalStorage();
+         });
+      }
+   } catch (e) {
+      console.log(e);
+   }
+
+
+   
+
+
+
+
+
    // pointer events for mobile devices
    if (isMobile) {
       document.head.append(`<style>* { pointer-events: none; }</style>`)
@@ -76,7 +124,7 @@ window.onload = async () => {
 
    toggleCancleNewBtn.on(() => {
       indexHeader.classList.toggle("active");
-   })
+   });
 
    // defualt chat open off
    let bodyMaxScroll = scrollBox.scrollHeight - scrollBox.clientHeight
@@ -125,6 +173,6 @@ window.onload = async () => {
    });
 
    profileBtn.addEventListener("click", () => {
-      window.location.replace("profile.html")
+      window.location.replace("profile.html");
    });
 }
