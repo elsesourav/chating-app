@@ -461,31 +461,51 @@ let currentSearchSelection = null; // for search user click detials
         uploadProcess.classList.add("active");
 
         try {
-            const dt = Date.now();
-            await update(dbRefFriends, {
-                [currentSearchSelection.userId]: dt
-            })
+            const d = Date.now();
+            const opDate = getOptimizeDate();
 
-            const dbRefChat = ref(db, `users_data/chats/${userId}/${currentSearchSelection.userId}/${new Date().getHours()}`);
-            // set first chat
-            await update(dbRefChat, {
-                [dt]: {
-                    type: "status",
+            const dbRefChatMe = ref(db, `users_data/chats/${userId}/${currentSearchSelection.userId}/${opDate.full}`);
+            const dbRefChatFriend = ref(db, `users_data/chats/${currentSearchSelection.userId}/${userId}/${opDate.full}`);
+            const dbRefFriendFriends = ref(db, `users_data/friends/${currentSearchSelection.userId}`);
+
+            const pathAndId = {
+                path: opDate.full,
+                id: d,
+                lastMessage: {
                     message: "Welcome to Live Chat",
-                    time: getChatDate().time,
+                    rank: d
                 }
+            }
+            const firstChat = {
+                type: "both",
+                message: "Welcome to Live Chat"
+            }
+
+            // add friend in friends list
+            await update(dbRefFriends, {
+                [currentSearchSelection.userId]: pathAndId
+            })
+            await update(dbRefFriendFriends, {
+                [userId]: pathAndId
             })
 
-            const snapshot = await get(dbRefFriends);
 
-            const len = Object.keys(snapshot.val()).length;
+            // set first chat in my chat list
+            await update(dbRefChatMe, { [d]: firstChat });
 
-            await update(dbRefInfo, {
-                friends: len
-            })
+            // set first chat in friend chat list
+            await update(dbRefChatFriend, { [d]: firstChat });
 
-            data.friends[currentSearchSelection.userId] = dt;
+            console.log(data);
+
+            data.friends[currentSearchSelection.userId] = pathAndId;
+
+            // upsh first chat
+            data.chats[currentSearchSelection.userId] = {
+                [opDate.full]: { [d]: firstChat }
+            }
             updateLocalStorage();
+
 
             friendOrNot.classList.add("sbi-user-check");
             uploadProcess.classList.remove("active");

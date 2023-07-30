@@ -20,18 +20,18 @@ window.onload = () => {
    }
 
    guestBtn.addEventListener('click', async () => {
-      const oldGuestId = getCookie("liveChatUserId");
+      const userId = getCookie("liveChatUserId");
       let newGuest = null;
 
       // when no guest account exist then create a new one
-      if (!oldGuestId) {
+      if (!userId) {
          newGuest = getGuestId();
          setCookie("liveChatUserId", newGuest.id, 30);
       }
 
       // database reference
-      const dbRefInfo = ref(db, `users_data/info/${oldGuestId || newGuest.id}`);
-      const dbRefStatus = ref(db, `users_data/status/${oldGuestId || newGuest.id}`);
+      const dbRefInfo = ref(db, `users_data/info/${userId || newGuest.id}`);
+      const dbRefStatus = ref(db, `users_data/status/${userId || newGuest.id}`);
 
       try {
          const user = await get(dbRefInfo);
@@ -41,17 +41,14 @@ window.onload = () => {
                userId: newGuest.id,
                date: newGuest.date,
                friends: 0
-            }).then(async () => {
-               await set(dbRefStatus, {
-                  lastOnline: Date.now(),
-                  lastProfileUpdated: null
-               }).then(() => {
-                  console.log("Data sended successfully");
-                  location.replace("./html/home.html");
-               })
-            }).catch((error) => {
-               alert(error.message);
-            });
+            })
+
+            await set(dbRefStatus, {
+               lastOnline: Date.now(),
+               lastProfileUpdated: null
+            })
+            console.log("Data sended successfully");
+            location.replace("./html/home.html");
 
          } else { // continue old guest
             await set(dbRefStatus, {

@@ -5,14 +5,15 @@ import {
    signInWithEmailAndPassword,
    createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
-import { set, get, getDatabase, query, ref, update,
-    orderByChild, equalTo, onValue, onChildChanged } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
+import {
+   set, get, getDatabase, query, ref, update,
+   orderByChild, equalTo, onValue, onChildChanged
+} from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
-userId = getCookie("liveChatUserId");
-data = getDataFromLocalStorage("liveChatUserData");
-// setDataFromLocalStorage("liveChatUserData", "");
+
 
 window.onload = async () => {
+
    // Initialize Firebase
    const app = initializeApp(firebaseConfig);
    const analytics = getAnalytics(app);
@@ -24,6 +25,7 @@ window.onload = async () => {
    const dbRefFriends = ref(db, `users_data/friends/${userId}`);
    const dbRefImage = ref(db, `users_data/image/${userId}`);
    const dbRefChats = ref(db, `users_data/chats/${userId}`);
+
 
    if (!data) {
       try {
@@ -37,8 +39,8 @@ window.onload = async () => {
             info: info.val(),
             status: status.val(),
             friends: friends.val() || null,
-            image: image.val() || null,
-            chats: chats.val() || null
+            image: image.val() || {},
+            chats: chats.val() || {}
          }
          data = structuredClone(obj);
          updateLocalStorage();
@@ -59,6 +61,7 @@ window.onload = async () => {
 
    }, 60_000);
 
+   console.log('work');
    pageLoad.classList.remove("active");
 
 
@@ -91,10 +94,10 @@ window.onload = async () => {
    // Chat
    try {
       for (const key in data.friends) {
-         
+
          const rf = ref(db, `users_data/chats/${userId}/${key}`);
          onChildChanged(rf, (snapshot) => {
-            data.chats[key][new Date().getHours()] = snapshot.val();
+            data.chats[key][getOptimizeDate().full] = snapshot.val();
             updateLocalStorage();
          });
       }
@@ -103,7 +106,7 @@ window.onload = async () => {
    }
 
 
-   
+
 
 
 

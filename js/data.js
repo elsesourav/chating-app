@@ -35,7 +35,7 @@ let messages = [
     {
         type: "one",
         message: "Hi",
-        time: "19:32",
+        time: "7:32 PM",
         id: 1,
         senderId: 2,
         name: "Arsalan",
@@ -43,7 +43,7 @@ let messages = [
     {
         type: "one",
         message: "Hello",
-        time: "19:32",
+        time: "7:32 PM",
         id: 2,
         senderId: 1,
         name: "Sourav Barui",
@@ -51,7 +51,7 @@ let messages = [
     {
         type: "one",
         message: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-        time: "19:32",
+        time: "7:33 PM",
         id: 3,
         senderId: 2,
         name: "Arsalan",

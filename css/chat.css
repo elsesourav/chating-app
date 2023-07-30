@@ -121,7 +121,7 @@ body.active #chat-contaner {
   min-height: var(--chat-min-h);
   max-height: var(--chat-max-h);
   z-index: 10;
-  bottom: calc(var(--chat-gap) / 2);
+  bottom: 10px;
   /* left: calc((100vw - var(--mn-chat-w)) / 2); */
 }
 .wapping footer .wrap {
@@ -200,13 +200,13 @@ body.active #chat-contaner {
 }
 
 /* ------------ chat ----------- */
-.wapping #scroll-chat {
+#scroll-chat {
   position: relative;
   width: 100%;
   height: 100%;
   overflow-y: scroll;
 }
-.wapping > #scroll-chat > .wrap {
+#scroll-chat > .wrap {
   position: relative;
   width: 100%;
   height: min-content;
@@ -215,58 +215,111 @@ body.active #chat-contaner {
   display: grid;
   gap: var(--chat-gap);
 }
-.wapping #scroll-chat .wrap .chat-box {
+#scroll-chat .wrap .chat-box {
   position: relative;
   width: 100%;
-  min-height: var(--chat-min-h);
   max-height: var(--chat-max-h);
   display: flex;
   align-items: center;
 }
-.wapping #scroll-chat .wrap .chat-box.other {
+
+/* ---------- when chat you ------------ */
+#scroll-chat .wrap .chat-box.you {
   justify-content: start;
 }
-.wapping #scroll-chat .wrap .chat-box.me {
-  justify-content: end;
-}
-.wapping #scroll-chat .wrap .chat-box .chat-content {
+
+
+
+#scroll-chat .wrap .chat-box .chat-content {
   position: relative;
   min-width: var(--min-chat-w);
   max-width: var(--max-chat-w);
   height: 100%;
   border-radius: 10px;
-  margin: 2px;
+  margin: 2px 6px;
   padding: 4px 6px;
+  border: none;
   border-bottom: solid 2px #444;
   box-shadow: 0 0 2px #0004;
 }
-.wapping #scroll-chat .wrap .chat-box.other .chat-content {
+
+
+#scroll-chat .chat-box.you .chat-content {
   background: #c2e0ff;
   border-top-left-radius: 0px;
 }
-.wapping #scroll-chat .wrap .chat-box.me .chat-content {
-  background: #c2ffc2;
-  border-top-right-radius: 0px;
-}
-.wapping #scroll-chat .wrap .chat-box .chat-content .wrap {
+
+
+#scroll-chat .chat-content .wrap {
   position: relative;
   width: 100%;
   height: 100%;
   display: grid;
   grid-template-rows: min-content auto min-content;
 }
-.wapping #scroll-chat .wrap .chat-box .chat-content .wrap .c-name {
-  font-size: 0.7rem;
-  font-weight: 600;
-  user-select: none;
-}
-.wapping #scroll-chat .wrap .chat-box .chat-content .wrap .c-text {
+#scroll-chat .chat-content .c-text {
   margin-top: 2px;
   font-size: 0.8rem;
+  display: inline-block;
+  font-family: Roboto;
+  font-weight: bold;
 }
-.wapping #scroll-chat .wrap .chat-box .chat-content .wrap .c-time {
-  font-size: 0.6rem;
-  font-weight: 600;
-  user-select: none;
+#scroll-chat .chat-content .c-time {
+  display: inline-block;
+  min-width: 50px;
   text-align: end;
+  user-select: none;
+}
+#scroll-chat .chat-content .c-time::before {
+  content: attr(data-time);
+  position: absolute;
+  width: 100%;
+  color: #000a4c;
+  font-family: Google;
+  font-size: 0.6rem;
+  font-weight: 900;
+  right: 4px;
+  bottom: 4px;
+}
+
+
+/* ----------- when both ------------- */
+#scroll-chat .wrap .chat-box.both,
+#scroll-chat .wrap .chat-box.status {
+  justify-content: center;
+}
+#scroll-chat .chat-box.both .chat-content {
+  background: #d45cff;
+}
+#scroll-chat .wrap .chat-box.both .c-text {
+  text-align: center;
+}
+#scroll-chat .wrap .chat-box.both .c-time {
+  display: none;
+}
+
+/* ----------- when status ------------- */
+#scroll-chat .wrap .chat-box.status {
+  justify-content: center;
+}
+#scroll-chat .chat-box.status .chat-content {
+  background: rgba(255, 255, 255, 0.4);
+  border: solid 1px #ffffff;
+  color: #000000;
+  box-shadow: none;
+}
+#scroll-chat .wrap .chat-box.status .c-text {
+  text-align: center;
+}
+#scroll-chat .wrap .chat-box.status .c-time {
+  display: none;
+}
+
+/* ----------- when chat me ------------- */
+#scroll-chat .wrap .chat-box.me {
+  justify-content: end;
+}
+#scroll-chat .chat-box.me .chat-content {
+  background: #c2ffc2;
+  border-top-right-radius: 0px;
 }

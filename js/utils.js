@@ -218,6 +218,20 @@ function getChatDate() {
    }
 }
 
+function getOptimizeDate() {
+   const dt = new Date();
+   const h = dt.getHours();
+   const m = dt.getMinutes();
+   const mn = dt.getMonth();
+   const y = dt.getFullYear();
+   const d = dt.getDate();
+   return {
+      full: `D${y}_${mn + 1}_${d}_${h}`,
+      time: `${h < 10 ? "0" + h : h}:${m < 10 ? "0" + m : m}`,
+      year: y.toString()
+   }
+}
+
 
 function smoothScroll(element, side, distence, time) {
    let run = true;
@@ -251,12 +265,14 @@ function objectEvery(object) {
    }
    return true;
 }
+
 function objectSome(object) {
    for (const key in object) {
       if (object[key]) return true;
    }
    return false;
 }
+
 function objectRound(object) {
    let obj = structuredClone(object);
 
@@ -278,12 +294,9 @@ const b36to10 = b36 => parseInt(b36, 36);
 const b10to36 = b10 => b10.toString(36);
 const b64toString = b64 => btoa(b64);
 const stringToB64 = b64 => atob(b64);
-function b36t10(v) {
-   return parseInt(v, 36);
-}
-function b10t36(v) {
-   return Number(v).toString(36);
-}
+const b36t10 = v => parseInt(v, 36);
+const b10t36 = v =>  Number(v).toString(36);
+
 
 /* -------------------------- formula ----------------------------**
 ** const date = new Date();                                       **
@@ -314,6 +327,7 @@ function setCookie(name, value, days) {
    }
    document.cookie = name + "=" + (value || "") + expires + "; path=/";
 }
+
 function getCookie(name) {
    var nameEQ = name + "=";
    var ca = document.cookie.split(';');
@@ -324,6 +338,7 @@ function getCookie(name) {
    }
    return null;
 }
+
 function eraseCookie(name) {
    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }

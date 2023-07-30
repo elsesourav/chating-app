@@ -1,6 +1,11 @@
 let userId = null;
 let data = null;
 
+userId = getCookie("liveChatUserId");
+data = getDataFromLocalStorage("liveChatUserData");
+// setDataFromLocalStorage("liveChatUserData", "");
+
+
 // update local storage for live chat user data
 function updateLocalStorage() {
    setDataFromLocalStorage("liveChatUserData", data);
