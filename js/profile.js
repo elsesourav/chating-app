@@ -55,13 +55,25 @@ let currentSearchSelection = null; // for search user click detials
 
 
     // initial run
-    try {
-        if (data.image.imgLow) {
+    userID.innerText = userId;
+    if (data.info.name) nameInput.value = data.info.name; 
+    if (data.info.about) aboutInput.value = data.info.about; 
 
-        }
-    } catch (error) {
+    // update profile information
+    proUpdateButton.addEventListener("click", debounce(async () => {
+        uploadProcess.classList.add("active");
+        const name = nameInput.value;
+        const about = aboutInput.value;
+        await update(dbRefInfo, {
+            name: name,
+            about: about
+        })
 
-    }
+        data.info.name = name;
+        data.info.about = about;
+
+        uploadProcess.classList.remove("active");
+    }, 500));
 
 
 
