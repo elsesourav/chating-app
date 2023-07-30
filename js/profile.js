@@ -522,7 +522,12 @@ let currentSearchSelection = null; // for search user click detials
 
             console.log(data);
 
-            data.friends[currentSearchSelection.userId] = pathAndId;
+            data.friends[currentSearchSelection.userId] = {
+                path: opDate.full,
+                id: d,
+                lastMessage: lastMessage,
+                name: data.info.name || "Guest"
+            };
 
             // upsh first chat
             data.chats[currentSearchSelection.userId] = {
