@@ -49,9 +49,12 @@ let you, nm;
 
 
     function setupFriends() {
-        
+        // sorted by last message user id
+        console.log(data.friends);
+        const sortedFriends = sortObjectByUserId(data.friends);
+        console.log(sortedFriends);
     }
-
+    // setupFriends()
 
 
 

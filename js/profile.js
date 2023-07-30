@@ -56,8 +56,8 @@ let currentSearchSelection = null; // for search user click detials
 
     // initial run
     userID.innerText = userId;
-    if (data.info.name) nameInput.value = data.info.name; 
-    if (data.info.about) aboutInput.value = data.info.about; 
+    if (data.info.name) nameInput.value = data.info.name;
+    if (data.info.about) aboutInput.value = data.info.about;
 
     // update profile information
     proUpdateButton.addEventListener("click", debounce(async () => {
@@ -479,26 +479,38 @@ let currentSearchSelection = null; // for search user click detials
             const dbRefChatMe = ref(db, `users_data/chats/${userId}/${currentSearchSelection.userId}/${opDate.full}`);
             const dbRefChatFriend = ref(db, `users_data/chats/${currentSearchSelection.userId}/${userId}/${opDate.full}`);
             const dbRefFriendFriends = ref(db, `users_data/friends/${currentSearchSelection.userId}`);
+            const dbRefFriendInfo = ref(db, `users_data/info/${currentSearchSelection.userId}`);
 
-            const pathAndId = {
-                path: opDate.full,
-                id: d,
-                lastMessage: {
-                    message: "Welcome to Live Chat",
-                    rank: d
-                }
-            }
+
+            const friendInfo = (await get(dbRefFriendInfo)).val();
+
             const firstChat = {
                 type: "both",
                 message: "Welcome to Live Chat"
             }
 
+            const lastMessage = {
+                message: "Welcome to Live Chat",
+                rank: d
+            }
+
             // add friend in friends list
             await update(dbRefFriends, {
-                [currentSearchSelection.userId]: pathAndId
+                [currentSearchSelection.userId]: {
+                    path: opDate.full,
+                    id: d,
+                    lastMessage: lastMessage,
+                    name: data.info.name || "Guest"
+                }
             })
+
             await update(dbRefFriendFriends, {
-                [userId]: pathAndId
+                [userId]: {
+                    path: opDate.full,
+                    id: d,
+                    lastMessage: lastMessage,
+                    name: friendInfo.name || "Guest"
+                }
             })
 
 

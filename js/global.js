@@ -30,3 +30,11 @@ function isMyFriend(object, tId) {
    }
    return false;
 }
+
+// sort object by user id
+function sortObjectByUserId(object) {
+   let ary = [];
+   for (const key in object) {
+      console.log(object[key]);
+   }
+}

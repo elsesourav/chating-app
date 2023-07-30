@@ -61,7 +61,7 @@ window.onload = async () => {
 
    }, 60_000);
 
-   console.log('work');
+
    pageLoad.classList.remove("active");
 
 
