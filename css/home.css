@@ -53,7 +53,7 @@
 	overflow-y: scroll;
 	touch-action: auto;
 }
-#home-contaner #wrap-contacts {
+#home-contaner #wrapContacts {
 	position: relative;
 	width: 100%;
 	height: min-content;
@@ -61,15 +61,16 @@
 	flex-direction: column;
 	background: #eeeeee;
 }
-#wrap-contacts .contact-box {
+#wrapContacts .contact-box {
 	--side: 5px;
 	position: relative;
 	width: 100%;
 	height: var(--contact-h);
 	padding: var(--side);
+	cursor: pointer;
 	user-select: none;
 }
-#wrap-contacts .contact-box::before {
+#wrapContacts .contact-box::before {
 	position: absolute;
 	content: "";
 	width: calc(100% - var(--contact-h));
@@ -78,13 +79,13 @@
 	right: 0;
 	background: #ffffff;
 }
-#wrap-contacts .contact-box:last-child:before {
+#wrapContacts .contact-box:last-child:before {
 	display: none;
 }
-#wrap-contacts .contact-box:nth-child(odd) {
+#wrapContacts .contact-box:nth-child(odd) {
 	background: #00000003;
 }
-#wrap-contacts .contact-box .wrap {
+#wrapContacts .contact-box .wrap {
 	position: relative;
 	width: 100%;
 	height: 100%;
@@ -159,7 +160,7 @@
 	width: 100%;
 	height: 100%;
 	display: grid;
-	grid-template-columns: auto min-content;
+	grid-template-columns: auto 70px;
 }
 .contact-box .contact-name {
 	position: relative;
@@ -173,7 +174,7 @@
 .contact-box .last-chat-time {
 	position: relative;
 	display: flex;
-	justify-content: flex-start;
+	justify-content: flex-end;
 	align-items: center;
 	font-size: 12px;
 	padding: 0 3px;
@@ -185,7 +186,7 @@
 	height: 100%;
 	display: grid;
 	align-items: center;
-	grid-template-columns: auto calc(var(--contact-h) / 2);
+	grid-template-columns: 85% auto;
 }
 .contact-box .last-chat {
 	position: relative;
@@ -193,20 +194,25 @@
 	justify-content: flex-start;
 	align-items: flex-start;
 	font-size: 0.7rem;
+	color: #8c005b;
 }
 .contact-box .no-of-msg {
 	position: relative;
 	width: 100%;
 	height: 100%;
-	display: grid;
+	display: none;
 	place-items: center;
+}
+.contact-box .no-of-msg.active {
+	display: grid;
 }
 .contact-box .no-of-msg p {
 	position: relative;
-	font-size: 0.6rem;
+	font-size: 12px;
 	font-weight: 500;
-	padding: 1px 5px;
+	padding: 1px 8px;
 	background: #ff9d00;
 	border-radius: 20px;
+	font-family: Oswald;
 }
 

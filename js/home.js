@@ -7,9 +7,16 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
 import {
    set, get, getDatabase, query, ref, update,
-   orderByChild, equalTo, onValue, onChildChanged
+   orderByChild, equalTo, onValue, onChildChanged, onChildAdded, 
 } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
+
+// import { getDatabase, ref, onDisconnect } from "firebase/database";
+
+// const db = getDatabase();
+// const presenceRef = ref(db, "disconnectmessage");
+// // Write a string when this client loses connection
+// onDisconnect(presenceRef).set("I disconnected!");
 
 
 window.onload = async () => {
@@ -36,14 +43,15 @@ window.onload = async () => {
          const chats = await get(dbRefChats);
 
          const obj = {
-            info: info.val(),
-            status: status.val(),
-            friends: friends.val() || null,
-            image: image.val() || {},
-            chats: chats.val() || {}
+            info: info,
+            status: status,
+            friends: friends,
+            image: image,
+            chats: chats
          }
-         data = structuredClone(obj);
-         updateLocalStorage();
+         data = obj;
+         
+         setupFriends();
       } catch (e) {
          location.reload();
       }
@@ -69,41 +77,57 @@ window.onload = async () => {
 
    // Friends
    onValue(dbRefFriends, (snapshot) => {
-      data.friends = snapshot.val() || null;
-      updateLocalStorage();
+      data.friends = snapshot.val() || {};
+      
    });
 
    // Info
    onValue(dbRefInfo, (snapshot) => {
       data.info = snapshot.val();
-      updateLocalStorage();
+      
    });
 
    // Images
    onValue(dbRefImage, (snapshot) => {
-      data.image = snapshot.val();
-      updateLocalStorage();
+      data.image = snapshot.val() || {};
+      
    });
 
    // Status
    onValue(dbRefStatus, (snapshot) => {
-      data.status = snapshot.val();
-      updateLocalStorage();
+      data.status = snapshot.val() || {};
+      
    });
 
-   // Chat
-   try {
-      for (const key in data.friends) {
 
+   onChildAdded(dbRefChats, (snapshot) => {
+
+
+
+      updateChildFafences();
+   });
+
+   function setupChatChaild(key) {
+      // Chat
+      try {
          const rf = ref(db, `users_data/chats/${userId}/${key}`);
          onChildChanged(rf, (snapshot) => {
-            data.chats[key][getOptimizeDate().full] = snapshot.val();
-            updateLocalStorage();
+            console.log(snapshot.val());
+            data.chats[key][getOptimizeDate().full] = snapshot.val() || {};
+            
+            setupFriends();
          });
+      } catch (e) {
+         console.log(e);
       }
-   } catch (e) {
-      console.log(e);
    }
+
+   function updateChildFafences() {
+      for (const key in data.friends) {
+
+      }
+   }
+   updateChildFafences();
 
 
 
@@ -121,7 +145,7 @@ window.onload = async () => {
    const indexHeader = ID("index-header");
    const scrollBox = ID("scroll-box");
    const profileBack = ID("profile-back");
-   const wrapContacts = ID("wrap-contacts");
+   // const wrapContacts = ID("wrap-contacts");
    const profileBtn = ID("profile-btn");
 
 
@@ -134,7 +158,6 @@ window.onload = async () => {
    document.body.classList.remove("active")
 
    function setContacts() {
-      wrapContacts.innerHTML = "";
       let str = "";
       myDtls.contacts.forEach((e, i) => {
          str += `
@@ -160,9 +183,9 @@ window.onload = async () => {
             </div>
           `;
       })
-      wrapContacts.innerHTML = str;
+      // wrapContacts.innerHTML = str;
    }
-   setContacts();
+   // setContacts();
 
    const contactBox = $(".contact-box");
    contactBox.on((e) => {

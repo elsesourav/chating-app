@@ -1,7 +1,7 @@
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
-import { set, get, getDatabase, query, ref, update, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
+import { set, get, getDatabase, OnDisconnect, query, ref, child, update, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
 
 window.onload = () => {
@@ -28,40 +28,48 @@ window.onload = () => {
          newGuest = getGuestId();
          setCookie("liveChatUserId", newGuest.id, 30);
       }
-
-      // database reference
-      const dbRefInfo = ref(db, `users_data/info/${userId || newGuest.id}`);
-      const dbRefStatus = ref(db, `users_data/status/${userId || newGuest.id}`);
-
       try {
+         // database reference
+         const dbRefInfo = ref(db, `users/${userId || newGuest.id}`);
+
          const user = await get(dbRefInfo);
 
          if (!user.exists()) { // create new guest
-            await set(dbRefInfo, {
-               userId: newGuest.id,
-               date: newGuest.date,
-               friends: 0
-            })
 
-            await set(dbRefStatus, {
-               lastOnline: Date.now(),
-               lastProfileUpdated: null
-            })
+            const datas = {
+               info: {
+                  id: newGuest.id,
+                  creationDate: newGuest.date,
+                  name: "",
+                  aboue: "",
+                  password: "",
+                  online: false,
+               },
+               images: {
+                  high: "",
+                  low: ""
+               },
+               chats: {
+                  receive: {},
+                  seved: {}
+               },
+               friends: {}
+            }
+
+            await set(dbRefInfo, datas);
+
+            date = datas;
+            updateLocalStorage();
+
             console.log("Data sended successfully");
             location.replace("./html/home.html");
 
          } else { // continue old guest
-            await set(dbRefStatus, {
-               lastOnline: Date.now(),
-               lastProfileUpdated: null
-            }).then(() => {
-               console.log("Data sended successfully");
-               location.replace("./html/home.html");
-            })
+            console.log("Continue with ols account");
+            location.replace("./html/home.html");
          }
       } catch (error) {
          console.log(error);
       }
-
    });
 }

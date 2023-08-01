@@ -3,8 +3,12 @@ let data = null;
 
 userId = getCookie("liveChatUserId");
 data = getDataFromLocalStorage("liveChatUserData");
-// setDataFromLocalStorage("liveChatUserData", "");
 
+
+
+document.addEventListener("visibilitychange", () => {
+   if (document.visibilityState == "hidden")  updateLocalStorage();
+}, false);
 
 // update local storage for live chat user data
 function updateLocalStorage() {
@@ -35,6 +39,20 @@ function isMyFriend(object, tId) {
 function sortObjectByUserId(object) {
    let ary = [];
    for (const key in object) {
-      console.log(object[key]);
+      const obj = object[key];
+      obj.id = key;
+      ary.push(obj);
    }
+   return ary.sort((a, b) => a.rank - b.rank);
+}
+
+// time conversion ms to hh:mm AM/PM
+function formatTime(ms) {
+   const d = new Date(ms);
+   const h = d.getHours();
+   const m = d.getMinutes();
+
+   const AM_PM = h < 12 ? "AM" : "PM";
+
+   return `${h % 12}:${m} ${AM_PM}`;
 }

@@ -46,16 +46,68 @@ let you, nm;
     const dbRefChats = ref(db, `users_data/chats/${userId}`);
 
 
-
-
     function setupFriends() {
-        // sorted by last message user id
-        console.log(data.friends);
-        const sortedFriends = sortObjectByUserId(data.friends);
-        console.log(sortedFriends);
-    }
-    // setupFriends()
+        const object = data && data.friends ? data.friends : {};
+        const friendsLen = Object.keys(object).length;
+        if (friendsLen < 1) return;
 
+        let str = "";
+        for (let i = 0; i < friendsLen; i++) {
+            str += `
+            <div class="contact-box">
+               <div class="wrap">
+                  <div class="contact-icon">
+                     <span>
+                        <i class="sbi-user"></i>
+                        <img src="" class="contect-img" alt="friend image">
+                     </span>
+                  </div>
+                  <div class="contact-datas">
+                     <div class="contact-name-time">
+                        <div class="contact-name">Contact Name</div>
+                        <div class="last-chat-time">00:00</div>
+                     </div>
+                     <div class="last-chat-no-of-msg">
+                        <div class="last-chat">Last Chat</div>
+                        <div class="no-of-msg"><p>100</p></div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+          `;
+        }
+        wrapContacts.innerHTML = str;
+
+
+        // sorted by last message user z
+        const sortedFriends = sortObjectByUserId(data.friends);
+        const iconEle = document.querySelectorAll(".contact-icon");
+        const image = document.querySelectorAll(".contect-img");
+        const name = document.querySelectorAll(".contact-name");
+        const lastChatTime = document.querySelectorAll(".last-chat-time");
+        const lastChat = document.querySelectorAll(".last-chat");
+        const noOfMsgEle = document.querySelectorAll(".no-of-msg");
+        const noOfMsg = document.querySelectorAll(".no-of-msg p");
+
+        sortedFriends.forEach((friend, i) => {
+            
+            if (friend.image && friend.image.low) {
+                iconEle[i].classList.add("active");
+                image[i].src = friend.image.lwo;
+            }
+
+            name[i].innerText = friend.name ? friend.name : "Guest";
+            lastChatTime[i].innerText = formatTime(friend.rank);
+            lastChat[i].innerText = friend.message;
+
+            if (!friend.visited) {
+                noOfMsg[i].innerText = friend.count;
+                noOfMsgEle[i].classList.add("active");
+            }
+        })
+    }
+
+    setupFriends();
 
 
 

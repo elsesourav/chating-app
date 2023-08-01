@@ -56,8 +56,8 @@ let currentSearchSelection = null; // for search user click detials
 
     // initial run
     userID.innerText = userId;
-    if (data.info.name) nameInput.value = data.info.name;
-    if (data.info.about) aboutInput.value = data.info.about;
+    if (data && data.info.name) nameInput.value = data.info.name;
+    if (data && data.info.about) aboutInput.value = data.info.about;
 
     // update profile information
     proUpdateButton.addEventListener("click", debounce(async () => {
@@ -489,27 +489,26 @@ let currentSearchSelection = null; // for search user click detials
                 message: "Welcome to Live Chat"
             }
 
-            const lastMessage = {
+            const initInfo = {
+                path: opDate.full,
+                count: 1,
                 message: "Welcome to Live Chat",
-                rank: d
+                rank: d,
+                visited: false
             }
 
             // add friend in friends list
             await update(dbRefFriends, {
                 [currentSearchSelection.userId]: {
-                    path: opDate.full,
-                    id: d,
-                    lastMessage: lastMessage,
-                    name: data.info.name || "Guest"
+                    ...initInfo,
+                    name: friendInfo.name || "Guest"
                 }
             })
 
             await update(dbRefFriendFriends, {
                 [userId]: {
-                    path: opDate.full,
-                    id: d,
-                    lastMessage: lastMessage,
-                    name: friendInfo.name || "Guest"
+                    ...initInfo,
+                    name: data.info.name || "Guest"
                 }
             })
 
@@ -520,20 +519,18 @@ let currentSearchSelection = null; // for search user click detials
             // set first chat in friend chat list
             await update(dbRefChatFriend, { [d]: firstChat });
 
-            console.log(data);
-
             data.friends[currentSearchSelection.userId] = {
-                path: opDate.full,
-                id: d,
-                lastMessage: lastMessage,
-                name: data.info.name || "Guest"
+                ...initInfo,
+                name: friendInfo.name || "Guest"
             };
 
+            console.log(data.chats);
             // upsh first chat
+            data.chats || (data.chats = {})
             data.chats[currentSearchSelection.userId] = {
                 [opDate.full]: { [d]: firstChat }
             }
-            updateLocalStorage();
+            
 
 
             friendOrNot.classList.add("sbi-user-check");
