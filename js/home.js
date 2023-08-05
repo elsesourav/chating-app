@@ -3,16 +3,13 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase
 import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
 import {
    set, get, getDatabase, query, ref, update, orderByChild, equalTo,
-   onValue, onChildChanged, onChildAdded, onDisconnect
+   onValue, onChildChanged, onChildAdded
 } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
 
 // import { getDatabase, ref, onDisconnect } from "firebase/database";
 
-// const db = getDatabase();
-// const presenceRef = ref(db, "disconnectmessage");
-// // Write a string when this client loses connection
-// onDisconnect(presenceRef).set("I disconnected!");
+
 
 
 window.onload = async () => {
@@ -24,7 +21,6 @@ window.onload = async () => {
    const db = getDatabase();
 
    const dbRef = ref(db, `users/${USER_ID}`);
-
 
    if (!data) {
       try {
@@ -40,6 +36,16 @@ window.onload = async () => {
    pageLoad.classList.remove("active");
 
 
+
+   setInterval(() => {
+      try {
+         set(dbRef, {
+            
+         })
+      } catch (error) {
+         
+      }
+   }, 60000);
    // Friends Update Changes Realtime 
 
    // // Friends

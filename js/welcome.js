@@ -1,7 +1,7 @@
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
-import { set, get, getDatabase, OnDisconnect, query, ref, child, update, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
+import { set, get, getDatabase, query, ref, child, update, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
 
 window.onload = () => {
@@ -39,9 +39,9 @@ window.onload = () => {
                   id: geustId.id,
                   name: "",
                   os: geustId.os,
-                  online: false,
                   password: "",
                },
+               onlineStatus: new Date(),
                images: {
                   high: "",
                   low: ""
