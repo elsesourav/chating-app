@@ -1,111 +1,109 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  /* outline: solid 1px #f004; */
-  user-select: none;
-  font-family: Righteous;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	/* outline: solid 1px #f004; */
+	user-select: none;
+	font-family: Righteous;
 }
 :root {
+	--mn-chat-w: max(min(80vw, 80vh), min(400px, 100vw));
+	/* --mn-chat-h: 694px; */
+	--mn-chat-h: 100vh;
 
-  --mn-chat-w: max(min(80vw, 80vh), min(400px, 100vw));
-  /* --mn-chat-h: 694px; */
-  --mn-chat-h: 100vh;
+	--chat-header-h: 50px;
+	--chat-footer-h: 60px;
 
-  --chat-header-h: 50px;
-  --chat-footer-h: 60px;
+	/* ---- chat profile ---- */
+	--pf-back-w: 30px;
+	--pf-icon-w: var(--chat-header-h);
+	--pf-info-nm-w: auto;
+	--pf-manu-w: 30px;
 
-  /* ---- chat profile ---- */
-  --pf-back-w: 30px;
-  --pf-icon-w: var(--chat-header-h);
-  --pf-info-nm-w: auto;
-  --pf-manu-w: 30px;
+	/* ---- chat box ---- */
+	--send-btn: var(--chat-header-h);
 
-  /* ---- chat box ---- */
-  --send-btn: var(--chat-header-h);
+	--chat-min-h: 40px;
+	--chat-max-h: 1000px;
+	--max-chat-w: 270px;
+	--min-chat-w: 60px;
 
-  --chat-min-h: 40px;
-  --chat-max-h: 1000px;
-  --max-chat-w: 270px;
-  --min-chat-w: 60px;
+	--chat-name-h: 20px;
+	--chat-time-h: 12px;
 
-  --chat-name-h: 20px;
-  --chat-time-h: 12px;
+	--chat-gap: 5px;
 
-  --chat-gap: 5px;
+	/* ---- index header ---- */
+	--max-index-header-h: 150px;
+	--min-index-header-h: 30px;
 
-  /* ---- index header ---- */
-  --max-index-header-h: 150px;
-  --min-index-header-h: 30px;
-
-  /* --profile-r: 40px; */
-  --contact-h: 60px;
-  --contact-photo-r: 50px;
-
+	/* --profile-r: 40px; */
+	--contact-h: 60px;
+	--contact-photo-r: 50px;
 }
 
 .i {
-  display: grid;
-  place-items: center;
+	display: grid;
+	place-items: center;
 }
 
 /* ------------- scroll bar ------------- */
 /* width */
 ::-webkit-scrollbar {
-  width: 5px;
-  background: transparent;
+	width: 5px;
+	background: transparent;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  box-shadow: none;
-  border-radius: 5px;
+	box-shadow: none;
+	border-radius: 5px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #0004;
-  border-radius: 5px;
+	background: #0004;
+	border-radius: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #333;
+	background: #333;
 }
 
 body {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  user-select: none;
-  background: #fff;
-}   
+	position: relative;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	user-select: none;
+	background: #fff;
+}
 
 #scroll-box {
-  position: relative;
-  width: var(--mn-chat-w);
-  height: 100vh;
-  overflow-y: hidden;
-  overflow-x: scroll;
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+	position: relative;
+	width: var(--mn-chat-w);
+	height: 100vh;
+	overflow-y: hidden;
+	overflow-x: scroll;
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
 }
 #scroll-box::-webkit-scrollbar {
-  display: none;
+	display: none;
 }
 #main-contant {
-  position: absolute;
-  width: auto;
-  height: 100%;
-  display: flex;
-  overflow: hidden;
+	position: absolute;
+	width: auto;
+	height: 100%;
+	display: flex;
+	overflow: hidden;
 }
 
 /* ------------ Star ------------ */
 .stars {
 	--time: 1s;
-  --min: min(50vw, 50vh);
+	--min: min(50vw, 50vh);
 	position: absolute;
 	width: var(--min);
 	height: var(--min);
@@ -136,8 +134,8 @@ body {
 	animation-fill-mode: backwards;
 	color: transparent;
 	animation-name: stars;
-  opacity: 1;
-  color: #000000;
+	opacity: 1;
+	color: #000000;
 	animation-timing-function: ease-in-out;
 	animation-iteration-count: infinite;
 	z-index: 5;
@@ -219,7 +217,7 @@ body {
 	font-size: 1.5rem;
 }
 #pageLoad p::before {
-	content: attr(data-val) ".";
+	content: attr(data-val) '.';
 	position: absolute;
 	color: #000000;
 	font-weight: 700;
@@ -231,12 +229,12 @@ body {
 		content: attr(data-val);
 	}
 	25% {
-		content: attr(data-val) ".";
+		content: attr(data-val) '.';
 	}
 	50% {
-		content: attr(data-val) "..";
+		content: attr(data-val) '..';
 	}
 	100% {
-		content: attr(data-val)"...";
+		content: attr(data-val)'...';
 	}
 }

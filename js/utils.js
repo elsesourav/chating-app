@@ -1,4 +1,4 @@
-"use strict"
+'use strict';
 
 //use cssRoot.style.setProperty("key", "value");
 const cssRoot = document.querySelector(':root');
@@ -7,149 +7,146 @@ const cssRoot = document.querySelector(':root');
 const isMobile = localStorage.mobile || window.navigator.maxTouchPoints > 1;
 
 // minimum window size
-const minSize = window.innerWidth > window.innerHeight ? window.innerHeight : window.innerWidth;
+const minSize =
+	window.innerWidth > window.innerHeight
+		? window.innerHeight
+		: window.innerWidth;
 
 const $ = (element) => {
-   const self = document.querySelectorAll(element);
+	const self = document.querySelectorAll(element);
 
-   self.each = (fun) => {
-      self.forEach(fun);
-   }
+	self.each = (fun) => {
+		self.forEach(fun);
+	};
 
-   self.on = (event, fun) => {
-      self.forEach((element) => {
-         if (typeof event == "function")
-            element.addEventListener("click", event);
-         else
-            element.addEventListener(event, fun);
-      });
-   }
+	self.on = (event, fun) => {
+		self.forEach((element) => {
+			if (typeof event == 'function')
+				element.addEventListener('click', event);
+			else element.addEventListener(event, fun);
+		});
+	};
 
-   self.text = (text) => {
-      self.forEach((element) => {
-         element.innerText = text;
-      });
-   }
+	self.text = (text) => {
+		self.forEach((element) => {
+			element.innerText = text;
+		});
+	};
 
-   self.html = (html) => {
-      self.forEach((element) => {
-         element.innerHtml = html;
-      });
-   }
+	self.html = (html) => {
+		self.forEach((element) => {
+			element.innerHtml = html;
+		});
+	};
 
-   self.style = (x = {}, y) => {
-      if (!y) {
-         const css = Object.entries(x);
-         self.forEach((element) => {
-            css.forEach(([prorerty, value]) => {
-               element.style[prorerty] = value;
-            });
-         });
-      } else {
-         self.forEach(element => {
-            element.style[x] = y;
-         });
-      }
-   }
-   return self;
-}
+	self.style = (x = {}, y) => {
+		if (!y) {
+			const css = Object.entries(x);
+			self.forEach((element) => {
+				css.forEach(([prorerty, value]) => {
+					element.style[prorerty] = value;
+				});
+			});
+		} else {
+			self.forEach((element) => {
+				element.style[x] = y;
+			});
+		}
+	};
+	return self;
+};
 
 const ID = (element) => {
-   const self = document.getElementById(element);
+	const self = document.getElementById(element);
 
-   self.on = (event, fun) => {
-      if (typeof event == "function")
-         self.addEventListener("click", event);
-      else
-         self.addEventListener(event, fun);
-   }
+	self.on = (event, fun) => {
+		if (typeof event == 'function') self.addEventListener('click', event);
+		else self.addEventListener(event, fun);
+	};
 
-   self.text = (text) => {
-      self.innerText = text;
-   }
+	self.text = (text) => {
+		self.innerText = text;
+	};
 
-   self.html = (html) => {
-      self.innerHtml = html;
-   }
+	self.html = (html) => {
+		self.innerHtml = html;
+	};
 
-   self.Style = (x = {}, y) => {
-      if (!y) {
-         const css = Object.entries(x);
-         css.forEach(([prorerty, value]) => {
-            self.style[prorerty] = value;
-         });
-      } else {
-         self.style[x] = y;
-      }
-   }
-   return self;
+	self.Style = (x = {}, y) => {
+		if (!y) {
+			const css = Object.entries(x);
+			css.forEach(([prorerty, value]) => {
+				self.style[prorerty] = value;
+			});
+		} else {
+			self.style[x] = y;
+		}
+	};
+	return self;
 };
 
 const Q = (element) => {
-   const self = document.querySelector(element);
+	const self = document.querySelector(element);
 
-   self.on = (event, fun) => {
-      if (typeof event == "function")
-         self.addEventListener("click", event);
-      else
-         self.addEventListener(event, fun);
-   }
+	self.on = (event, fun) => {
+		if (typeof event == 'function') self.addEventListener('click', event);
+		else self.addEventListener(event, fun);
+	};
 
-   self.text = (text) => {
-      self.innerText = text;
-   }
+	self.text = (text) => {
+		self.innerText = text;
+	};
 
-   self.html = (html) => {
-      self.innerHtml = html;
-   }
+	self.html = (html) => {
+		self.innerHtml = html;
+	};
 
-   self.Style = (x = {}, y) => {
-      if (!y) {
-         const css = Object.entries(x);
-         css.forEach(([prorerty, value]) => {
-            self.style[prorerty] = value;
-         });
-      } else {
-         self.style[x] = y;
-      }
-   }
-   return self;
+	self.Style = (x = {}, y) => {
+		if (!y) {
+			const css = Object.entries(x);
+			css.forEach(([prorerty, value]) => {
+				self.style[prorerty] = value;
+			});
+		} else {
+			self.style[x] = y;
+		}
+	};
+	return self;
 };
 
-Math.toRadian = degree => (degree * Math.PI) / 180;// degree to radian
-Math.toRadian = radian => (radian * 180) / Math.PI;// radian to Degree
+Math.toRadian = (degree) => (degree * Math.PI) / 180; // degree to radian
+Math.toRadian = (radian) => (radian * 180) / Math.PI; // radian to Degree
 
 Math.rnd = (start = 0, end = 1, int_floor = false) => {
-   const result = start + (Math.random() * (end - start));
-   return int_floor ? Math.floor(result) : result;
-}
+	const result = start + Math.random() * (end - start);
+	return int_floor ? Math.floor(result) : result;
+};
 
 /* e.x 
 (0 start) -------.------ (10 end) input . = 5
 (10 min) ----------------.---------------- (30 max) output . = 20
 */
 Math.map = (point, start, end, min, max) => {
-   return ((max - min) * (point - start) / (end - start)) + min;
-}
-
+	return ((max - min) * (point - start)) / (end - start) + min;
+};
 
 function hover(element) {
-   const elements = typeof element == "object" ? element : [element];
-   elements.forEach((ele) => {
-      ele.addEventListener("touchstart", () => {
-         if (isMobile) ele.classList.add("_on_");
-      });
-      ele.addEventListener("mouseenter", () => {
-         if (!isMobile) ele.classList.add("_on_");
-      });
+	const elements = typeof element == 'object' ? element : [element];
+	elements.forEach((ele) => {
+		ele.addEventListener('touchstart', () => {
+			if (isMobile) ele.classList.add('_on_');
+		});
+		ele.addEventListener('mouseenter', () => {
+			if (!isMobile) ele.classList.add('_on_');
+		});
 
-      ele.addEventListener("touchend", () => {
-         if (isMobile) ele.classList.remove("_on_");
-      });
-      ele.addEventListener("mouseleave", () => {
-         if (!isMobile) ele.classList.remove("_on_");
-      });
-   })
+		ele.addEventListener('touchend', () => {
+			if (isMobile) ele.classList.remove('_on_');
+		});
+		ele.addEventListener('mouseleave', () => {
+			if (!isMobile) ele.classList.remove('_on_');
+		});
+	});
 }
 /* ---- example ---- */
 // .hover {
@@ -160,203 +157,211 @@ function hover(element) {
 //     color: red;
 //     transition: linear 0.3s;
 // }
-hover(document.querySelectorAll(".hover"));
-
+hover(document.querySelectorAll('.hover'));
 
 /* ----  local storage set and get ---- */
 function setDataFromLocalStorage(key, object) {
-   let data = JSON.stringify(object);
-   localStorage.setItem(key, data);
+	let data = JSON.stringify(object);
+	localStorage.setItem(key, data);
 }
 function getDataFromLocalStorage(key) {
-   return JSON.parse(localStorage.getItem(key))
+	return JSON.parse(localStorage.getItem(key));
 }
 function deleteDataFromLocalStorage(key) {
-   return localStorage.removeItem(key);
+	return localStorage.removeItem(key);
 }
 
 // class add in html
-function addClass(array, className = "active") {
-   if (array.length == undefined) {
-      array.classList.forEach(() => array.classList.add(className));
-   } else {
-      array.forEach((element) => element.classList.add(className));
-   }
+function addClass(array, className = 'active') {
+	if (array.length == undefined) {
+		array.classList.forEach(() => array.classList.add(className));
+	} else {
+		array.forEach((element) => element.classList.add(className));
+	}
 }
 // claass remove in html
-function removeClass(array, className = "active") {
-   if (array.length == undefined) {
-      array.classList.forEach(() => array.classList.remove(className));
-   } else {
-      array.forEach((element) => element.classList.remove(className));
-   }
+function removeClass(array, className = 'active') {
+	if (array.length == undefined) {
+		array.classList.forEach(() => array.classList.remove(className));
+	} else {
+		array.forEach((element) => element.classList.remove(className));
+	}
 }
-
-
 
 // message modify
 function messageModify(message) {
-   return message.
-      replace(/^\s{1,}/, ""). // starting whitespace and new line (when nathing write anything baln then letter)
-      replaceAll(/\n{3,}/g, "\n\n"). // multiple new line
-      replaceAll(/^\n+\s{1,}/mg, "\n"). // remove starting balnk space (when write then)
-      replaceAll("<", "&#60;").
-      replaceAll(">", "&#62;").
-      replaceAll(`"`, "&#34;").
-      replaceAll(`'`, "&#39;").
-      replaceAll("\n", "<br>");
+	return message
+		.replace(/^\s{1,}/, '') // starting whitespace and new line (when nathing write anything baln then letter)
+		.replaceAll(/\n{3,}/g, '\n\n') // multiple new line
+		.replaceAll(/^\n+\s{1,}/gm, '\n') // remove starting balnk space (when write then)
+		.replaceAll('<', '&#60;')
+		.replaceAll('>', '&#62;')
+		.replaceAll(`"`, '&#34;')
+		.replaceAll(`'`, '&#39;')
+		.replaceAll('\n', '<br>');
 }
 
-
-// get date for message 
-let _hh, _mm, _dt = new Date();
+// get date for message
+let _hh,
+	_mm,
+	_dt = new Date();
 function getChatDate() {
-   _dt = new Date();
-   _hh = _dt.getHours();
-   _mm = _dt.getMinutes();
+	_dt = new Date();
+	_hh = _dt.getHours();
+	_mm = _dt.getMinutes();
 
-   return {
-      year: _dt.getFullYear(),
-      time: `${_hh < 10 ? "0" + _hh : _hh}:${_mm < 10 ? "0" + _mm : _mm}`
-   }
+	return {
+		year: _dt.getFullYear(),
+		time: `${_hh < 10 ? '0' + _hh : _hh}:${_mm < 10 ? '0' + _mm : _mm}`
+	};
 }
 
 function getOptimizeDate() {
-   const dt = new Date();
-   const h = dt.getHours();
-   const m = dt.getMinutes();
-   const mn = dt.getMonth();
-   const y = dt.getFullYear();
-   const d = dt.getDate();
-   return {
-      full: `D${y}_${mn + 1}_${d}_${h}`,
-      time: `${h < 10 ? "0" + h : h}:${m < 10 ? "0" + m : m}`,
-      year: y.toString()
-   }
+	const dt = new Date();
+	const h = dt.getHours();
+	const m = dt.getMinutes();
+	const mn = dt.getMonth();
+	const y = dt.getFullYear();
+	const d = dt.getDate();
+	return {
+		full: `D${y}_${mn + 1}_${d}_${h}`,
+		time: `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`,
+		year: y.toString()
+	};
 }
-
 
 function smoothScroll(element, side, distence, time) {
-   let run = true;
-   const fps = 60;
-   let f = (time / 1000) * fps;
-   let count = f;
-   let d = distence / f;
-   let stap = element[side];
+	let run = true;
+	const fps = 60;
+	let f = (time / 1000) * fps;
+	let count = f;
+	let d = distence / f;
+	let stap = element[side];
 
-   function loop() {
-
-      if (count <= 0) {
-         run = false;
-         if (distence < 0) element[side] = 0;
-         else element[side] = distence;
-      }
-      if (run) {
-         count--;
-         stap += d;
-         element[side] = stap;
-         setTimeout(loop, 1000 / fps);
-      }
-   }
-   loop();
+	function loop() {
+		if (count <= 0) {
+			run = false;
+			if (distence < 0) element[side] = 0;
+			else element[side] = distence;
+		}
+		if (run) {
+			count--;
+			stap += d;
+			element[side] = stap;
+			setTimeout(loop, 1000 / fps);
+		}
+	}
+	loop();
 }
 
-
 function objectEvery(object) {
-   for (const key in object) {
-      if (!object[key]) return false;
-   }
-   return true;
+	for (const key in object) {
+		if (!object[key]) return false;
+	}
+	return true;
 }
 
 function objectSome(object) {
-   for (const key in object) {
-      if (object[key]) return true;
-   }
-   return false;
+	for (const key in object) {
+		if (object[key]) return true;
+	}
+	return false;
 }
 
 function objectRound(object) {
-   let obj = structuredClone(object);
+	let obj = structuredClone(object);
 
-   for (const key in obj) {
-      obj[key] = Math.round(obj[key]);
-   }
-   return obj;
+	for (const key in obj) {
+		obj[key] = Math.round(obj[key]);
+	}
+	return obj;
 }
 
+const validEmail = (exp) =>
+	/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(exp);
+const validName = (exp) =>
+	/^([a-zA-Zà-úÀ-Ú]{2,})+\s+([a-zA-Zà-úÀ-Ú\s]{2,})+$/.test(exp);
+const validUName = (exp) => /^[a-zA-Z0-9\_\-\@]{6,16}$/.test(exp);
+const validPass = (exp) => /^([A-Za-z0-9à-úÀ-Ú\@\_\.\-]{8,16})+$/.test(exp);
+const validText = (exp) =>
+	/^([A-Za-z0-9à-úÀ-Ú\.\-\,\_\|\?\:\*\&\%\#\!\+\~\₹\'\"\`\@\s]{2,})+$/.test(
+		exp
+	);
 
-const validEmail = exp => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(exp);
-const validName = exp => /^([a-zA-Zà-úÀ-Ú]{2,})+\s+([a-zA-Zà-úÀ-Ú\s]{2,})+$/.test(exp);
-const validUName = exp => /^[a-zA-Z0-9\_\-\@]{6,16}$/.test(exp);
-const validPass = exp => /^([A-Za-z0-9à-úÀ-Ú\@\_\.\-]{8,16})+$/.test(exp);
-const validText = exp => /^([A-Za-z0-9à-úÀ-Ú\.\-\,\_\|\?\:\*\&\%\#\!\+\~\₹\'\"\`\@\s]{2,})+$/.test(exp);
-
-
-const b36to10 = b36 => parseInt(b36, 36);
-const b10to36 = b10 => b10.toString(36);
-const b64toString = b64 => btoa(b64);
-const stringToB64 = b64 => atob(b64);
-const b36t10 = v => parseInt(v, 36);
-const b10t36 = v => Number(v).toString(36);
-
+const b36to10 = (b36) => parseInt(b36, 36);
+const b10to36 = (b10) => b10.toString(36);
+const b64toString = (b64) => btoa(b64);
+const stringToB64 = (b64) => atob(b64);
+const b36t10 = (v) => parseInt(v, 36);
+const b10t36 = (v) => Number(v).toString(36);
 
 /* -------------------------- formula ----------------------------**
-** const date = new Date();                                       **
-** const pass = Sourav@121                                        **        
-** let x = `%${b10t36(date)}${stringToB64(pass)}%${b10t36(date)}` **  
-** console.log(x);                                                **  
-** x = x.split(`%${b10t36(date)}`).join("");                      **          
-** console.log(x);                                                **
-** let y = b64toString(x);                                        **  
-** console.log(y);                                                **      
-**----------------------------------------------------------------**/
+ ** const date = new Date();                                       **
+ ** const pass = Sourav@121                                        **
+ ** let x = `%${b10t36(date)}${stringToB64(pass)}%${b10t36(date)}` **
+ ** console.log(x);                                                **
+ ** x = x.split(`%${b10t36(date)}`).join("");                      **
+ ** console.log(x);                                                **
+ ** let y = b64toString(x);                                        **
+ ** console.log(y);                                                **
+ **----------------------------------------------------------------**/
 
 function getOperatingSystemName() {
-   const ua = navigator.userAgent
-   return /iPad/.test(ua) ? "iPad"
-      : /iPhone/.test(ua) ? "iPhone"
-         : /Android 4/.test(ua) ? "Android"
-            : /Windows/.test(ua) ? "Windows" : "Other";
+	const ua = navigator.userAgent;
+	return /iPad/.test(ua)
+		? 'iPad'
+		: /iPhone/.test(ua)
+		? 'iPhone'
+		: /Android 4/.test(ua)
+		? 'Android'
+		: /Windows/.test(ua)
+		? 'Windows'
+		: 'Other';
 }
 
 function getGuestId() {
-   const date = Date.now(); // in milliseconds
-   return {
-      date: date,
-      id: b10to36(date).toUpperCase(),
-      os: getOperatingSystemName()
-   };
+	const date = Date.now(); // in milliseconds
+	return {
+		date: date,
+		id: b10to36(date).toUpperCase(),
+		os: getOperatingSystemName()
+	};
 }
 
 function setCookie(name, value, days) {
-   let expires = "";
-   if (days) {
-      let date = new Date();
-      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-      expires = "; expires=" + date.toUTCString();
-   }
-   document.cookie = name + "=" + (JSON.stringify(value) || "") + expires + "; path=/";
+	if (typeof name === 'string') {
+		let expires = new Date();
+		expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+		document.cookie = `${name}="${
+			JSON.stringify(value) || ''
+		}${date}; path=/"`;
+	}
 }
 
 function getCookie(name) {
-   let result = document.cookie.match(new RegExp(name + '=([^;]+)'));
-   result && (result = JSON.parse(result[1]));
-   return result;
+	let result = document.cookie.match(new RegExp(name + '=([^;]+)'));
+	result && (result = JSON.parse(result[1]));
+	return result;
 }
 
 function deleteCookie(name) {
-   document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+	document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
 // delay input run function
 function debounce(callback, delay = 1000) {
-   let timeout;
-   return function () {
-      clearTimeout(timeout);
-      timeout = setTimeout(callback, delay);
-   };
+	let timeout;
+	return function () {
+		clearTimeout(timeout);
+		timeout = setTimeout(callback, delay);
+	};
 }
 
-
-
+function clearLocal() {
+	deleteDataFromLocalStorage('liveChatUserData');
+	setCookie('liveChatUserId', '', -1);
+	setTimeout(() => {
+		location.replace('../index.html');
+	}, 500);
+}
+// clearLocal()

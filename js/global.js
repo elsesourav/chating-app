@@ -1,74 +1,63 @@
-const USER = getCookie("liveChatUser");
-if(!(USER && USER.id)) window.location.replace("../index.html");
+const USER = getCookie('liveChatUser');
+if (!(USER && USER.id)) window.location.replace('../index.html');
 
-const USER_ID = getCookie("liveChatUser").id;
-let data = getDataFromLocalStorage("liveChatUserData");
+const USER_ID = getCookie('liveChatUser').id;
+let data = getDataFromLocalStorage('liveChatUserData');
 
 // profile image url and size
 const IMG_PIXEL = { high: 512, low: 64 };
-const IMAGE_URL = { high: "", low: "" };
-
-
-document.addEventListener("visibilitychange", () => {
-   if (document.visibilityState == "hidden")  {
-      // update local storage for live chat user data
-      setDataFromLocalStorage("liveChatUserData", data);
-   }
-}, false);
-
-
+const IMAGE_URL = { high: '', low: '' };
 
 // object filter
 function objectFilter(object, tId) {
-   let ary = [];
+	let ary = [];
 
-   for (const key in object) {
-      if (key.search(tId) !== -1) {
-         ary.push(object[key])
-      }
-   }
-   return ary;
+	for (const key in object) {
+		if (key.search(tId) !== -1) {
+			ary.push(object[key]);
+		}
+	}
+	return ary;
 }
 
 // check is olrady my friend
 function isMyFriend(object, tId) {
-   for (const key in object) {
-      if (key == tId) return true;
-   }
-   return false;
+	for (const key in object) {
+		if (key == tId) return true;
+	}
+	return false;
 }
 
 // sort object by user id
 function sortObjectByUserId(object) {
-   let ary = [];
-   for (const key in object) {
-      const obj = object[key];
-      obj.id = key;
-      ary.push(obj);
-   }
-   return ary.sort((a, b) => a.rank - b.rank);
+	let ary = [];
+	for (const key in object) {
+		const obj = object[key];
+		obj.id = key;
+		ary.push(obj);
+	}
+	return ary.sort((a, b) => a.rank - b.rank);
 }
 
 // time conversion ms to hh:mm AM/PM
 function formatTime(ms) {
-   const d = new Date(ms);
-   const h = d.getHours();
-   const m = d.getMinutes();
+	const d = new Date(ms);
+	const h = d.getHours();
+	const m = d.getMinutes();
 
-   const AM_PM = h < 12 ? "AM" : "PM";
+	const AM_PM = h < 12 ? 'AM' : 'PM';
 
-   return `${h % 12}:${m} ${AM_PM}`;
+	return `${h % 12}:${m} ${AM_PM}`;
 }
 
-
 function setupFriends() {
-   const fs = data && data.friends ? data.friends : {};
-   const friendsLen = Object.keys(fs).length;
-   if (friendsLen < 1) return;
+	const fs = data && data.friends ? data.friends : {};
+	const friendsLen = Object.keys(fs).length;
+	if (friendsLen < 1) return;
 
-   let str = "";
-   for (let i = 0; i < friendsLen; i++) {
-       str += `
+	let str = '';
+	for (let i = 0; i < friendsLen; i++) {
+		str += `
        <div class="contact-box">
           <div class="wrap">
              <div class="contact-icon">
@@ -87,38 +76,36 @@ function setupFriends() {
                    <div class="no-of-msg"><p>100</p></div>
                 </div>
              </div>
-          </div>
+          </div>F
        </div>
      `;
-   }
-   wrapContacts.innerHTML = str;
+	}
+	wrapContacts.innerHTML = str;
 
+	// sorted by last message user z
+	const sortedFriends = sortObjectByUserId(data.friends);
 
-   // sorted by last message user z
-   const sortedFriends = sortObjectByUserId(data.friends);
+	const iconEle = document.querySelectorAll('.contact-icon');
+	const image = document.querySelectorAll('.contect-img');
+	const name = document.querySelectorAll('.contact-name');
+	const lastChatTime = document.querySelectorAll('.last-chat-time');
+	const lastChat = document.querySelectorAll('.last-chat');
+	const noOfMsgEle = document.querySelectorAll('.no-of-msg');
+	const noOfMsg = document.querySelectorAll('.no-of-msg p');
 
-   const iconEle = document.querySelectorAll(".contact-icon");
-   const image = document.querySelectorAll(".contect-img");
-   const name = document.querySelectorAll(".contact-name");
-   const lastChatTime = document.querySelectorAll(".last-chat-time");
-   const lastChat = document.querySelectorAll(".last-chat");
-   const noOfMsgEle = document.querySelectorAll(".no-of-msg");
-   const noOfMsg = document.querySelectorAll(".no-of-msg p");
+	sortedFriends.forEach((friend, i) => {
+		if (friend.image && friend.image.low) {
+			iconEle[i].classList.add('active');
+			image[i].src = friend.image.lwo;
+		}
 
-   sortedFriends.forEach((friend, i) => {
-       
-       if (friend.image && friend.image.low) {
-           iconEle[i].classList.add("active");
-           image[i].src = friend.image.lwo;
-       }
+		name[i].innerText = friend.name ? friend.name : 'Guest';
+		lastChatTime[i].innerText = formatTime(friend.rank);
+		lastChat[i].innerText = friend.message;
 
-       name[i].innerText = friend.name ? friend.name : "Guest";
-       lastChatTime[i].innerText = formatTime(friend.rank);
-       lastChat[i].innerText = friend.message;
-
-       if (!friend.visited) {
-           noOfMsg[i].innerText = friend.count;
-           noOfMsgEle[i].classList.add("active");
-       }
-   })
+		if (!friend.visited) {
+			noOfMsg[i].innerText = friend.count;
+			noOfMsgEle[i].classList.add('active');
+		}
+	});
 }
