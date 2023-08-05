@@ -1,17 +1,7 @@
-import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js';
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js';
-import { getAuth } from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js';
-import {
-	set,
-	get,
-	getDatabase,
-	query,
-	ref,
-	update,
-	orderByChild,
-	equalTo,
-	onValue
-} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js';
+import {getAnalytics} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js';
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js';
+import {getAuth} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js';
+import {set, get, getDatabase, query, ref, update, orderByChild, equalTo, onValue} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js';
 
 if (isMobile) {
 	cssRoot.style.setProperty('--cursor', 'auto');
@@ -54,7 +44,7 @@ let you, nm;
 
 	setupFriends();
 
-	function getMessages({ message, time, senderId, type, name }) {
+	function getMessages({message, time, senderId, type, name}) {
 		you = senderId == myDtls.id;
 		// nm = you ? (type == "one" ? "" : "You") : name;
 
@@ -102,7 +92,7 @@ let you, nm;
 				time: getChatDate().time,
 				id: Date.now() + 'msgId',
 				senderId: myDtls.id,
-				name: myDtls.name
+				name: myDtls.name,
 			});
 			setMessages();
 			inputDiv.innerHTML = '';

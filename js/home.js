@@ -1,24 +1,12 @@
-import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js';
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js';
-import { getAuth } from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js';
-import {
-	set,
-	get,
-	getDatabase,
-	query,
-	ref,
-	update,
-	orderByChild,
-	equalTo,
-	onValue,
-	onChildChanged,
-	onChildAdded
-} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js';
+import {getAnalytics} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js';
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js';
+import {getAuth} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js';
+import {set, get, getDatabase, query, ref, update, orderByChild, equalTo, onValue, onChildChanged, onChildAdded} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js';
 
 // import { getDatabase, ref, onDisconnect } from "firebase/database";
 
 // clear all local datas
-clearLocal();
+// clearLocal();
 
 window.onload = async () => {
 	// Initialize Firebase
@@ -38,19 +26,13 @@ window.onload = async () => {
 		}
 	}
 
-	// document.addEventListener("visibilitychange", () => {
-	//    if (document.visibilityState == "hidden")  {
-	//       // update local storage for live chat user data
-	//       setDataFromLocalStorage("liveChatUserData", data);
-	//    }
-	// }, false);
 
 	pageLoad.classList.remove('active');
 
 	setInterval(() => {
 		try {
 			update(dbRef, {
-				onlineStatus: new Date()
+				onlineStatus: Date.now(),
 			});
 			console.log('update time');
 		} catch (error) {
@@ -102,6 +84,20 @@ window.onload = async () => {
 		}
 	}
 
+
+	/* -------------- default setup -------------- */
+	// profile image 
+	if (data) {
+		if (data.images && (data.images.high || data.images.low)) {
+			profileImg.src = data.images.high;
+			profielImage.classList.add("active");
+		}
+		if (data.info) {
+			nameInput.value = data.info.name;
+			aboutInput.value = data.info.about;
+		}
+	}
+
 	function updateChildFafences() {
 		for (const key in data.friends) {
 		}
@@ -147,9 +143,7 @@ window.onload = async () => {
                      </div>
                      <div class="last-chat-no-of-msg">
                         <div class="last-chat">Last Chat</div>
-                        <div class="no-of-msg"><p>${
-									Math.floor(Math.random() * 10) + 1
-								}</p></div>
+                        <div class="no-of-msg"><p>${Math.floor(Math.random() * 10) + 1}</p></div>
                      </div>
                   </div>
                </div>

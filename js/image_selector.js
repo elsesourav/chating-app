@@ -4,10 +4,10 @@ const P = {
 	topLeft: false,
 	bottomLeft: false,
 	bottomRight: false,
-	topRight: false
+	topRight: false,
 };
 
-const pre = { x: 0, y: 0 };
+const pre = {x: 0, y: 0};
 let middleMove = false;
 
 // set initial sides position
@@ -15,10 +15,10 @@ const sides = {
 	left: 48,
 	right: 48,
 	top: 48,
-	bottom: 48
+	bottom: 48,
 };
 
-const { width: Width, height: Height } = canvasBox.getBoundingClientRect();
+const {width: Width, height: Height} = canvasBox.getBoundingClientRect();
 const minSelectorSize = 60;
 
 imageUpload.addEventListener('click', () => {
@@ -41,6 +41,17 @@ closeFullImage.addEventListener('click', () => {
 	}, 100);
 });
 
+const _$ = {
+	c: cvs.getContext('2d'),
+	img: null,
+	w: 0,
+	h: 0,
+	max: 0,
+	min: 0,
+	cvsBoxWidth: null,
+	minHlaf: null,
+};
+
 // -------------- image selection --------------
 fileInput.addEventListener('change', (e) => {
 	if (!e.target.files[0]) {
@@ -48,98 +59,68 @@ fileInput.addEventListener('change', (e) => {
 		return;
 	}
 
-	const c = cvs.getContext('2d');
+	_$.img = new Image();
+	_$.img.src = URL.createObjectURL(e.target.files[0]);
 
-	let fileNames = e.target.files[0].name;
-	const img = new Image();
-	const Img = URL.createObjectURL(e.target.files[0]);
-	img.src = Img;
-
-	img.onload = () => {
+	_$.img.onload = () => {
 		imageSelection.classList.add('active');
 
-		const w = img.width;
-		const h = img.height;
-		const max = Math.max(w, h);
-		const min = Math.min(w, h);
+		_$.w = _$.img.width;
+		_$.h = _$.img.height;
+		_$.max = Math.max(_$.w, _$.h);
+		_$.min = Math.min(_$.w, _$.h);
 
-		const cvsBoxWidth = canvasBox.clientWidth;
-		const minHlaf = (cvsBoxWidth - (min / max) * cvsBoxWidth * 0.9) / 2;
+		_$.cvsBoxWidth = canvasBox.clientWidth;
+		_$.minHlaf = (_$.cvsBoxWidth - (_$.min / _$.max) * _$.cvsBoxWidth * 0.9) / 2;
 
-		selector.style.inset = `${(sides.top = minHlaf)}px ${(sides.right =
-			minHlaf)}px ${(sides.bottom = minHlaf)}px ${(sides.left = minHlaf)}px`;
+		selector.style.inset = `${(sides.top = _$.minHlaf)}px ${(sides.right = _$.minHlaf)}px ${(sides.bottom = _$.minHlaf)}px ${(sides.left = _$.minHlaf)}px`;
 
-		cvs.width = max;
-		cvs.height = max;
+		cvs.width = _$.max;
+		cvs.height = _$.max;
 
-		c.fillStyle = '#ffffff';
-		c.fillRect(0, 0, cvs.width, cvs.height);
-		c.drawImage(img, (max - w) / 2, (max - h) / 2, w, h);
-
-		async function eventHandler() {
-			const wRatio = w / canvasBox.clientWidth;
-			const hRatio = h / canvasBox.clientHeight;
-
-			const ratio = Math.max(wRatio, hRatio);
-
-			const half = {
-				x: w < h ? (h - w) / 2 : 0,
-				y: w > h ? (w - h) / 2 : 0
-			};
-
-			const dleft = Math.round(sides.left * ratio - half.x);
-			const dtop = Math.round(sides.top * ratio - half.y);
-			const dwidth = Math.round(selector.clientWidth * ratio);
-			const dheight = Math.round(selector.clientHeight * ratio);
-
-			// for high quality image
-			cvs.width = IMG_PIXEL.high;
-			cvs.height = IMG_PIXEL.high;
-
-			c.fillStyle = '#ffffff';
-			c.fillRect(0, 0, cvs.width, cvs.height);
-			c.drawImage(
-				img,
-				dleft,
-				dtop,
-				dwidth,
-				dheight,
-				0,
-				0,
-				cvs.width,
-				cvs.height
-			);
-			IMAGE_URL.high = cvs.toDataURL('image/jpeg', 1.0);
-
-			// for low quality image
-			cvs.width = IMG_PIXEL.low;
-			cvs.height = IMG_PIXEL.low;
-
-			c.fillStyle = '#ffffff';
-			c.fillRect(0, 0, cvs.width, cvs.height);
-			c.drawImage(
-				img,
-				dleft,
-				dtop,
-				dwidth,
-				dheight,
-				0,
-				0,
-				cvs.width,
-				cvs.height
-			);
-
-			IMAGE_URL.low = cvs.toDataURL('image/jpeg', 1.0);
-
-			profielImage.classList.add('active');
-			imageSelection.classList.remove('active');
-			uploadImageBtn.removeEventListener('click', eventHandler, true);
-
-			uploadProcess.classList.add('active');
-		}
-		doneSelectedImage.addEventListener('click', eventHandler, true);
+		_$.c.fillStyle = '#ffffff';
+		_$.c.fillRect(0, 0, cvs.width, cvs.height);
+		_$.c.drawImage(_$.img, (_$.max - _$.w) / 2, (_$.max - _$.h) / 2, _$.w, _$.h);
 	};
 });
+
+function createImageData() {
+	uploadProcess.classList.add('active');
+	const wRatio = _$.w / canvasBox.clientWidth;
+	const hRatio = _$.h / canvasBox.clientHeight;
+
+	const ratio = Math.max(wRatio, hRatio);
+
+	const half = {
+		x: _$.w < _$.h ? (_$.h - _$.w) / 2 : 0,
+		y: _$.w > _$.h ? (_$.w - _$.h) / 2 : 0,
+	};
+
+	const dleft = Math.round(sides.left * ratio - half.x);
+	const dtop = Math.round(sides.top * ratio - half.y);
+	const dwidth = Math.round(selector.clientWidth * ratio);
+	const dheight = Math.round(selector.clientHeight * ratio);
+
+	// for high quality image
+	cvs.width = IMG_PIXEL.high;
+	cvs.height = IMG_PIXEL.high;
+
+	_$.c.fillStyle = '#ffffff';
+	_$.c.fillRect(0, 0, cvs.width, cvs.height);
+	_$.c.drawImage(_$.img, dleft, dtop, dwidth, dheight, 0, 0, cvs.width, cvs.height);
+	IMAGE_URL.high = cvs.toDataURL('image/jpeg', 1.0);
+
+	// for low quality image
+	cvs.width = IMG_PIXEL.low;
+	cvs.height = IMG_PIXEL.low;
+
+	_$.c.fillStyle = '#ffffff';
+	_$.c.fillRect(0, 0, cvs.width, cvs.height);
+	_$.c.drawImage(_$.img, dleft, dtop, dwidth, dheight, 0, 0, cvs.width, cvs.height);
+	IMAGE_URL.low = cvs.toDataURL('image/jpeg', 1.0);
+
+	imageSelection.classList.remove('active');
+}
 
 // -------------- event handlers --------------
 
@@ -165,7 +146,7 @@ canvasBox.addEventListener('mousedown', (e) => {
 });
 
 canvasBox.addEventListener('mousemove', (e) => {
-	selectionChanged({ x: e.clientX, y: e.clientY });
+	selectionChanged({x: e.clientX, y: e.clientY});
 });
 
 selector.addEventListener('mousedown', (e) => {
@@ -175,7 +156,7 @@ selector.addEventListener('mousedown', (e) => {
 });
 
 selector.addEventListener('mousemove', (e) => {
-	selectorMove({ x: e.clientX, y: e.clientY });
+	selectorMove({x: e.clientX, y: e.clientY});
 });
 
 /*  ---------- event listener for mobile -----------*/
@@ -200,7 +181,7 @@ canvasBox.addEventListener('touchstart', (e) => {
 });
 
 canvasBox.addEventListener('touchmove', (e) => {
-	selectionChanged({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+	selectionChanged({x: e.touches[0].clientX, y: e.touches[0].clientY});
 });
 
 selector.addEventListener('touchstart', (e) => {
@@ -210,7 +191,7 @@ selector.addEventListener('touchstart', (e) => {
 });
 
 selector.addEventListener('touchmove', (e) => {
-	selectorMove({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+	selectorMove({x: e.touches[0].clientX, y: e.touches[0].clientY});
 });
 
 // false all sides and middle
@@ -222,7 +203,7 @@ function resetSideAndMiddle() {
 }
 
 // control selection movement
-function selectorMove({ x, y }) {
+function selectorMove({x, y}) {
 	if (!middleMove || objectSome(P)) return;
 	let dx = x - pre.x;
 	let dy = y - pre.y;
@@ -236,7 +217,7 @@ function selectorMove({ x, y }) {
 		sides.bottom -= dy;
 	}
 
-	const { top, bottom, left, right } = objectRound(sides);
+	const {top, bottom, left, right} = objectRound(sides);
 	selector.style.inset = `${top}px ${right}px ${bottom}px ${left}px`;
 
 	pre.x = x;
@@ -244,10 +225,10 @@ function selectorMove({ x, y }) {
 }
 
 // control sides changes
-function selectionChanged({ x, y }) {
+function selectionChanged({x, y}) {
 	const _sides = structuredClone(sides);
 
-	const { top, bottom, left, right } = sides;
+	const {top, bottom, left, right} = sides;
 
 	if (P.topLeft) {
 		const avg = (x - pre.x + (y - pre.y)) / 2;
@@ -275,12 +256,9 @@ function selectionChanged({ x, y }) {
 		}
 	}
 
-	const { top: t, bottom: b, left: l, right: r } = objectRound(sides);
+	const {top: t, bottom: b, left: l, right: r} = objectRound(sides);
 
-	if (
-		Width - (t + b) > minSelectorSize &&
-		Height - (l + r) > minSelectorSize
-	) {
+	if (Width - (t + b) > minSelectorSize && Height - (l + r) > minSelectorSize) {
 		selector.style.inset = `${t}px ${r}px ${b}px ${l}px`;
 	} else {
 		for (const key in sides) {

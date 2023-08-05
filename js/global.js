@@ -4,9 +4,21 @@ if (!(USER && USER.id)) window.location.replace('../index.html');
 const USER_ID = getCookie('liveChatUser').id;
 let data = getDataFromLocalStorage('liveChatUserData');
 
+// update local storage user data
+document.addEventListener(
+	'visibilitychange',
+	() => {
+		if (document.visibilityState == 'hidden') {
+			setDataFromLocalStorage('liveChatUserData', data);
+		}
+	},
+	false
+);
+
+
 // profile image url and size
-const IMG_PIXEL = { high: 512, low: 64 };
-const IMAGE_URL = { high: '', low: '' };
+const IMG_PIXEL = {high: 512, low: 64};
+const IMAGE_URL = {high: '', low: ''};
 
 // object filter
 function objectFilter(object, tId) {

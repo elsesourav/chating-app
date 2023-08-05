@@ -1,24 +1,7 @@
-import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js';
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js';
-import {
-	getAuth,
-	signInWithEmailAndPassword,
-	createUserWithEmailAndPassword
-} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js';
-import {
-	set,
-	get,
-	getDatabase,
-	query,
-	ref,
-	update,
-	orderByChild,
-	equalTo,
-	startAt,
-	endAt,
-	onValue,
-	child
-} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js';
+import {getAnalytics} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js';
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js';
+import {getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js';
+import {set, get, getDatabase, query, ref, update, orderByChild, equalTo, startAt, endAt, onValue, child, once} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js';
 
 let currentSearchSelection = null; // for search user click detials
 
@@ -35,6 +18,12 @@ let currentSearchSelection = null; // for search user click detials
 
 	let allUserInfo = null;
 
+
+	firebase.database().ref().child("users").orderByChild('profileData/username').equalTo("testUsername").once('value', function (snapshot) {
+
+
+	})
+
 	// initial run
 	userID.innerText = USER_ID;
 	if (data && data.info.name) nameInput.value = data.info.name;
@@ -49,7 +38,7 @@ let currentSearchSelection = null; // for search user click detials
 			const about = aboutInput.value;
 			await update(child(dbRef, `info`), {
 				name: name,
-				about: about
+				about: about,
 			});
 
 			data.info.name = name;
@@ -57,6 +46,53 @@ let currentSearchSelection = null; // for search user click detials
 
 			uploadProcess.classList.remove('active');
 		}, 500)
+	);
+
+	// logout button
+	logoutButton.addEventListener('click', async () => {
+		clearLocal();
+		window.location.href = '/';
+	});
+
+	// delete image button
+	imageDelete.addEventListener('click', async () => {
+		try {
+			uploadProcess.classList.add('active');
+			await update(child(dbRef, `images`), {
+				high: '',
+				low: '',
+			});
+			data.images.high = '';
+			data.images.low = '';
+			profileImg.src = '';
+			profielImage.classList.remove('active');
+		} catch (error) {
+			console.log(error);
+		}
+		uploadProcess.classList.remove('active');
+	});
+
+	/* ----------------- upload profile image ------------------ */
+	doneSelectedImage.addEventListener(
+		'click',
+		async () => {
+			createImageData();
+			try {
+				await update(child(dbRef, `images`), {
+					high: IMAGE_URL.high,
+					low: IMAGE_URL.low,
+				});
+			} catch (error) {
+				console.log(error);
+			}
+
+			profileImg.src = IMAGE_URL.high;
+			data.images.high = IMAGE_URL.high;
+			data.images.low = IMAGE_URL.low;
+			profielImage.classList.add('active');
+			uploadProcess.classList.remove('active');
+		},
+		true
 	);
 
 	/* ------------- user profile setting ------------- */
@@ -196,28 +232,16 @@ let currentSearchSelection = null; // for search user click detials
 				const d = Date.now();
 				const opDate = getOptimizeDate();
 
-				const dbRefChatMe = ref(
-					db,
-					`users_data/chats/${USER_ID}/${currentSearchSelection.USER_ID}/${opDate.full}`
-				);
-				const dbRefChatFriend = ref(
-					db,
-					`users_data/chats/${currentSearchSelection.USER_ID}/${USER_ID}/${opDate.full}`
-				);
-				const dbRefFriendFriends = ref(
-					db,
-					`users_data/friends/${currentSearchSelection.USER_ID}`
-				);
-				const dbRefFriendInfo = ref(
-					db,
-					`users_data/info/${currentSearchSelection.USER_ID}`
-				);
+				const dbRefChatMe = ref(db, `users_data/chats/${USER_ID}/${currentSearchSelection.USER_ID}/${opDate.full}`);
+				const dbRefChatFriend = ref(db, `users_data/chats/${currentSearchSelection.USER_ID}/${USER_ID}/${opDate.full}`);
+				const dbRefFriendFriends = ref(db, `users_data/friends/${currentSearchSelection.USER_ID}`);
+				const dbRefFriendInfo = ref(db, `users_data/info/${currentSearchSelection.USER_ID}`);
 
 				const friendInfo = (await get(dbRefFriendInfo)).val();
 
 				const firstChat = {
 					type: 'both',
-					message: 'Welcome to Live Chat'
+					message: 'Welcome to Live Chat',
 				};
 
 				const initInfo = {
@@ -225,40 +249,40 @@ let currentSearchSelection = null; // for search user click detials
 					count: 1,
 					message: 'Welcome to Live Chat',
 					rank: d,
-					visited: false
+					visited: false,
 				};
 
 				// add friend in friends list
 				await update(dbRefFriends, {
 					[currentSearchSelection.USER_ID]: {
 						...initInfo,
-						name: friendInfo.name || 'Guest'
-					}
+						name: friendInfo.name || 'Guest',
+					},
 				});
 
 				await update(dbRefFriendFriends, {
 					[USER_ID]: {
 						...initInfo,
-						name: data.info.name || 'Guest'
-					}
+						name: data.info.name || 'Guest',
+					},
 				});
 
 				// set first chat in my chat list
-				await update(dbRefChatMe, { [d]: firstChat });
+				await update(dbRefChatMe, {[d]: firstChat});
 
 				// set first chat in friend chat list
-				await update(dbRefChatFriend, { [d]: firstChat });
+				await update(dbRefChatFriend, {[d]: firstChat});
 
 				data.friends[currentSearchSelection.USER_ID] = {
 					...initInfo,
-					name: friendInfo.name || 'Guest'
+					name: friendInfo.name || 'Guest',
 				};
 
 				console.log(data.chats);
 				// upsh first chat
 				data.chats || (data.chats = {});
 				data.chats[currentSearchSelection.USER_ID] = {
-					[opDate.full]: { [d]: firstChat }
+					[opDate.full]: {[d]: firstChat},
 				};
 
 				friendOrNot.classList.add('sbi-user-check');

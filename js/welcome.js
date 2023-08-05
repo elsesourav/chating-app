@@ -1,17 +1,7 @@
-import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js';
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js';
-import { getAuth } from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js';
-import {
-	set,
-	get,
-	getDatabase,
-	query,
-	ref,
-	child,
-	update,
-	orderByChild,
-	equalTo
-} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js';
+import {getAnalytics} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js';
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js';
+import {getAuth} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js';
+import {set, get, getDatabase, query, ref, child, update, orderByChild, equalTo} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js';
 
 window.onload = () => {
 	// Initialize Firebase
@@ -29,7 +19,7 @@ window.onload = () => {
 	}
 
 	guestBtn.addEventListener('click', async () => {
-		const geustId = getCookie('liveChatUserId') || getGuestId();
+		const geustId = getCookie('liveChatUser') || getGuestId();
 
 		// when no guest account exist then create a new one
 
@@ -49,18 +39,18 @@ window.onload = () => {
 						id: geustId.id,
 						name: '',
 						os: geustId.os,
-						password: ''
+						password: '',
 					},
 					images: {
 						high: '',
-						low: ''
+						low: '',
 					},
 					chats: {
 						receive: {},
-						seved: {}
+						seved: {},
 					},
 					friends: {},
-					onlineStatus: new Date()
+					onlineStatus: Date.now(),
 				};
 
 				await update(dbRefInfo, datas);

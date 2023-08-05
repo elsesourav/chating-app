@@ -828,6 +828,7 @@
 	width: var(--s);
 	height: var(--s);
 	z-index: 12;
+	border-radius: 0;
 	display: grid;
 	place-items: center;
 	outline: 1000px solid black;

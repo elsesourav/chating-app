@@ -7,10 +7,7 @@ const cssRoot = document.querySelector(':root');
 const isMobile = localStorage.mobile || window.navigator.maxTouchPoints > 1;
 
 // minimum window size
-const minSize =
-	window.innerWidth > window.innerHeight
-		? window.innerHeight
-		: window.innerWidth;
+const minSize = window.innerWidth > window.innerHeight ? window.innerHeight : window.innerWidth;
 
 const $ = (element) => {
 	const self = document.querySelectorAll(element);
@@ -21,8 +18,7 @@ const $ = (element) => {
 
 	self.on = (event, fun) => {
 		self.forEach((element) => {
-			if (typeof event == 'function')
-				element.addEventListener('click', event);
+			if (typeof event == 'function') element.addEventListener('click', event);
 			else element.addEventListener(event, fun);
 		});
 	};
@@ -212,7 +208,7 @@ function getChatDate() {
 
 	return {
 		year: _dt.getFullYear(),
-		time: `${_hh < 10 ? '0' + _hh : _hh}:${_mm < 10 ? '0' + _mm : _mm}`
+		time: `${_hh < 10 ? '0' + _hh : _hh}:${_mm < 10 ? '0' + _mm : _mm}`,
 	};
 }
 
@@ -226,7 +222,7 @@ function getOptimizeDate() {
 	return {
 		full: `D${y}_${mn + 1}_${d}_${h}`,
 		time: `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`,
-		year: y.toString()
+		year: y.toString(),
 	};
 }
 
@@ -277,16 +273,11 @@ function objectRound(object) {
 	return obj;
 }
 
-const validEmail = (exp) =>
-	/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(exp);
-const validName = (exp) =>
-	/^([a-zA-Zà-úÀ-Ú]{2,})+\s+([a-zA-Zà-úÀ-Ú\s]{2,})+$/.test(exp);
+const validEmail = (exp) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(exp);
+const validName = (exp) => /^([a-zA-Zà-úÀ-Ú]{2,})+\s+([a-zA-Zà-úÀ-Ú\s]{2,})+$/.test(exp);
 const validUName = (exp) => /^[a-zA-Z0-9\_\-\@]{6,16}$/.test(exp);
 const validPass = (exp) => /^([A-Za-z0-9à-úÀ-Ú\@\_\.\-]{8,16})+$/.test(exp);
-const validText = (exp) =>
-	/^([A-Za-z0-9à-úÀ-Ú\.\-\,\_\|\?\:\*\&\%\#\!\+\~\₹\'\"\`\@\s]{2,})+$/.test(
-		exp
-	);
+const validText = (exp) => /^([A-Za-z0-9à-úÀ-Ú\.\-\,\_\|\?\:\*\&\%\#\!\+\~\₹\'\"\`\@\s]{2,})+$/.test(exp);
 
 const b36to10 = (b36) => parseInt(b36, 36);
 const b10to36 = (b10) => b10.toString(36);
@@ -308,15 +299,7 @@ const b10t36 = (v) => Number(v).toString(36);
 
 function getOperatingSystemName() {
 	const ua = navigator.userAgent;
-	return /iPad/.test(ua)
-		? 'iPad'
-		: /iPhone/.test(ua)
-		? 'iPhone'
-		: /Android 4/.test(ua)
-		? 'Android'
-		: /Windows/.test(ua)
-		? 'Windows'
-		: 'Other';
+	return /iPad/.test(ua) ? 'iPad' : /iPhone/.test(ua) ? 'iPhone' : /Android 4/.test(ua) ? 'Android' : /Windows/.test(ua) ? 'Windows' : 'Other';
 }
 
 function getGuestId() {
@@ -324,17 +307,16 @@ function getGuestId() {
 	return {
 		date: date,
 		id: b10to36(date).toUpperCase(),
-		os: getOperatingSystemName()
+		os: getOperatingSystemName(),
 	};
 }
 
-function setCookie(name, value, days) {
-	if (typeof name === 'string') {
-		let expires = new Date();
-		expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-		document.cookie = `${name}="${
-			JSON.stringify(value) || ''
-		}${date}; path=/"`;
+function setCookie(name, value = '', exdays = 0) {
+	if (typeof exdays === 'number') {
+		const d = new Date();
+		d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+		let expires = 'expires=' + d.toUTCString();
+		document.cookie = `${name}=${JSON.stringify(value)};${expires};path=/`;
 	}
 }
 
@@ -359,9 +341,8 @@ function debounce(callback, delay = 1000) {
 
 function clearLocal() {
 	deleteDataFromLocalStorage('liveChatUserData');
-	setCookie('liveChatUserId', '', -1);
+	setCookie('liveChatUser', '', 0);
 	setTimeout(() => {
 		location.replace('../index.html');
 	}, 500);
 }
-// clearLocal()
