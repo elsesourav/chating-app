@@ -1,13 +1,9 @@
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js";
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
 import {
-   getAuth,
-   signInWithEmailAndPassword,
-   createUserWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js";
-import {
-   set, get, getDatabase, query, ref, update,
-   orderByChild, equalTo, onValue, onChildChanged, onChildAdded, 
+   set, get, getDatabase, query, ref, update, orderByChild, equalTo,
+   onValue, onChildChanged, onChildAdded, onDisconnect
 } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js";
 
 
@@ -27,47 +23,18 @@ window.onload = async () => {
    const auth = getAuth();
    const db = getDatabase();
 
-   const dbRefInfo = ref(db, `users_data/info/${userId}`);
-   const dbRefStatus = ref(db, `users_data/status/${userId}`);
-   const dbRefFriends = ref(db, `users_data/friends/${userId}`);
-   const dbRefImage = ref(db, `users_data/image/${userId}`);
-   const dbRefChats = ref(db, `users_data/chats/${userId}`);
+   const dbRef = ref(db, `users/${USER_ID}`);
 
 
    if (!data) {
       try {
-         const info = await get(dbRefInfo);
-         const status = await get(dbRefStatus);
-         const friends = await get(dbRefFriends);
-         const image = await get(dbRefImage);
-         const chats = await get(dbRefChats);
-
-         const obj = {
-            info: info,
-            status: status,
-            friends: friends,
-            image: image,
-            chats: chats
-         }
-         data = obj;
-         
+         data = (await get(dbRef)).val();
          setupFriends();
       } catch (e) {
          location.reload();
       }
    }
 
-   setInterval(async () => {
-      try {
-         await update(dbRefStatus, {
-            lastOnline: Date.now()
-         })
-      } catch (error) {
-         console.log("Something went wrong!");
-         console.log(error);
-      }
-
-   }, 60_000);
 
 
    pageLoad.classList.remove("active");
@@ -75,48 +42,48 @@ window.onload = async () => {
 
    // Friends Update Changes Realtime 
 
-   // Friends
-   onValue(dbRefFriends, (snapshot) => {
-      data.friends = snapshot.val() || {};
-      
-   });
+   // // Friends
+   // onValue(dbRefFriends, (snapshot) => {
+   //    data.friends = snapshot.val() || {};
 
-   // Info
-   onValue(dbRefInfo, (snapshot) => {
-      data.info = snapshot.val();
-      
-   });
+   // });
 
-   // Images
-   onValue(dbRefImage, (snapshot) => {
-      data.image = snapshot.val() || {};
-      
-   });
+   // // Info
+   // onValue(dbRefInfo, (snapshot) => {
+   //    data.info = snapshot.val();
 
-   // Status
-   onValue(dbRefStatus, (snapshot) => {
-      data.status = snapshot.val() || {};
-      
-   });
+   // });
 
+   // // Images
+   // onValue(dbRefImage, (snapshot) => {
+   //    data.image = snapshot.val() || {};
 
-   onChildAdded(dbRefChats, (snapshot) => {
+   // });
+
+   // // Status
+   // onValue(dbRefStatus, (snapshot) => {
+   //    data.status = snapshot.val() || {};
+
+   // });
 
 
+   // onChildAdded(dbRefChats, (snapshot) => {
 
-      updateChildFafences();
-   });
+
+
+   //    updateChildFafences();
+   // });
 
    function setupChatChaild(key) {
       // Chat
       try {
-         const rf = ref(db, `users_data/chats/${userId}/${key}`);
-         onChildChanged(rf, (snapshot) => {
-            console.log(snapshot.val());
-            data.chats[key][getOptimizeDate().full] = snapshot.val() || {};
-            
-            setupFriends();
-         });
+         // const rf = ref(db, `users_data/chats/${USER_ID}/${key}`);
+         // onChildChanged(rf, (snapshot) => {
+         //    console.log(snapshot.val());
+         //    data.chats[key][getOptimizeDate().full] = snapshot.val() || {};
+
+         //    setupFriends();
+         // });
       } catch (e) {
          console.log(e);
       }

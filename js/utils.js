@@ -165,11 +165,14 @@ hover(document.querySelectorAll(".hover"));
 
 /* ----  local storage set and get ---- */
 function setDataFromLocalStorage(key, object) {
-   var data = JSON.stringify(object);
+   let data = JSON.stringify(object);
    localStorage.setItem(key, data);
 }
 function getDataFromLocalStorage(key) {
    return JSON.parse(localStorage.getItem(key))
+}
+function deleteDataFromLocalStorage(key) {
+   return localStorage.removeItem(key);
 }
 
 // class add in html
@@ -295,7 +298,7 @@ const b10to36 = b10 => b10.toString(36);
 const b64toString = b64 => btoa(b64);
 const stringToB64 = b64 => atob(b64);
 const b36t10 = v => parseInt(v, 36);
-const b10t36 = v =>  Number(v).toString(36);
+const b10t36 = v => Number(v).toString(36);
 
 
 /* -------------------------- formula ----------------------------**
@@ -309,37 +312,40 @@ const b10t36 = v =>  Number(v).toString(36);
 ** console.log(y);                                                **      
 **----------------------------------------------------------------**/
 
+function getOperatingSystemName() {
+   const ua = navigator.userAgent
+   return /iPad/.test(ua) ? "iPad"
+      : /iPhone/.test(ua) ? "iPhone"
+         : /Android 4/.test(ua) ? "Android"
+            : /Windows/.test(ua) ? "Windows" : "Other";
+}
 
 function getGuestId() {
    const date = Date.now(); // in milliseconds
    return {
       date: date,
-      id: b10to36(date).toUpperCase()
+      id: b10to36(date).toUpperCase(),
+      os: getOperatingSystemName()
    };
 }
 
 function setCookie(name, value, days) {
-   var expires = "";
+   let expires = "";
    if (days) {
-      var date = new Date();
+      let date = new Date();
       date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
       expires = "; expires=" + date.toUTCString();
    }
-   document.cookie = name + "=" + (value || "") + expires + "; path=/";
+   document.cookie = name + "=" + (JSON.stringify(value) || "") + expires + "; path=/";
 }
 
 function getCookie(name) {
-   var nameEQ = name + "=";
-   var ca = document.cookie.split(';');
-   for (var i = 0; i < ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-   }
-   return null;
+   let result = document.cookie.match(new RegExp(name + '=([^;]+)'));
+   result && (result = JSON.parse(result[1]));
+   return result;
 }
 
-function eraseCookie(name) {
+function deleteCookie(name) {
    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
@@ -347,8 +353,10 @@ function eraseCookie(name) {
 function debounce(callback, delay = 1000) {
    let timeout;
    return function () {
-       clearTimeout(timeout);
-       timeout = setTimeout(callback, delay);
+      clearTimeout(timeout);
+      timeout = setTimeout(callback, delay);
    };
 }
+
+
 

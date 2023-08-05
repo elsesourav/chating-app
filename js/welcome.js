@@ -20,17 +20,13 @@ window.onload = () => {
    }
 
    guestBtn.addEventListener('click', async () => {
-      const userId = getCookie("liveChatUserId");
-      let newGuest = null;
+      const geustId = getCookie("liveChatUserId") || getGuestId();
 
       // when no guest account exist then create a new one
-      if (!userId) {
-         newGuest = getGuestId();
-         setCookie("liveChatUserId", newGuest.id, 30);
-      }
+
       try {
          // database reference
-         const dbRefInfo = ref(db, `users/${userId || newGuest.id}`);
+         const dbRefInfo = ref(db, `users/${geustId.id}`);
 
          const user = await get(dbRefInfo);
 
@@ -38,12 +34,13 @@ window.onload = () => {
 
             const datas = {
                info: {
-                  id: newGuest.id,
-                  creationDate: newGuest.date,
+                  about: "",
+                  creationDate: geustId.date,
+                  id: geustId.id,
                   name: "",
-                  aboue: "",
-                  password: "",
+                  os: geustId.os,
                   online: false,
+                  password: "",
                },
                images: {
                   high: "",
@@ -58,8 +55,9 @@ window.onload = () => {
 
             await set(dbRefInfo, datas);
 
-            date = datas;
-            updateLocalStorage();
+            setCookie("liveChatUser", geustId, 30);
+
+            setDataFromLocalStorage("liveChatUserData", datas);
 
             console.log("Data sended successfully");
             location.replace("./html/home.html");

@@ -6,166 +6,110 @@
 	--img-width: 100px;
 	--img-margin: 20px;
 
-	position: absolute;
-	width: var(--width-u);
-	height: var(---height-u);
-	display: grid;
-	grid-auto-flow: column;
-	background: #dddddd;
-	outline: solid 1px #0007;
-	border-bottom-left-radius: var(--radius-u);
-	border-bottom-right-radius: var(--radius-u);
-	left: calc(50% - var(--width-u) / 2);
+	position: fixed;
+	width: 100vw;
+	display: flex;
+	justify-content: center;
 	top: calc(var(---height-u) * -1 - 3px);
-	transition: ease-in-out 300ms top;
+	transition: ease-in-out 300ms top, linear 300ms width, linear 300ms height;
 	z-index: 2;
 }
 #myProfileAndFindUser.show {
 	top: 0;
 }
+#p_f_cover {
+	position: relative;
+	width: var(--width-u);
+	height: var(---height-u);
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	background: #dddddd;
+	outline: solid 1px #0007;
+	border-bottom-left-radius: var(--radius-u);
+	border-bottom-right-radius: var(--radius-u);
+	transition: linear 300ms background,
+	 linear 300ms width,
+	  linear 300ms height;
+}
+#myProfileAndFindUser.one #p_f_cover,
+#myProfileAndFindUser.two #p_f_cover {
+	width: var(--mn-chat-w);
+	height: 100vh;
+	background: #eeeeee;
+}
 #myProfileAndFindUser #userProfileBox,
 #myProfileAndFindUser #searchUserBox {
 	position: relative;
 	display: flex;
-	width: calc(var(--width-u) / 2);
-	height: calc(var(---height-u));
-	scale: 1;
+	flex-direction: column;
+	width: min-content;
+	height: min-content;
 	justify-content: center;
+	border-radius: 100px;
 	align-items: center;
 	z-index: 3;
-	transition: linear 200ms scale, linear 200ms width, linear 200ms height;
+	transition: linear 300ms display;
 }
-#myProfileAndFindUser.show #userProfileBox,
-#myProfileAndFindUser.show #searchUserBox {
-	scale: 1;
-	display: flex;
-	width: auto;
-	height: auto;
+#myProfileAndFindUser.one #userProfileBox,
+#myProfileAndFindUser.two #searchUserBox {
+	border-radius: 0;
 }
 #myProfileAndFindUser.one #searchUserBox,
 #myProfileAndFindUser.two #userProfileBox {
-	scale: 0;
-	width: auto;
-	height: auto;
-	opacity: 1;
+	display: none;
 }
-#myProfileAndFindUser.two #userProfileBox {
-	width: 0;
-	height: 0;
-	opacity: 0;
-}
-
 #myProfileAndFindUser #profielImage,
 #myProfileAndFindUser #searchIcon {
 	position: relative;
-	width: 30px;
-	height: 30px;
-	display: grid;
-	place-items: center;
+	width: 35px;
+	height: 35px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	border: solid 2px #006eff;
 	border-radius: 100px;
-	box-shadow: 0 0 3px #000000;
+	box-shadow: 5 0 3px #000000;
 	background: #ffffff;
 	cursor: pointer;
 	overflow: hidden;
-	top: 0;
-	transition: linear 400ms width, linear 400ms height, linear 400ms top,
-		linear 400ms border-radius;
+	outline: none;
+	padding: 0;
+	margin: 0;
+	transition: linear 300ms width, linear 300ms height, linear 300ms top,
+		linear 300ms border-radius, linear 300ms background;
 	z-index: 3;
 }
 #myProfileAndFindUser.one #profielImage,
 #myProfileAndFindUser.two #searchIcon {
-	top: calc(var(--img-margin) + (max(500px, 100vh) - 500px) / 2);
-	border-radius: 10px;
 	width: 100px;
 	height: 100px;
+	border-radius: 20px;
 }
-#myProfileAndFindUser.one #profielImage,
-#myProfileAndFindUser.two #searchIcon {
-	top: calc(var(--img-margin) + (max(500px, 100vh) - 500px) / 2);
-	border-radius: 10px;
-	width: 100px;
-	height: 100px;
-	overflow: hidden;
+#myProfileAndFindUser #profielImage:hover,
+#myProfileAndFindUser #searchIcon:hover {
+	background: #006eff;
 }
-#myProfileAndFindUser #profielImage .mn-i {
-	font-size: 19px;
-}
-#myProfileAndFindUser #profielImage #imageEdite {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	display: none;
-	place-items: center;
-	z-index: 1;
-}
-#myProfileAndFindUser.one #profielImage #imageEdite {
-	display: grid;
-}
-#profielImage #imageEdite #imageEditeOptions {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	display: flex;
-	justify-content: space-evenly;
-	align-items: center;
-	background: transparent;
-	backdrop-filter: blur(0px);
-	cursor: pointer;
-	transition: linear 300ms background, linear 300ms backdrop-filter;
-}
-#profielImage #imageEdite #imageEditeOptions.active {
-	background: #00000077;
-	backdrop-filter: blur(3px);
-	cursor: auto;
-}
-#profielImage #imageEdite #imageEditeOptions .img-btn {
-	position: relative;
-	width: calc(var(--img-width) / 3);
-	height: calc(var(--img-width) / 3);
-	border-radius: 100px;
-	display: grid;
-	place-items: center;
-	background: #eeeeee;
-	scale: 0;
-	box-shadow: 1px 1px 3px #c5c5c5, inset 1px 1px 3px #ffffff,
-		-1px -1px 3px #ffffff, inset -1px -1px 3px #b4b4b4;
-	transition: linear 300ms scale;
-	cursor: pointer;
-}
-#profielImage #imageEdite #imageEditeOptions.active .img-btn {
-	scale: 1;
-}
-#profielImage #imageEdite #imageEditeOptions .img-btn i {
-	font-size: 24px;
-	text-shadow: 0 0 1px #000000;
-	color: #0029ff;
-}
-#profielImage #imageEdite #imageEditeOptions .img-btn:last-child i {
-	color: #ff0000;
-}
-#myProfileAndFindUser #profielImage i,
-#myProfileAndFindUser #searchIcon i {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	display: grid;
-	place-items: center;
-	font-size: 24px;
+#myProfileAndFindUser #profielImage .mn-i,
+#myProfileAndFindUser #searchIcon .mn-i {
 	color: #006eff;
-	transition: linear 400ms font-size;
+	transition: linear 300ms color;
+	font-size: 24px;
 }
-#myProfileAndFindUser.one #profielImage i,
-#myProfileAndFindUser.two #searchIcon i {
-	font-size: 60px;
+#myProfileAndFindUser #profielImage:hover .mn-i,
+#myProfileAndFindUser #searchIcon:hover .mn-i {
+	color: #ffffff;
+}
+#myProfileAndFindUser #searchIcon .mn-i {
+	font-size: 26px;
 }
 
+/* ----------- profile and find up down -------------- */
 #myProfileAndFindUser #profileOpenClose {
 	--sz-porfile: 30px;
 	position: absolute;
-	background: #dddddd;
-	left: calc(var(--width-u) / 2 - var(--sz-porfile) / 2);
-	top: var(---height-u);
+	left: calc(50% - var(--sz-porfile) / 2);
+	bottom: calc(var(--sz-porfile) * -1 + 4px);
 	width: calc(var(--sz-porfile) + 4px);
 	height: calc(var(--sz-porfile) - 4px);
 	display: flex;
@@ -175,6 +119,7 @@
 	border-top: none;
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
+	background: #dddddd;
 	cursor: pointer;
 	color: #0029ff;
 	z-index: 1;
@@ -192,36 +137,114 @@
 #myProfileAndFindUser #profileOpenClose:hover i {
 	color: #002279;
 }
+
+#myProfileAndFindUser #profielImage #imageEdite {
+	position: fixed;
+	width: var(--mn-chat-w);
+	height: 100vh;
+	top: 0;
+	display: none;
+	place-items: center;
+	background: transparent;
+	z-index: 12;
+}
+#myProfileAndFindUser.one #profielImage #imageEdite {
+	display: grid;
+	background: #000000;
+}
+#profielImage #imageEdite #imageEditeOptions {
+	position: absolute;
+	top: 100%;
+	padding: 30px 0;
+	display: none;
+	justify-content: space-around;
+	gap: 20px;
+	align-items: center;
+	background: transparent;
+	backdrop-filter: blur(0px);
+	cursor: pointer;
+}
+#profielImage #imageEdite.active #imageEditeOptions {
+	display: flex;
+}
+
+#profielImage #imageEdite #imageEditeOptions .img-btn {
+	position: relative;
+	width: 90px;
+	height: 35px;
+	border-radius: 14px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: #000000;
+	gap: 5px;
+	box-shadow: 1px 1px 3px #c5c5c5, inset 1px 1px 3px #ffffff,
+		-1px -1px 3px #ffffff, inset -1px -1px 3px #b4b4b4;
+	color: #ffffff;
+	transition: linear 300ms background, linear 300ms color;
+	cursor: pointer;
+}
+#profielImage #imageEdite #imageEditeOptions .img-btn:hover {
+	background: #eeeeee;
+	color: #000000;
+}
+#profielImage #imageEdite #imageEditeOptions .img-btn p {
+	font-family: Roboto;
+	font-weight: 600;
+	font-size: 15px;
+}
+#profielImage #imageEdite #imageEditeOptions .img-btn i {
+	width: min-content;
+	font-size: 20px;
+	text-shadow: 0 0 1px #000000;
+	color: #0029ff;
+}
+#profielImage #imageEdite #imageEditeOptions .img-btn:nth-child(2) i {
+	color: #ff0000;
+}
+#profielImage #imageEdite #imageEditeOptions .img-btn:last-child i {
+	color: #ffffff;
+}
+#profielImage #imageEdite #imageEditeOptions .img-btn:last-child:hover i {
+	color: #000000;
+}
+#myProfileAndFindUser #profielImage i,
+#myProfileAndFindUser #searchIcon i {
+	font-size: 24px;
+	color: #006eff;
+	transition: linear 400ms font-size;
+}
+#myProfileAndFindUser.one #profielImage i,
+#myProfileAndFindUser.two #searchIcon i {
+	font-size: 70px;
+}
+
 #myProfileAndFindUser #porfileSetting,
 #myProfileAndFindUser #searchOption {
-	position: absolute;
-	display: none;
+	position: relative;
+	display: flex;
 	width: 0;
 	height: 0;
-	top: 0;
 	scale: 0;
 	opacity: 0;
-	padding-top: calc(
-		var(--width-u) + var(--img-margin) * 2 + (max(500px, 100vh) - 500px) / 2
-	);
 	border-bottom-left-radius: 1000px;
 	border-bottom-right-radius: 1000px;
-	background: #eeeeee;
-	transition: linear 400ms width, linear 400ms height,
-		linear 400ms border-radius, linear 400ms opacity, linear 400ms scale;
 	flex-direction: column;
-	transition-delay: 100ms;
 	align-items: center;
+	margin: 0;
+	transition: linear 300ms width, linear 300ms height,
+		linear 300ms border-radius, linear 300ms opacity, linear 300ms scale;
 }
 #myProfileAndFindUser.one #porfileSetting,
 #myProfileAndFindUser.two #searchOption {
 	scale: 1;
 	opacity: 1;
+	margin: 10px 0;
 	width: var(--mn-chat-w);
-	height: 100vh;
+	height: max-content;
 	border-radius: 0;
-	transition-delay: 0;
 }
+
 #myProfileAndFindUser.show #porfileSetting,
 #myProfileAndFindUser.show #searchOption {
 	display: flex;
@@ -286,8 +309,9 @@
 	font-size: 13px;
 }
 #porfileSetting #updateAndLogout {
-	position: absolute;
-	bottom: 0;
+	position: relative;
+	margin-top: max-height;
+	height: max-content;
 	width: 100%;
 	display: grid;
 	grid-template-columns: 4fr 1fr;
@@ -334,11 +358,16 @@
 	padding: 5px 10px;
 	font-size: 20px;
 	border-radius: 100px;
+	scale: 0;
 	background: #ffffff;
 	box-shadow: inset 0 0 5px #c8c8c8;
-	z-index: 5;
+	z-index: 2;
 	cursor: pointer;
-	transition: linear 300ms color, linear 300ms background;
+	transition: linear 300ms color, linear 300ms background, linear 300ms scale;
+}
+#myProfileAndFindUser.one .top-right,
+#myProfileAndFindUser.two .top-right {
+	scale: 1;
 }
 .top-right:hover {
 	color: #ff0000;
@@ -599,6 +628,7 @@
 	display: grid;
 	place-items: center;
 	transition: ease-in-out 0.3s top;
+	overflow: hidden;
 }
 #imageSelection.active {
 	top: 0;
@@ -609,7 +639,8 @@
 	width: min(70vw, 70vh);
 	height: min(70vw, 70vh);
 	background: black;
-	outline: solid 10px #000000;
+	outline: solid 1000px #000000;
+	border: solid 3px #393939;
 	overflow: hidden;
 }
 #canvasBox #selector {
@@ -719,20 +750,27 @@
 #upload-close-btn-box .button-upload {
 	position: relative;
 	padding: 10px 20px;
-	border: none;
 	border-radius: 10px;
-	background: #0029ff;
+	background: #000000;
 	color: #ffffff;
 	cursor: pointer;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	border: solid 1px #ffffff;
+	color: #ffffff;
 	gap: 5px;
-	box-shadow: 0 0 3px #00000077;
-	transition: ease-in-out 300ms background;
+	box-shadow: 1px 1px 3px #c5c5c5, inset 1px 1px 3px #ffffff,
+		-1px -1px 3px #ffffff, inset -1px -1px 3px #b4b4b4;
+	transition: ease-in-out 300ms background, ease-in-out 300ms color;
 }
 #upload-close-btn-box .button-upload:hover {
-	background: #002ea2;
+	background: #ffffff;
+	color: #000000;
+}
+#upload-close-btn-box .button-upload p {
+	font-family: Roboto;
+	font-weight: 900;
 }
 
 /* ----------- upload Process ------------ */
@@ -751,30 +789,41 @@
 }
 #uploadProcess.active {
 	opacity: 1;
-	height: 100vh; 
+	height: 100vh;
 	transition: height 0ms 0ms, opacity 300ms 0ms;
 }
-
 
 /* --------- global ----------- */
 #profielImage.active .mn-img,
 #profielImage .mn-i,
 #myProfileAndFindUser #searchIcon.active .mn-img,
-#myProfileAndFindUser #searchIcon .mn-i  {
+#myProfileAndFindUser #searchIcon .mn-i {
 	display: grid;
 }
 #profielImage .mn-img,
-#profielImage.active .mn-i ,
+#profielImage.active .mn-i,
 #myProfileAndFindUser #searchIcon .mn-img,
 #myProfileAndFindUser #searchIcon.active .mn-i {
 	display: none;
 }
 #profielImage.active .mn-img,
-#myProfileAndFindUser #searchIcon.active .mn-img  {
+#myProfileAndFindUser #searchIcon.active .mn-img {
 	position: relative;
 	width: 100%;
 	height: 100%;
 	background-position: center;
 	background-size: cover;
+}
+#myProfileAndFindUser.one #profielImage.full {
+	--s: min(60vw, 60vh);
+	position: fixed;
+	width: var(--s);
+	height: var(--s);
+	z-index: 12;
+	display: grid;
+	right: calc(var(--s) / -2 - 15px);
+	place-items: center;
+	outline: 1000px solid black;
+	overflow: visible;
 }
 /* --------- end ----------- */

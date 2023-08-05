@@ -11,6 +11,7 @@
 		/>
 		<title>Live Chat</title>
 
+		<!-- --------- styles --------- -->
 		<link rel="stylesheet" href="../icons/css/icon.css" />
 		<link rel="stylesheet" href="../css/font.css" />
 		<link rel="stylesheet" href="../css/utils.css" />
@@ -18,6 +19,7 @@
 		<link rel="stylesheet" href="../css/profile.css" />
 		<link rel="stylesheet" href="../css/chat.css" />
 
+		<!-- ------------  scripts ------------- -->
 		<script defer src="../js/utils.js"></script>
 		<script defer src="../js/global.js"></script>
 		<script defer src="../js/data.js"></script>
@@ -26,8 +28,10 @@
 		<script defer type="module" src="../js/home.js"></script>
 		<script defer type="module" src="../js/profile.js"></script>
 		<script defer type="module" src="../js/chat.js"></script>
+		<script defer src="../js/image_selector.js"></script>
 	</head>
 	<body>
+		<!-- ----------- contests ------------- -->
 		<div id="pageLoad" class="active">
 			<div class="stars">
 				<i class="i-star"></i>
@@ -48,6 +52,188 @@
 				<i class="i-star"></i>
 				<i class="i-star"></i>
 				<i class="i-star"></i>
+			</div>
+		</div>
+
+		<!-- ---------- profile and search ----------- -->
+		<div id="myProfileAndFindUser" class="">
+			<div id="p_f_cover">
+				<!-- "","show","one" "two" -->
+				<div id="userProfileBox">
+					<div id="profielImage" class="">
+						<i class="sbi-user mn-i"></i>
+						<img
+							class="mn-img"
+							src=""
+							id="profileImg"
+							alt="prifile image"
+						/>
+						<div id="imageEdite" class="">
+							<div id="imageEditeOptions">
+								<div id="imageUpload" class="img-btn">
+									<i class="sbi-cloud_upload"></i>
+									<p>Upload</p>
+								</div>
+								<div id="imageDelete" class="img-btn">
+									<i class="sbi-delete"></i>
+									<p>Delete</p>
+								</div>
+								<div id="closeFullImage" class="img-btn">
+									<i class="sbi-close"></i>
+									<p>Close</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="top-right">
+						<div id="closeProfile">
+							<i class="sbi-close_fullscreen"></i>
+						</div>
+					</div>
+					<div id="porfileSetting">
+						<div id="profileInformation">
+							<div class="option">
+								<div class="icon-box">
+									<p>ID</p>
+								</div>
+								<div class="input-box">
+									<div id="userID">LK3MZOL7</div>
+								</div>
+							</div>
+							<div class="option">
+								<div class="icon-box">
+									<i class="sbi-user1"></i>
+								</div>
+								<div class="input-box">
+									<input
+										type="text"
+										id="nameInput"
+										placeholder="Name"
+										spellcheck="false"
+									/>
+								</div>
+							</div>
+							<div class="option">
+								<div class="icon-box">
+									<i class="sbi-new_releases"></i>
+								</div>
+								<div class="input-box">
+									<textarea
+										id="aboutInput"
+										placeholder="About"
+										cols="30"
+										rows="3"
+										spellcheck="false"
+									></textarea>
+								</div>
+							</div>
+
+							<div id="updateInfo">
+								<div id="updateInsetInfo">
+									<div id="updateEmailBtn" class="update-btn">
+										<i class="sbi-email1"></i>
+									</div>
+									<div id="updatePasswordBtn" class="update-btn">
+										<i class="sbi-key"></i>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div id="updateAndLogout">
+							<div class="progile-btn" id="proUpdateButton">
+								<i class="sbi-save2"></i>
+								<p>Save</p>
+							</div>
+							<div class="progile-btn" id="logoutButton">
+								<i class="sbi-sign-out"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div id="searchUserBox">
+					<div id="searchIcon">
+						<i class="sbi-person_search mn-i"></i>
+						<img
+							class="mn-img"
+							src=""
+							id="searchUserImage"
+							alt="user image"
+						/>
+					</div>
+					<div class="top-right">
+						<div id="closeSearch">
+							<i class="sbi-close_fullscreen"></i>
+						</div>
+					</div>
+					<div id="searchOption">
+
+						<div id="userAddAndInfo" class="">
+							<div id="addUserName">
+								<i id="friendOrNot" class="sbi-user"></i>
+								<p id="searchUserName">User Name</p>
+							</div>
+							<div id="addUserBtn">
+								<i class="sbi-user-plus1"></i>
+								<p>Add</p>
+							</div>
+						</div>
+
+						<div id="userSearchBox">
+							<div id="userSearchInputBox">
+								<i class="sbi-search1"></i>
+								<input
+									type="text"
+									spellcheck="false"
+									id="userSearchInput"
+									placeholder="ID"
+								/>
+								<div id="pasteButton">
+									<i class="sbi-paste1"></i>
+								</div>
+							</div>
+						</div>
+
+						<div id="resultUserListBox">
+							<div class="scroll-list" id="allSearchResult"></div>
+						</div>
+					</div>
+				</div>
+
+				<div id="imageSelection" class="">
+					<div id="canvasBox">
+						<canvas id="cvs"></canvas>
+						<div id="selector">
+							<div class="corner" id="topLeft"></div>
+							<div class="corner" id="bottomLeft"></div>
+							<div class="corner" id="bottomRight"></div>
+							<div class="corner" id="topRight"></div>
+							<div id="midil"></div>
+						</div>
+					</div>
+
+					<div id="upload-close-btn-box">
+						<div class="button-upload" id="cancleSelectedImage">
+							<i class="sbi-close"></i>
+							<p>Cancle</p>
+						</div>
+						<div class="button-upload" id="doneSelectedImage">
+							<i class="sbi-check"></i>
+							<p>Done</p>
+						</div>
+					</div>
+
+					<input
+						type="file"
+						accept=".jpg,.jpeg,.gif,.png"
+						id="fileInput"
+					/>
+				</div>
+
+				<!-- hide profile and search element -->
+				<div id="profileOpenClose">
+					<i class="sbi-chevron-down1"></i>
+				</div>
 			</div>
 		</div>
 
@@ -90,186 +276,9 @@
 							</div>
 						</header>
 
-						<!-- ---------- profile and search ----------- -->
-						<div id="myProfileAndFindUser" class="">
-							<!-- "","show","one" "two" -->
-							<div id="userProfileBox">
-								<div id="profielImage">
-									<i class="sbi-user mn-i"></i>
-									<img
-										class="mn-img"
-										src=""
-										id="profileImg"
-										alt="prifile image"
-									/>
-									<div id="imageEdite">
-										<div id="imageEditeOptions" class="">
-											<div id="imageUpload" class="img-btn">
-												<i class="sbi-cloud_upload"></i>
-											</div>
-											<div id="imageDelete" class="img-btn">
-												<i class="sbi-delete"></i>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div id="porfileSetting">
-									<div class="top-right">
-										<div id="closeProfile">
-											<i class="sbi-close_fullscreen"></i>
-										</div>
-									</div>
-									<div id="profileInformation">
-										<div class="option">
-											<div class="icon-box">
-												<p>ID</p>
-											</div>
-											<div class="input-box">
-												<div id="userID">LK3MZOL7</div>
-											</div>
-										</div>
-										<div class="option">
-											<div class="icon-box">
-												<i class="sbi-user1"></i>
-											</div>
-											<div class="input-box">
-												<input
-													type="text"
-													id="nameInput"
-													placeholder="Name"
-													spellcheck="false"
-												/>
-											</div>
-										</div>
-										<div class="option">
-											<div class="icon-box">
-												<i class="sbi-new_releases"></i>
-											</div>
-											<div class="input-box">
-												<textarea
-													id="aboutInput"
-													placeholder="About"
-													cols="30"
-													rows="3"
-													spellcheck="false"
-												></textarea>
-											</div>
-										</div>
-
-										<div id="updateInfo">
-											<div id="updateInsetInfo">
-												<div id="updateEmailBtn" class="update-btn">
-													<i class="sbi-email1"></i>
-												</div>
-												<div
-													id="updatePasswordBtn"
-													class="update-btn"
-												>
-													<i class="sbi-key"></i>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div id="updateAndLogout">
-										<div class="progile-btn" id="proUpdateButton">
-											<i class="sbi-save2"></i>
-											<p>Save</p>
-										</div>
-										<div class="progile-btn" id="logoutButton">
-											<i class="sbi-sign-out"></i>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div id="searchUserBox">
-								<div id="searchIcon">
-									<i class="sbi-person_search mn-i"></i>
-									<img
-										class="mn-img"
-										src=""
-										id="searchUserImage"
-										alt="user image"
-									/>
-								</div>
-								<div id="searchOption">
-									<div class="top-right">
-										<div id="closeSearch">
-											<i class="sbi-close_fullscreen"></i>
-										</div>
-									</div>
-
-									<div id="userAddAndInfo" class="">
-										<div id="addUserName">
-											<i id="friendOrNot" class="sbi-user"></i>
-											<p id="searchUserName">User Name</p>
-										</div>
-										<div id="addUserBtn">
-											<i class="sbi-user-plus1"></i>
-											<p>Add</p>
-										</div>
-									</div>
-
-									<div id="userSearchBox">
-										<div id="userSearchInputBox">
-											<i class="sbi-search1"></i>
-											<input
-												type="text"
-												spellcheck="false"
-												id="userSearchInput"
-												placeholder="ID"
-											/>
-											<div id="pasteButton">
-												<i class="sbi-paste1"></i>
-											</div>
-										</div>
-									</div>
-
-									<div id="resultUserListBox">
-										<div class="scroll-list" id="allSearchResult"></div>
-									</div>
-								</div>
-							</div>
-							<div id="profileOpenClose">
-								<i class="sbi-chevron-down1"></i>
-							</div>
-
-							<div id="imageSelection" class="">
-								<div id="canvasBox">
-									<canvas id="cvs"></canvas>
-									<div id="selector">
-										<div class="corner" id="topLeft"></div>
-										<div class="corner" id="bottomLeft"></div>
-										<div class="corner" id="bottomRight"></div>
-										<div class="corner" id="topRight"></div>
-										<div id="midil"></div>
-									</div>
-								</div>
-
-								<div id="upload-close-btn-box">
-									<div class="button-upload">
-										<i class="sbi-close"></i>
-										<div id="uploadCancleBtn">Cancle</div>
-									</div>
-									<div class="button-upload">
-										<i class="sbi-upload-to-cloud"></i>
-										<div id="uploadImageBtn">Upload</div>
-									</div>
-								</div>
-
-								<input
-									type="file"
-									accept=".jpg,.jpeg,.gif,.png"
-									id="fileInput"
-								/>
-							</div>
-						</div>
-
 						<!-- --------- chat contact --------- -->
 						<div id="all-contacts">
-							<div id="wrapContacts">
-								
-							</div>
+							<div id="wrapContacts"></div>
 						</div>
 					</div>
 				</div>
