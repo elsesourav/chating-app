@@ -127,6 +127,7 @@ function setupFriends() {
 		lastChat[i].innerText = friend.lastMessage;
 
 		const len = getFriendReceiveMessageLength(friend.id);
+		console.log(friend.id);
 
 		if (len > 0) {
 			noOfMsg[i].innerText = len;

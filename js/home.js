@@ -98,9 +98,17 @@ window.onload = async () => {
 					});
 					await remove(child(dbRef, `chats/receive/${refr}/${key}`));
 		
-					data.chats.receive[key] = {
-						[k]: object[key][k]
-					};
+					if (!data.chats.receive[refr]) {
+						data.chats.receive[refr] = {};
+						data.chats.receive[refr][key] = {
+							[k]: object[key][k]
+						};
+					} else {
+						data.chats.receive[refr][key] = {
+							...data.chats.receive[refr][key],
+							[k]: object[key][k]
+						};
+					}
 				}
 			}
 			
