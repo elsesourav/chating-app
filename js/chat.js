@@ -11,7 +11,7 @@ const inputDiv = ID('input-div');
 const msgLvl = ID('msg-lvl');
 let inputlabel = true;
 
-inputDiv.on('keyup', () => {
+inputDiv.on('input', () => {
 	let val = inputDiv.innerText;
 	if (!val.length) {
 		inputlabel = false;

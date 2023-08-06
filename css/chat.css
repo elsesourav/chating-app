@@ -287,6 +287,7 @@ background-blend-mode: overlay, color-dodge, overlay, overlay, difference,
 	border: none;
 	border-bottom: solid 2px #444;
 	box-shadow: 0 0 2px #0004;
+	user-select: auto;
 }
 
 #scroll-chat .chat-box.you .chat-content {
