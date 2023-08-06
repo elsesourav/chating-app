@@ -7,12 +7,18 @@ cssRoot.style.setProperty("--_w", window.innerWidth + `px`);
 cssRoot.style.setProperty("--_h", window.innerHeight + `px`);
 
 window.addEventListener("resize", () => {
-	cssRoot.style.setProperty("--_w", window.innerWidth + `px`);
-	cssRoot.style.setProperty("--_h", window.innerHeight + `px`);
+	window.location.reload();
 });
 
 // when run this app in mobile is return true
 const isMobile = localStorage.mobile || window.navigator.maxTouchPoints > 1;
+
+	// pointer events for mobile devices
+	if (isMobile) {
+		cssRoot.style.setProperty("--pointer", "auto");
+	} else {
+		cssRoot.style.setProperty("--pointer", "pointer");
+	}
 
 // minimum window size
 const minSize = window.innerWidth > window.innerHeight ? window.innerHeight : window.innerWidth;
@@ -404,13 +410,11 @@ function getAllMessages(friendId) {
 
 // get friend receive message length
 function getFriendReceiveMessageLength(friendId) {
-	console.log(data.chats.receive[friendId]);
 	let count = 0;
 	for (const key in data.chats.receive[friendId]) {
 		for (const k in data.chats.receive[friendId][key]) {
 			count++;
 		}
 	}
-	console.log(count);
 	return count;
 }

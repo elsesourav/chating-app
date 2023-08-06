@@ -74,9 +74,10 @@ let you, nm;
 	setMessages();
 
 	sendMsg.on(() => {
-		console.log(inputDiv.innerText);
+
 		const message = messageModify(inputDiv.innerText);
-		console.log(message);
+
+		
 
 		if (!message.length) {
 			return;

@@ -67,7 +67,7 @@
 	width: 100%;
 	height: var(--contact-h);
 	padding: var(--side);
-	cursor: pointer;
+	cursor: var(--pointer);
 	user-select: none;
 }
 #wrapContacts .contact-box::before {

@@ -6,6 +6,8 @@ const UPDATE_DELAY = 10 * 1000;
 let data = getDataFromLocalStorage('liveChatUserData');
 let user_active = true;
 
+let currentChatOpenId = 0;
+
 // update local storage user data
 document.addEventListener(
 	'visibilitychange',
@@ -67,15 +69,19 @@ function formatTime(ms) {
 	const m = d.getMinutes();
 
 	const AM_PM = h < 12 ? 'AM' : 'PM';
+	const nh = h % 12;
 
-	return `${h % 12}:${m} ${AM_PM}`;
+	
+	return `${nh < 10 ? '0' + nh : nh}:${m < 10 ? '0' + m : m} ${AM_PM}`;
 }
 
 function setupFriends() {
 	const isExsist = data.friends.saved || {};
-	console.log(isExsist);
 	const friendsLen = Object.keys(isExsist).length;
 	if (friendsLen < 1) return;
+
+	// sorted by last message user z
+	const sortedFriends = sortObjectByUserId(data.friends.saved);
 
 	let str = '';
 	for (let i = 0; i < friendsLen; i++) {
@@ -104,10 +110,8 @@ function setupFriends() {
 	}
 	wrapContacts.innerHTML = str;
 
-	// sorted by last message user z
-	const sortedFriends = sortObjectByUserId(data.friends.saved);
 
-
+	const box = document.querySelectorAll('.contact-box');
 	const iconEle = document.querySelectorAll('.contact-icon');
 	const image = document.querySelectorAll('.contect-img');
 	const name = document.querySelectorAll('.contact-name');
@@ -117,6 +121,8 @@ function setupFriends() {
 	const noOfMsg = document.querySelectorAll('.no-of-msg p');
 
 	sortedFriends.forEach((friend, i) => {
+		box[i].setAttribute('userid', friend.id)
+
 		if (friend.images.high && friend.images.low) {
 			iconEle[i].classList.add('active');
 			image[i].src = friend.images.low; 
@@ -127,7 +133,6 @@ function setupFriends() {
 		lastChat[i].innerText = friend.lastMessage;
 
 		const len = getFriendReceiveMessageLength(friend.id);
-		console.log(friend.id);
 
 		if (len > 0) {
 			noOfMsg[i].innerText = len;

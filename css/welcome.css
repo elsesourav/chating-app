@@ -30,7 +30,7 @@ button {
 	border: none;
 	padding: 8px 20px;
 	border-radius: 5px;
-	cursor: pointer;
+	cursor: var(--pointer);
 	font-family: Google;
 	font-weight: 600;
 	background: #00c244;

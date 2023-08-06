@@ -54,10 +54,18 @@ window.onload = async () => {
 
 					data.friends.saved[key].onlineStatus = newStatus;
 
-					if ((newStatus - oldStatus) > (UPDATE_DELAY - 5000)) {
+					if (newStatus - oldStatus > UPDATE_DELAY - 5000) {
 						borders[index].classList.add('online');
+						if (currentChatOpenId == key) {
+							ID('pf-status').classList.add('active');
+							ID('pf-status').innerText = 'Online';
+						}
 					} else {
 						borders[index].classList.remove('online');
+						if (currentChatOpenId == key) {
+							ID('pf-status').classList.remove('active');
+							ID('pf-status').innerText = formatTime(newStatus);
+						}
 					}
 					index++;
 				}
@@ -89,29 +97,29 @@ window.onload = async () => {
 		onChildAdded(child(dbRef, `chats/receive`), async (snapshot) => {
 			const object = snapshot.val();
 			let refr = snapshot.ref._path.pieces_;
-			refr = refr[refr.length - 1]; 
-			
+			refr = refr[refr.length - 1];
+
 			for (const key in object) {
 				for (const k in object[key]) {
 					await update(child(dbRef, `chats/saved/${refr}/${key}`), {
 						[k]: object[key][k],
 					});
 					await remove(child(dbRef, `chats/receive/${refr}/${key}`));
-		
+
 					if (!data.chats.receive[refr]) {
 						data.chats.receive[refr] = {};
 						data.chats.receive[refr][key] = {
-							[k]: object[key][k]
+							[k]: object[key][k],
 						};
 					} else {
 						data.chats.receive[refr][key] = {
 							...data.chats.receive[refr][key],
-							[k]: object[key][k]
+							[k]: object[key][k],
 						};
 					}
 				}
 			}
-			
+
 			setupFriends();
 		});
 	} catch (error) {
@@ -132,11 +140,6 @@ window.onload = async () => {
 	}
 
 	setupFriends();
-
-	// pointer events for mobile devices
-	if (isMobile) {
-		document.head.append(`<style>* { pointer-events: none; }</style>`);
-	}
 
 	const toggleCancleNewBtn = ID('toggle-cancle-new-btn');
 	const indexHeader = ID('index-header');
@@ -183,11 +186,50 @@ window.onload = async () => {
 	}
 	// setContacts();
 
-	const contactBox = $('.contact-box');
-	contactBox.on((e) => {
-		document.body.classList.add('active');
-		bodyMaxScroll = scrollBox.scrollWidth - scrollBox.clientWidth;
-		smoothScroll(scrollBox, 'scrollLeft', bodyMaxScroll, 100);
+	const contactBox = document.querySelectorAll('.contact-box');
+	const onlineClass = document.querySelectorAll('.contact-icon');
+	contactBox.forEach((e, i) => {
+		e.addEventListener('click', async () => {
+			const userid = e.getAttribute('userid');
+			const isOnline = onlineClass[i].classList.contains('online');
+
+			const userInfo = data.friends.saved[userid];
+			currentChatOpenId = userid;
+
+			// when profile open force to close
+			myProfileAndFindUser.classList.remove('show');
+
+			if (userInfo.images.low) {
+				ID('porfile-image').classList.add('active');
+				chatProfileImg.src = userInfo.images.low;
+			} else {
+				ID('porfile-image').classList.remove('active');
+			}
+			if (userInfo.name) {
+				ID('pf-name').innerHTML = userInfo.name;
+			}
+			if (isOnline) {
+				ID('pf-status').classList.add('active');
+				ID('pf-status').innerText = 'Online';
+			} else {
+				ID('pf-status').classList.remove('active');
+				ID('pf-status').innerText = formatTime(userInfo.onlineStatus);
+			}
+
+
+			const allMessages = {...data.chats.saved[userid], ...data.chats.receive[userid]};
+
+			if (data.chats.receive[userid]) {
+				console.log("have");
+			} else {
+
+			}
+			console.log(allMessages);
+
+			document.body.classList.add('active');
+			bodyMaxScroll = scrollBox.scrollWidth - scrollBox.clientWidth;
+			smoothScroll(scrollBox, 'scrollLeft', bodyMaxScroll, 100);
+		});
 	});
 
 	profileBack.on(() => {

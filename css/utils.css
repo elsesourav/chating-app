@@ -15,7 +15,7 @@
 	--chat-footer-h: 60px;
 
 	/* ---- chat profile ---- */
-	--pf-back-w: 30px;
+	--pf-back-w: 40px;
 	--pf-icon-w: var(--chat-header-h);
 	--pf-info-nm-w: auto;
 	--pf-manu-w: 30px;
@@ -23,7 +23,7 @@
 	/* ---- chat box ---- */
 	--send-btn: var(--chat-header-h);
 
-	--chat-min-h: 40px;
+	--chat-min-h: 35px;
 	--chat-max-h: 1000px;
 	--max-chat-w: 270px;
 	--min-chat-w: 60px;
