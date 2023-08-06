@@ -26,14 +26,43 @@ window.onload = async () => {
 		}
 	}
 
-
 	pageLoad.classList.remove('active');
 
-	setInterval(() => {
+	setInterval(async () => {
 		try {
-			update(dbRef, {
-				onlineStatus: Date.now(),
+			const d = Date.now();
+
+			await update(dbRef, {
+				onlineStatus: d,
 			});
+
+			const borders = document.querySelectorAll('.contact-icon');
+			let index = 0;
+
+			// update my time in friends list
+			for (const key in data.friends) {
+				await update(ref(db, `users/${key}/friends/${USER_ID}`), {
+					onlineStatus: d,
+				});
+
+				// update online status in my chat list
+				const onSt = await get(ref(db, `users/${USER_ID}/friends/${key}/onlineStatus`));
+
+				const oldStatus = data.friends[key].onlineStatus;
+				const newStatus = onSt.val();
+
+				data.friends[key].onlineStatus = newStatus;
+
+				if (newStatus - oldStatus > 60000 + 5000) {
+					borders[index].classList.add('online');
+				} else {
+					borders[index].classList.remove('online');
+				}
+				index++;
+			}
+
+			data.onlineStatus = d;
+
 			console.log('update time');
 		} catch (error) {
 			console.log(error);
@@ -84,13 +113,12 @@ window.onload = async () => {
 		}
 	}
 
-
 	/* -------------- default setup -------------- */
-	// profile image 
+	// profile image
 	if (data) {
 		if (data.images && (data.images.high || data.images.low)) {
 			profileImg.src = data.images.high;
-			profielImage.classList.add("active");
+			profielImage.classList.add('active');
 		}
 		if (data.info) {
 			nameInput.value = data.info.name;

@@ -15,7 +15,6 @@ document.addEventListener(
 	false
 );
 
-
 // profile image url and size
 const IMG_PIXEL = {high: 512, low: 64};
 const IMAGE_URL = {high: '', low: ''};
@@ -29,6 +28,11 @@ function objectFilter(object, tId) {
 			ary.push(object[key]);
 		}
 	}
+	return ary;
+}
+function objectToArray(object) {
+	let ary = [];
+	for (const key in object) ary.push(object[key]);
 	return ary;
 }
 
@@ -88,7 +92,7 @@ function setupFriends() {
                    <div class="no-of-msg"><p>100</p></div>
                 </div>
              </div>
-          </div>F
+          </div>
        </div>
      `;
 	}
@@ -96,6 +100,7 @@ function setupFriends() {
 
 	// sorted by last message user z
 	const sortedFriends = sortObjectByUserId(data.friends);
+
 
 	const iconEle = document.querySelectorAll('.contact-icon');
 	const image = document.querySelectorAll('.contect-img');
@@ -106,17 +111,19 @@ function setupFriends() {
 	const noOfMsg = document.querySelectorAll('.no-of-msg p');
 
 	sortedFriends.forEach((friend, i) => {
-		if (friend.image && friend.image.low) {
+		if (friend.images.high && friend.images.low) {
 			iconEle[i].classList.add('active');
-			image[i].src = friend.image.lwo;
+			image[i].src = friend.images.low; 
 		}
 
 		name[i].innerText = friend.name ? friend.name : 'Guest';
-		lastChatTime[i].innerText = formatTime(friend.rank);
-		lastChat[i].innerText = friend.message;
+		lastChatTime[i].innerText = formatTime(friend.lastChatTime);
+		lastChat[i].innerText = friend.lastMessage;
 
-		if (!friend.visited) {
-			noOfMsg[i].innerText = friend.count;
+		const len = getFriendReceiveMessageLength(friend.id);
+
+		if (len > 0) {
+			noOfMsg[i].innerText = len;
 			noOfMsgEle[i].classList.add('active');
 		}
 	});

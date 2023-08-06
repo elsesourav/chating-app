@@ -346,3 +346,61 @@ function clearLocal() {
 		location.replace('../index.html');
 	}, 500);
 }
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
+const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+function getClenderStatus(formatTime, currentTime) {
+	const ft = formatTime.split('_');
+	const ct = currentTime.split('_');
+
+	if (ft[0] == ct[0] && ft[1] == ct[1] && ft[2] == ct[2]) {
+		return 'Today';
+	} else if (ft[0] == ct[0] && ft[1] == ct[1] && ft[2] == ct[2] - 1) {
+		return 'Yesterday';
+	} else if (ft[0] == ct[0] && ft[1] == ct[1] && ct[2] - ft[2] < 10 && ct[2] - ft[2] > -1) {
+		const d = new Date(ft[0].substring(1, 5), ft[1], ft[2]);
+		return DAYS[d.getDay()];
+	} else {
+		return `${ft[2]} ${MONTHS[ft[2]]} ${ft[0].substring(1, 5)}`;
+	}
+}
+
+// get all messages from local data
+function getAllMessages(friendId) {
+	const opDate = getOptimizeDate();
+
+	let ary = [];
+	for (const key in data.chats.receive[friendId]) {
+		const chat = data.chats.receive[friendId][key];
+		ary.push({
+			type: 'status',
+			message: getClenderStatus(key, opDate.full),
+		});
+		for (const key in chat) {
+			ary.push(chat[key]);
+		}
+	}
+	for (const key in data.chats.seved[friendId]) {
+		const chat = data.chats.seved[friendId][key];
+		ary.push({
+			type: 'status',
+			message: getClenderStatus(key, opDate.full),
+		});
+		for (const key in chat) {
+			ary.push(chat[key]);
+		}
+	}
+	console.log(ary);
+}
+
+// get friend receive message length
+function getFriendReceiveMessageLength(friendId) {
+	let count = 0;
+	for (const key in data.chats.receive[friendId]) {
+		for (const k in data.chats.receive[friendId][key]) {
+			count++;
+		}
+	}
+	return count;
+}

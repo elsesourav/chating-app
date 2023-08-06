@@ -1,7 +1,7 @@
 import {getAnalytics} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js';
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js';
 import {getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js';
-import {set, get, getDatabase, query, ref, update, orderByChild, orderByValue, equalTo, startAt, endAt, onValue, child} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js';
+import {set, get, getDatabase, query, ref, update, orderByChild, orderByValue, equalTo, startAfter, startAt, endAt, onValue, child} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js';
 
 let currentSearchSelection = null; // for search user click detials
 
@@ -103,13 +103,13 @@ let currentSearchSelection = null; // for search user click detials
 		myProfileAndFindUser.classList.remove('one');
 		myProfileAndFindUser.classList.add('two');
 
-	// 	try {
-	// 		const r = ref(db, `users_data/info/`);
-	// 		allUserInfo = (await get(r)).val();
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// });
+		// 	try {
+		// 		const r = ref(db, `users_data/info/`);
+		// 		allUserInfo = (await get(r)).val();
+		// 	} catch (error) {
+		// 		console.log(error);
+		// 	}
+	});
 
 	closeSearch.addEventListener('click', () => {
 		myProfileAndFindUser.classList.remove('two');
@@ -118,6 +118,8 @@ let currentSearchSelection = null; // for search user click detials
 		searchUserName.innerText = 'User Name';
 		userAddAndInfo.classList.remove('active');
 		allSearchResult.innerHTML = '';
+		searchUserImage.url = "";
+		searchIcon.classList.remove('active');
 	});
 
 	// copy buttton
@@ -161,14 +163,12 @@ let currentSearchSelection = null; // for search user click detials
 		// const sorted = allUserInfo.filter(({ id }) => id.includes(ID))
 		// const sorted = objectFilter(allUserInfo, ID);
 
-		const topUserPostsRef = query(ref(db, 'users'), orderByChild('id'), startAt(ID));
-		const reply = (await get(topUserPostsRef)).val();
-
-		// console.log(sorted);
+		const newRef = query(ref(db, 'users'), orderByChild('id'), equalTo(ID));
+		const result = objectToArray((await get(newRef)).val());
 
 		let strElement = '';
 
-		[...reply].forEach(({id, info}) => {
+		[...result].forEach(({id, info}) => {
 			const isYou = USER_ID === id;
 			const isFriend = isMyFriend(data.friends, id);
 			strElement += `
@@ -188,31 +188,31 @@ let currentSearchSelection = null; // for search user click detials
 				removeClass(allFindUsers);
 				addClass(findUser);
 
+				const {id, images, info} = result[i];
+
 				// set in search view elements
 				userAddAndInfo.classList.add('active');
 				userAddAndInfo.classList.remove('have');
 				friendOrNot.classList = [];
 
-				if (USER_ID === sorted[i].USER_ID) {
+				if (USER_ID === id) {
 					userAddAndInfo.classList.add('have');
 					friendOrNot.classList.add('sbi-user');
-				} else if (isMyFriend(data.friends, sorted[i].USER_ID)) {
+				} else if (isMyFriend(data.friends, id)) {
 					userAddAndInfo.classList.add('have');
 					friendOrNot.classList.add('sbi-user-check');
 				} else {
 					friendOrNot.classList.add('sbi-user');
 				}
-				searchUserName.innerText = sorted[i].name || sorted[i].USER_ID;
+				searchUserName.innerText = info.name || id;
 
 				// add image url when have image
-				searchIcon.classList.remove('active');
-				const imgs = (await get(dbRefImage)).val();
-
-				if (imgs) {
-					searchUserImage.src = imgs.high;
+				if (images && images.high != '') {
+					searchIcon.classList.remove('active');
+					searchUserImage.src = images.high;
 					searchIcon.classList.add('active');
 				}
-				currentSearchSelection = sorted[i];
+				currentSearchSelection = result[i];
 			});
 		});
 	}
@@ -223,63 +223,78 @@ let currentSearchSelection = null; // for search user click detials
 		debounce(async () => {
 			if (!currentSearchSelection) return;
 			uploadProcess.classList.add('active');
+			const {id, images, info, onlineStatus} = currentSearchSelection;
 
 			try {
 				const d = Date.now();
 				const opDate = getOptimizeDate();
 
-				const dbRefChatMe = ref(db, `users_data/chats/${USER_ID}/${currentSearchSelection.USER_ID}/${opDate.full}`);
-				const dbRefChatFriend = ref(db, `users_data/chats/${currentSearchSelection.USER_ID}/${USER_ID}/${opDate.full}`);
-				const dbRefFriendFriends = ref(db, `users_data/friends/${currentSearchSelection.USER_ID}`);
-				const dbRefFriendInfo = ref(db, `users_data/info/${currentSearchSelection.USER_ID}`);
-
-				const friendInfo = (await get(dbRefFriendInfo)).val();
-
 				const firstChat = {
 					type: 'both',
-					message: 'Welcome to Live Chat',
+					message: 'Welcome to Live Chat!',
+				};
+				const friendInfo = {
+					about: info.about,
+					creationDate: info.creationDate,
+					name: info.name || 'Guest',
+					os: info.os,
+					onlineStatus: onlineStatus,
+					lastChatTime: d,
+					lastMessage: firstChat.message,
+					images: {
+						high: images.high,
+						low: images.low,
+					},
 				};
 
-				const initInfo = {
-					path: opDate.full,
-					count: 1,
-					message: 'Welcome to Live Chat',
-					rank: d,
-					visited: false,
-				};
-
-				// add friend in friends list
-				await update(dbRefFriends, {
-					[currentSearchSelection.USER_ID]: {
-						...initInfo,
-						name: friendInfo.name || 'Guest',
+				// add in friend's friends list
+				await update(ref(db, `users/${id}/friends`), {
+					[USER_ID]: {
+						about: data.info.about,
+						creationDate: data.info.creationDate,
+						name: data.info.name || 'Guest',
+						os: data.info.os,
+						onlineStatus: data.onlineStatus,
+						lastChatTime: d,
+						lastMessage: firstChat.message,
+						images: {
+							high: data.images.high,
+							low: data.images.low,
+						},
 					},
 				});
 
-				await update(dbRefFriendFriends, {
-					[USER_ID]: {
-						...initInfo,
-						name: data.info.name || 'Guest',
-					},
+				// add in friends list
+				await update(child(dbRef, `friends`), {
+					[id]: friendInfo,
 				});
 
 				// set first chat in my chat list
-				await update(dbRefChatMe, {[d]: firstChat});
+				await update(child(dbRef, `chats/receive/${id}/${opDate.full}`), {
+					[d]: firstChat,
+				});
 
 				// set first chat in friend chat list
-				await update(dbRefChatFriend, {[d]: firstChat});
+				await update(ref(db, `users/${id}/chats/receive/${USER_ID}/${opDate.full}`), {
+					[d]: firstChat,
+				});
 
-				data.friends[currentSearchSelection.USER_ID] = {
-					...initInfo,
-					name: friendInfo.name || 'Guest',
-				};
+				data.friends[id] = friendInfo;
+				
 
-				console.log(data.chats);
-				// upsh first chat
-				data.chats || (data.chats = {});
-				data.chats[currentSearchSelection.USER_ID] = {
-					[opDate.full]: {[d]: firstChat},
-				};
+				// upsh first chat in local
+				if (!data.chats.receive[id]) {
+					data.chats.receive[id] = {
+						[opDate.full]: {
+							[d]: firstChat,
+						},
+					};
+				} else {
+					data.chats.receive[id][opDate.full] = {
+						...data.chats.receive[id][opDate.full],
+						[d]: firstChat,
+					};
+				}
 
 				friendOrNot.classList.add('sbi-user-check');
 				uploadProcess.classList.remove('active');
@@ -287,6 +302,7 @@ let currentSearchSelection = null; // for search user click detials
 				currentSearchSelection = null;
 				userSearchInput.value = '';
 				allSearchResult.innerHTML = '';
+				setupFriends();
 			} catch (error) {
 				console.log('something went wrong!!');
 				console.log(error);
