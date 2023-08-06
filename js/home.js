@@ -59,7 +59,7 @@ window.onload = async () => {
 					borders[index].classList.remove('online');
 				}
 				index++;
-			}
+			} 
 
 			data.onlineStatus = d;
 
