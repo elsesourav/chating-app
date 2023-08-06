@@ -36,7 +36,6 @@ window.onload = () => {
 					info: {
 						about: '',
 						creationDate: geustId.date,
-						id: geustId.id,
 						name: '',
 						os: geustId.os,
 						password: '',
@@ -50,6 +49,7 @@ window.onload = () => {
 						seved: {},
 					},
 					friends: {},
+					id: geustId.id,
 					onlineStatus: Date.now(),
 				};
 

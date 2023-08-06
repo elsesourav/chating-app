@@ -1,7 +1,7 @@
 import {getAnalytics} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js';
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js';
 import {getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js';
-import {set, get, getDatabase, query, ref, update, orderByChild, equalTo, startAt, endAt, onValue, child, once} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js';
+import {set, get, getDatabase, query, ref, update, orderByChild, orderByValue, equalTo, startAt, endAt, onValue, child} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js';
 
 let currentSearchSelection = null; // for search user click detials
 
@@ -17,12 +17,6 @@ let currentSearchSelection = null; // for search user click detials
 	const dbRef = ref(db, `users/${USER_ID}`);
 
 	let allUserInfo = null;
-
-
-	firebase.database().ref().child("users").orderByChild('profileData/username').equalTo("testUsername").once('value', function (snapshot) {
-
-
-	})
 
 	// initial run
 	userID.innerText = USER_ID;
@@ -51,7 +45,6 @@ let currentSearchSelection = null; // for search user click detials
 	// logout button
 	logoutButton.addEventListener('click', async () => {
 		clearLocal();
-		window.location.href = '/';
 	});
 
 	// delete image button
@@ -110,13 +103,13 @@ let currentSearchSelection = null; // for search user click detials
 		myProfileAndFindUser.classList.remove('one');
 		myProfileAndFindUser.classList.add('two');
 
-		try {
-			const r = ref(db, `users_data/info/`);
-			allUserInfo = (await get(r)).val();
-		} catch (error) {
-			console.log(error);
-		}
-	});
+	// 	try {
+	// 		const r = ref(db, `users_data/info/`);
+	// 		allUserInfo = (await get(r)).val();
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// });
 
 	closeSearch.addEventListener('click', () => {
 		myProfileAndFindUser.classList.remove('two');
@@ -164,23 +157,26 @@ let currentSearchSelection = null; // for search user click detials
 		if (ID.length < 5) return;
 
 		ID = ID.toUpperCase();
-		console.log(allUserInfo);
+		// console.log(allUserInfo);//
 		// const sorted = allUserInfo.filter(({ id }) => id.includes(ID))
-		const sorted = objectFilter(allUserInfo, ID);
+		// const sorted = objectFilter(allUserInfo, ID);
 
-		console.log(sorted);
+		const topUserPostsRef = query(ref(db, 'users'), orderByChild('id'), startAt(ID));
+		const reply = (await get(topUserPostsRef)).val();
+
+		// console.log(sorted);
 
 		let strElement = '';
 
-		sorted.forEach((e) => {
-			const isYou = USER_ID === e.id;
-			const isFriend = isMyFriend(data.friends, e.id);
+		[...reply].forEach(({id, info}) => {
+			const isYou = USER_ID === id;
+			const isFriend = isMyFriend(data.friends, id);
 			strElement += `
             <div class="search-user ${isYou || isFriend ? 'have' : ''}">
                 <i class="sbi-user"></i>
-				<div class="user-name">${isYou ? 'You' : e.name ? e.name : 'Guest'}</div>
+				<div class="user-name">${isYou ? 'You' : info.name ? info.name : 'Guest'}</div>
 				<p>ID</p>
-				<div class="user-id">${e.id}</div>
+				<div class="user-id">${id}</div>
             </div>
         `;
 		});
