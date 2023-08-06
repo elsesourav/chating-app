@@ -17,6 +17,7 @@ window.onload = async () => {
 
 	const dbRef = ref(db, `users/${USER_ID}`);
 
+	// when local data is not available
 	if (!data) {
 		try {
 			data = (await get(dbRef)).val();
@@ -26,6 +27,7 @@ window.onload = async () => {
 		}
 	}
 
+	// stop page loding
 	pageLoad.classList.remove('active');
 
 	setInterval(async () => {
@@ -54,7 +56,7 @@ window.onload = async () => {
 
 					data.friends.saved[key].onlineStatus = newStatus;
 
-					if (newStatus - oldStatus > UPDATE_DELAY - 5000) {
+					if (newStatus - oldStatus > UPDATE_DELAY - 10000) {
 						borders[index].classList.add('online');
 						if (currentChatOpenId == key) {
 							ID('pf-status').classList.add('active');
@@ -105,6 +107,9 @@ window.onload = async () => {
 						[k]: object[key][k],
 					});
 					await remove(child(dbRef, `chats/receive/${refr}/${key}`));
+
+					data.friends.saved[refr].lastChatTime = k * 1;
+					data.friends.saved[refr].lastMessage = object[key][k].message;
 
 					if (!data.chats.receive[refr]) {
 						data.chats.receive[refr] = {};
@@ -542,10 +547,26 @@ window.onload = async () => {
 				iconEle[i].classList.add('active');
 				image[i].src = friend.images.low;
 			}
+			
+			const oldStatus = friend.onlineStatus;
+
+			if (Date.now() - oldStatus > UPDATE_DELAY - 10000) {
+				iconEle[i].classList.add('online');
+			}
 
 			name[i].innerText = friend.name ? friend.name : 'Guest';
 			lastChatTime[i].innerText = formatTime(friend.lastChatTime);
-			lastChat[i].innerText = friend.lastMessage;
+
+			let formatMessage = friend.lastMessage;
+			let brIndex = formatMessage.indexOf("<br>");
+
+			if (brIndex != -1) {
+				formatMessage = formatMessage.substring(0, brIndex) + "...";
+			} else if (formatMessage.length > 45) {
+				formatMessage = formatMessage.substring(0, 45) + "...";
+			} 
+
+			lastChat[i].innerText = formatMessage;
 
 			const len = getFriendReceiveMessageLength(friend.id);
 
@@ -581,28 +602,6 @@ window.onload = async () => {
 
 				const allMessages = getAllMessages(friend.id);
 
-				const receive = data.chats.receive[friend.id];
-				const saved = data.chats.saved[friend.id];
-
-				data.chats.receive[friend.id] = {};
-				for (const key in receive) {
-					let have = false;
-
-					for (const k in saved) {
-						if (k == key) {
-							data.chats.saved[friend.id][key] = {
-								...saved[key],
-								...receive[key],
-							};
-							have = true;
-						}
-					}
-
-					if (!have) {
-						data.chats.saved[friend.id] = receive;
-					}
-				}
-
 				console.log('have');
 
 				console.log(allMessages);
@@ -617,13 +616,10 @@ window.onload = async () => {
 		});
 	}
 
-
-
 	const inputDiv = ID('input-div');
 	const scrollChatWrap = Q('#scroll-chat .wrap');
 	const scrollChat = ID('scroll-chat');
 	const sendMsg = ID('send-msg');
-
 
 	let maxScroll = 0;
 	function setUpMessages(messages) {
@@ -636,10 +632,6 @@ window.onload = async () => {
 		});
 		scrollChatWrap.innerHTML = str;
 
-		// update scroll
-		maxScroll = scrollChat.scrollHeight - scrollChat.clientHeight;
-		scrollChat.scrollTop = maxScroll;
-
 		// ------- end of the chat set ------
 		maxScroll = scrollChat.scrollHeight - scrollChat.clientHeight;
 		scrollChat.scrollTop = maxScroll;
@@ -647,7 +639,7 @@ window.onload = async () => {
 
 	function getMessages({message, time, type}) {
 		return `
-            <div class="chat-box ${type || ""}">
+            <div class="chat-box ${type || ''}">
                 <div class="chat-content">
                     <div class="wrap">
                         <div class="c-text">${message}
@@ -659,22 +651,70 @@ window.onload = async () => {
         `;
 	}
 
-	sendMsg.on(() => {
+	sendMsg.on(async () => {
 		const message = messageModify(inputDiv.innerText);
-
 		if (!message.length) {
 			return;
 		} else {
-			messages.push({
-				type: 'one',
-				message: message,
-				time: getChatDate().time,
-				id: Date.now() + 'msgId',
-				senderId: myDtls.id,
-				name: myDtls.name,
-			});
-			setMessages();
-			inputDiv.innerHTML = '';
+			try {
+				const d = Date.now();
+				const opDate = getOptimizeDate();
+				const id = currentChatOpenId;
+				inputDiv.innerHTML = '';
+
+				if (!data.chats.saved[id][opDate.full]) {
+					data.chats.saved[id][opDate.full] = {
+						[d]: {
+							message: message,
+							type: USER_ID,
+						},
+					};
+
+					scrollChatWrap.innerHTML += getMessages({
+						message: getClenderStatus(opDate.full, opDate.full),
+						type: 'status',
+					});
+				} else {
+					data.chats.saved[id][opDate.full][d] = {
+						message: message,
+						type: USER_ID,
+					};
+				}
+
+				data.friends.saved[id].lastChatTime = d;
+				data.friends.saved[id].lastMessage = message;
+
+
+				ID('msg-lvl').classList.add('active');
+				scrollChatWrap.innerHTML += getMessages({
+					message: message,
+					type: 'me',
+					time: formatTime(d),
+				});
+
+				maxScroll = scrollChat.scrollHeight - scrollChat.clientHeight;
+				scrollChat.scrollTop = maxScroll;
+
+				// set first chat in my chat list
+				await update(child(dbRef, `chats/saved/${id}/${opDate.full}`), {
+					[d]: {
+						message: message,
+						type: USER_ID,
+					},
+				});
+
+				// set first chat in friend chat list
+				await update(ref(db, `users/${id}/chats/receive/${USER_ID}/${opDate.full}`), {
+					[d]: {
+						message: message,
+						type: USER_ID,
+					},
+				});
+
+				setupFriends();
+			} catch (error) {
+				console.log(error);
+			}
 		}
 	});
 };

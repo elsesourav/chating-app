@@ -259,7 +259,7 @@ background-blend-mode: overlay, color-dodge, overlay, overlay, difference,
 	width: 100%;
 	height: min-content;
 	padding: var(--chat-gap) 0;
-	padding-bottom: 50px;
+	padding-bottom: 60px;
 	display: grid;
 	gap: var(--chat-gap);
 }
@@ -332,7 +332,7 @@ background-blend-mode: overlay, color-dodge, overlay, overlay, difference,
 	justify-content: center;
 }
 #scroll-chat .chat-box.both .chat-content {
-	background: #d45cff;
+	background: #26ff00;
 }
 #scroll-chat .wrap .chat-box.both .c-text {
 	text-align: center;

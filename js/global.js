@@ -64,6 +64,7 @@ function sortObjectByUserId(object) {
 
 // time conversion ms to hh:mm AM/PM
 function formatTime(ms) {
+	console.log(ms);
 	const d = new Date(ms);
 	const h = d.getHours();
 	const m = d.getMinutes();

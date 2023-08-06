@@ -3,22 +3,22 @@
 //use cssRoot.style.setProperty("key", "value");
 const cssRoot = document.querySelector(':root');
 
-cssRoot.style.setProperty("--_w", window.innerWidth + `px`);
-cssRoot.style.setProperty("--_h", window.innerHeight + `px`);
+cssRoot.style.setProperty('--_w', window.innerWidth + `px`);
+cssRoot.style.setProperty('--_h', window.innerHeight + `px`);
 
-window.addEventListener("resize", () => {
+window.addEventListener('resize', () => {
 	window.location.reload();
 });
 
 // when run this app in mobile is return true
 const isMobile = localStorage.mobile || window.navigator.maxTouchPoints > 1;
 
-	// pointer events for mobile devices
-	if (isMobile) {
-		cssRoot.style.setProperty("--pointer", "auto");
-	} else {
-		cssRoot.style.setProperty("--pointer", "pointer");
-	}
+// pointer events for mobile devices
+if (isMobile) {
+	cssRoot.style.setProperty('--pointer', 'auto');
+} else {
+	cssRoot.style.setProperty('--pointer', 'pointer');
+}
 
 // minimum window size
 const minSize = window.innerWidth > window.innerHeight ? window.innerHeight : window.innerWidth;
@@ -234,7 +234,7 @@ function getOptimizeDate() {
 	const y = dt.getFullYear();
 	const d = dt.getDate();
 	return {
-		full: `D${y}_${mn + 1}_${d}_${h}`,
+		full: `D${y}_${mn + 1}_${d}`,
 		time: `${h < 10 ? '0' + h : h}:${m < 10 ? '0' + m : m}`,
 		year: y.toString(),
 	};
@@ -383,29 +383,44 @@ function getClenderStatus(formatTime, currentTime) {
 // get all messages from local data
 function getAllMessages(friendId) {
 	const opDate = getOptimizeDate();
-
 	let ary = [];
-	for (const key in data.chats.receive[friendId]) {
-		const chat = data.chats.receive[friendId][key];
-		ary.push({
-			type: 'status',
-			message: getClenderStatus(key, opDate.full),
-			time: ""
-		});
-		for (const k in chat) {
-			ary.push({...chat[k], time: formatTime(k * 1)});
+
+	// marge two chat objects by time 
+	const receive = data.chats.receive[friendId];
+	const saved = data.chats.saved[friendId];
+
+	data.chats.receive[friendId] = {};
+	for (const key in receive) {
+		let have = false;
+
+		for (const k in saved) {
+			if (k == key) {
+				data.chats.saved[friendId][key] = {
+					...saved[key],
+					...receive[key],
+				};
+				have = true;
+			}
+		}
+
+		if (!have) {
+			data.chats.saved[friendId] = receive;
 		}
 	}
-	
+
 	for (const key in data.chats.saved[friendId]) {
 		const chat = data.chats.saved[friendId][key];
 		ary.push({
 			type: 'status',
 			message: getClenderStatus(key, opDate.full),
-			time: ""
+			time: '',
 		});
 		for (const k in chat) {
-			ary.push({...chat[k], time: formatTime(k * 1)});
+			ary.push({
+				message: chat[k].message,
+				type: chat[k].type == 'both' ? 'both' : chat[k].type == friendId ? 'you' : 'me',
+				time: formatTime(k * 1),
+			});
 		}
 	}
 	return ary;
