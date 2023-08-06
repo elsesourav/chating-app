@@ -390,22 +390,25 @@ function getAllMessages(friendId) {
 		ary.push({
 			type: 'status',
 			message: getClenderStatus(key, opDate.full),
+			time: ""
 		});
-		for (const key in chat) {
-			ary.push(chat[key]);
+		for (const k in chat) {
+			ary.push({...chat[k], time: formatTime(k * 1)});
 		}
 	}
-	for (const key in data.chats.seved[friendId]) {
-		const chat = data.chats.seved[friendId][key];
+	
+	for (const key in data.chats.saved[friendId]) {
+		const chat = data.chats.saved[friendId][key];
 		ary.push({
 			type: 'status',
 			message: getClenderStatus(key, opDate.full),
+			time: ""
 		});
-		for (const key in chat) {
-			ary.push(chat[key]);
+		for (const k in chat) {
+			ary.push({...chat[k], time: formatTime(k * 1)});
 		}
 	}
-	console.log(ary);
+	return ary;
 }
 
 // get friend receive message length

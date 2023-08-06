@@ -538,7 +538,6 @@ window.onload = async () => {
 		const noOfMsg = document.querySelectorAll('.no-of-msg p');
 
 		sortedFriends.forEach((friend, i) => {
-
 			if (friend.images.high && friend.images.low) {
 				iconEle[i].classList.add('active');
 				image[i].src = friend.images.low;
@@ -554,7 +553,6 @@ window.onload = async () => {
 				noOfMsg[i].innerText = len;
 				noOfMsgEle[i].classList.add('active');
 			}
-
 
 			box[i].addEventListener('click', async () => {
 				const isOnline = iconEle[i].classList.contains('online');
@@ -581,35 +579,35 @@ window.onload = async () => {
 					ID('pf-status').innerText = formatTime(friend.onlineStatus);
 				}
 
-				const allMessages = {...data.chats.saved[friend.id], ...data.chats.receive[friend.id]};
+				const allMessages = getAllMessages(friend.id);
 
-				if (data.chats.receive[friend.id]) {
-					const receive = data.chats.receive[friend.id];
-					const saved = data.chats.saved[friend.id];
+				const receive = data.chats.receive[friend.id];
+				const saved = data.chats.saved[friend.id];
 
-					data.chats.receive[friend.id] = {};
-					for (const key in receive) {
-						let have = false;
+				data.chats.receive[friend.id] = {};
+				for (const key in receive) {
+					let have = false;
 
-						for (const k in saved) {
-							if (k == key) {
-								data.chats.saved[friend.id][key] = {
-									...saved[key],
-									...receive[key],
-								};
-								have = true;
-							}
-						}
-
-						if (!have) {
-							data.chats.saved[friend.id] = receive;
+					for (const k in saved) {
+						if (k == key) {
+							data.chats.saved[friend.id][key] = {
+								...saved[key],
+								...receive[key],
+							};
+							have = true;
 						}
 					}
 
-					console.log('have');
-				} else {
+					if (!have) {
+						data.chats.saved[friend.id] = receive;
+					}
 				}
+
+				console.log('have');
+
 				console.log(allMessages);
+
+				setUpMessages(allMessages);
 
 				document.body.classList.add('active');
 				bodyMaxScroll = scrollBox.scrollWidth - scrollBox.clientWidth;
@@ -617,6 +615,66 @@ window.onload = async () => {
 				noOfMsgEle[i].classList.remove('active');
 			});
 		});
-
 	}
+
+
+
+	const inputDiv = ID('input-div');
+	const scrollChatWrap = Q('#scroll-chat .wrap');
+	const scrollChat = ID('scroll-chat');
+	const sendMsg = ID('send-msg');
+
+
+	let maxScroll = 0;
+	function setUpMessages(messages) {
+		scrollChatWrap.innerHTML = '';
+		let str = ``;
+
+		messages.forEach((e) => {
+			console.log(e);
+			str += getMessages(e);
+		});
+		scrollChatWrap.innerHTML = str;
+
+		// update scroll
+		maxScroll = scrollChat.scrollHeight - scrollChat.clientHeight;
+		scrollChat.scrollTop = maxScroll;
+
+		// ------- end of the chat set ------
+		maxScroll = scrollChat.scrollHeight - scrollChat.clientHeight;
+		scrollChat.scrollTop = maxScroll;
+	}
+
+	function getMessages({message, time, type}) {
+		return `
+            <div class="chat-box ${type || ""}">
+                <div class="chat-content">
+                    <div class="wrap">
+                        <div class="c-text">${message}
+                        <p class="c-time" data-time="${time}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+	}
+
+	sendMsg.on(() => {
+		const message = messageModify(inputDiv.innerText);
+
+		if (!message.length) {
+			return;
+		} else {
+			messages.push({
+				type: 'one',
+				message: message,
+				time: getChatDate().time,
+				id: Date.now() + 'msgId',
+				senderId: myDtls.id,
+				name: myDtls.name,
+			});
+			setMessages();
+			inputDiv.innerHTML = '';
+		}
+	});
 };
