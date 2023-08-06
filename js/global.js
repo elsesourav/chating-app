@@ -48,7 +48,7 @@ function isMyFriend(object, tId) {
 // sort object by user id
 function sortObjectByUserId(object) {
 	let ary = [];
-	for (const key in object) {
+	for (const key in {...object}) {
 		const obj = object[key];
 		obj.id = key;
 		ary.push(obj);
@@ -68,7 +68,9 @@ function formatTime(ms) {
 }
 
 function setupFriends() {
-	const friendsLen = Object.keys(data.friends.saved).length;
+	const isExsist = data.friends.saved || {};
+	console.log(isExsist);
+	const friendsLen = Object.keys(isExsist).length;
 	if (friendsLen < 1) return;
 
 	let str = '';
@@ -99,7 +101,7 @@ function setupFriends() {
 	wrapContacts.innerHTML = str;
 
 	// sorted by last message user z
-	const sortedFriends = sortObjectByUserId(data.friends);
+	const sortedFriends = sortObjectByUserId(data.friends.saved);
 
 
 	const iconEle = document.querySelectorAll('.contact-icon');

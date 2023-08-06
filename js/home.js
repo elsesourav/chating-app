@@ -1,7 +1,7 @@
 import {getAnalytics} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js';
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js';
 import {getAuth} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js';
-import {set, get, getDatabase, query, ref, update, orderByChild, equalTo, onValue, onChildChanged, onChildAdded, child} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js';
+import {set, get, getDatabase, query, ref, update, orderByChild, equalTo, onValue, onChildChanged, onChildAdded, child, remove} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js';
 
 // import { getDatabase, ref, onDisconnect } from "firebase/database";
 
@@ -48,10 +48,10 @@ window.onload = async () => {
 				// update online status in my chat list
 				const onSt = await get(ref(db, `users/${USER_ID}/friends/saved/${key}/onlineStatus`));
 
-				const oldStatus = data.friends[key].onlineStatus;
+				const oldStatus = data.friends.saved[key].onlineStatus;
 				const newStatus = onSt.val();
 
-				data.friends[key].onlineStatus = newStatus;
+				data.friends.saved[key].onlineStatus = newStatus;
 
 				if (newStatus - oldStatus > 60000 + 5000) {
 					borders[index].classList.add('online');
@@ -59,7 +59,7 @@ window.onload = async () => {
 					borders[index].classList.remove('online');
 				}
 				index++;
-			} 
+			}
 
 			data.onlineStatus = d;
 
@@ -69,24 +69,26 @@ window.onload = async () => {
 		}
 	}, 60000);
 
-
-	onChildAdded(child(dbRef, `friends/receive`), async (snapshot) => {
-		// updateChildFafences();
-		const val = snapshot.val();
-
-		for (const key in val) {
-			await update(child(dbRef, `friends/saved`), {
-				[key]: val[key]
+	try {
+		onChildAdded(child(dbRef, `friends/receive`), async (snapshot) => {
+			// updateChildFafences();
+			const val = snapshot.val();
+	
+			await update(child(dbRef, `friends/saved/`), {
+				[val.id]: val,
 			});
-			await remove(child(dbRef, `friends/saved/${key}`));
-			data.friends.saved[key] = val[key];
-		}
 
-		console.log(val);
-
-
-		console.log(snapshot.val());
-	});
+			await remove(child(dbRef, `friends/receive/${val.id}`));
+			data.friends.saved[val.id] = val;
+	
+			console.log(val);
+	
+			console.log(snapshot.val());
+		});
+		
+	} catch (error) {
+		console.log(error);
+	}
 
 	// Friends Update Changes Realtime
 
@@ -148,11 +150,6 @@ window.onload = async () => {
 
 	setupFriends();
 
-	function updateChildFafences() {
-		for (const key in data.friends) {
-		}
-	}
-	updateChildFafences();
 
 	// pointer events for mobile devices
 	if (isMobile) {

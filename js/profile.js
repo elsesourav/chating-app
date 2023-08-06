@@ -212,7 +212,7 @@ let currentSearchSelection = null; // for search user click detials
 					searchUserImage.src = images.high;
 					searchIcon.classList.add('active');
 				}
-				currentSearchSelection = result[i];
+				currentSearchSelection = {...result[i]};
 			});
 		});
 	}
@@ -224,7 +224,8 @@ let currentSearchSelection = null; // for search user click detials
 			if (!currentSearchSelection) return;
 			uploadProcess.classList.add('active');
 			const {id, images, info, onlineStatus} = currentSearchSelection;
-
+			console.log(data.friends);
+			
 			try {
 				const d = Date.now();
 				const opDate = getOptimizeDate();
@@ -236,6 +237,7 @@ let currentSearchSelection = null; // for search user click detials
 				const friendInfo = {
 					about: info.about,
 					creationDate: info.creationDate,
+					id: id,
 					name: info.name || 'Guest',
 					os: info.os,
 					onlineStatus: onlineStatus,
@@ -248,10 +250,11 @@ let currentSearchSelection = null; // for search user click detials
 				};
 
 				// add in friend's friends list
-				await update(ref(db, `users/${id}/friends/saved`), {
+				await update(ref(db, `users/${id}/friends/receive`), {
 					[USER_ID]: {
 						about: data.info.about,
 						creationDate: data.info.creationDate,
+						id: USER_ID,
 						name: data.info.name || 'Guest',
 						os: data.info.os,
 						onlineStatus: data.onlineStatus,
@@ -265,7 +268,7 @@ let currentSearchSelection = null; // for search user click detials
 				});
 
 				// add in friends list
-				await update(child(dbRef, `friends/receive`), {
+				await update(child(dbRef, `friends/saved`), {
 					[id]: friendInfo,
 				});
 
@@ -279,8 +282,9 @@ let currentSearchSelection = null; // for search user click detials
 					[d]: firstChat,
 				});
 
+				console.log(data.friends);
 				data.friends.saved[id] = friendInfo;
-				
+				console.log(data.friends);
 
 				// upsh first chat in local
 				if (!data.chats.receive[id]) {

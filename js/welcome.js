@@ -18,7 +18,7 @@ window.onload = () => {
 		document.head.append(`<style>* { pointer-events: none; }</style>`);
 	}
 
-	guestBtn.addEventListener('click', async () => {
+	guestBtn.addEventListener('click', debounce(async () => {
 		const geustId = getCookie('liveChatUser') || getGuestId();
 
 		// when no guest account exist then create a new one
@@ -72,5 +72,5 @@ window.onload = () => {
 		} catch (error) {
 			console.log(error);
 		}
-	});
+	}), 500);
 };
