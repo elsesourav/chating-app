@@ -7,7 +7,7 @@
 	--img-margin: 20px;
 
 	position: fixed;
-	width: 100vw;
+	width: var(--_w);
 	display: flex;
 	justify-content: center;
 	top: calc(var(---height-u) * -1 - 3px);
@@ -35,7 +35,7 @@
 #myProfileAndFindUser.one #p_f_cover,
 #myProfileAndFindUser.two #p_f_cover {
 	width: var(--mn-chat-w);
-	height: 100vh;
+	height: var(--_h);
 	background: #eeeeee;
 }
 #myProfileAndFindUser #userProfileBox,
@@ -141,7 +141,7 @@
 #myProfileAndFindUser #profielImage #imageEdite {
 	position: fixed;
 	width: var(--mn-chat-w);
-	height: 100vh;
+	height: var(--_h);
 	top: 0;
 	display: none;
 	place-items: center;
@@ -362,7 +362,7 @@
 .top-right {
 	position: fixed;
 	top: 5px;
-	right: calc(calc(100vw - var(--mn-chat-w)) / 2 + 5px);
+	right: calc(calc(var(--_w) - var(--mn-chat-w)) / 2 + 5px);
 	padding: 5px 10px;
 	font-size: 20px;
 	border-radius: 100px;
@@ -626,8 +626,8 @@
 /* -------------- upload image box -------------- */
 #imageSelection {
 	position: fixed;
-	width: 100vw;
-	height: 100vh;
+	width: var(--_w);
+	height: var(--_h);
 	z-index: 10;
 	left: 0;
 	background: rgba(0, 0, 0, 0.8);
@@ -748,7 +748,7 @@
 #upload-close-btn-box {
 	position: absolute;
 	height: 80px;
-	width: 100vw;
+	width: var(--_w);
 	z-index: 11;
 	bottom: 0;
 	display: flex;
@@ -786,7 +786,7 @@
 	position: fixed;
 	background: #ffffff77;
 	backdrop-filter: blur(4px);
-	width: 100vw;
+	width: var(--_w);
 	height: 0;
 	display: grid;
 	place-items: center;
@@ -797,7 +797,7 @@
 }
 #uploadProcess.active {
 	opacity: 1;
-	height: 100vh;
+	height: var(--_h);
 	transition: height 0ms 0ms, opacity 300ms 0ms;
 }
 

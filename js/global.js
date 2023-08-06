@@ -4,6 +4,7 @@ if (!(USER && USER.id)) window.location.replace('../index.html');
 const USER_ID = getCookie('liveChatUser').id;
 let data = getDataFromLocalStorage('liveChatUserData');
 
+
 // update local storage user data
 document.addEventListener(
 	'visibilitychange',
@@ -67,8 +68,7 @@ function formatTime(ms) {
 }
 
 function setupFriends() {
-	const fs = data && data.friends ? data.friends : {};
-	const friendsLen = Object.keys(fs).length;
+	const friendsLen = Object.keys(data.friends.saved).length;
 	if (friendsLen < 1) return;
 
 	let str = '';

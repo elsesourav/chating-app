@@ -1,7 +1,7 @@
 import {getAnalytics} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js';
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js';
 import {getAuth} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js';
-import {set, get, getDatabase, query, ref, update, orderByChild, equalTo, onValue, onChildChanged, onChildAdded} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js';
+import {set, get, getDatabase, query, ref, update, orderByChild, equalTo, onValue, onChildChanged, onChildAdded, child} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js';
 
 // import { getDatabase, ref, onDisconnect } from "firebase/database";
 
@@ -40,13 +40,13 @@ window.onload = async () => {
 			let index = 0;
 
 			// update my time in friends list
-			for (const key in data.friends) {
-				await update(ref(db, `users/${key}/friends/${USER_ID}`), {
+			for (const key in data.friends.saved) {
+				await update(ref(db, `users/${key}/friends/saved/${USER_ID}`), {
 					onlineStatus: d,
 				});
 
 				// update online status in my chat list
-				const onSt = await get(ref(db, `users/${USER_ID}/friends/${key}/onlineStatus`));
+				const onSt = await get(ref(db, `users/${USER_ID}/friends/saved/${key}/onlineStatus`));
 
 				const oldStatus = data.friends[key].onlineStatus;
 				const newStatus = onSt.val();
@@ -68,6 +68,26 @@ window.onload = async () => {
 			console.log(error);
 		}
 	}, 60000);
+
+
+	onChildAdded(child(dbRef, `friends/receive`), async (snapshot) => {
+		// updateChildFafences();
+		const val = snapshot.val();
+
+		for (const key in val) {
+			await update(child(dbRef, `friends/saved`), {
+				[key]: val[key]
+			});
+			await remove(child(dbRef, `friends/saved/${key}`));
+			data.friends.saved[key] = val[key];
+		}
+
+		console.log(val);
+
+
+		console.log(snapshot.val());
+	});
+
 	// Friends Update Changes Realtime
 
 	// // Friends
@@ -125,6 +145,8 @@ window.onload = async () => {
 			aboutInput.value = data.info.about;
 		}
 	}
+
+	setupFriends();
 
 	function updateChildFafences() {
 		for (const key in data.friends) {

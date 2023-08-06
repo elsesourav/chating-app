@@ -1,7 +1,7 @@
 import {getAnalytics} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js';
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js';
 import {getAuth} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-auth.js';
-import {set, get, getDatabase, query, ref, child, update, orderByChild, equalTo} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js';
+import {get, getDatabase, ref, update} from 'https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js';
 
 window.onload = () => {
 	// Initialize Firebase
@@ -46,9 +46,12 @@ window.onload = () => {
 					},
 					chats: {
 						receive: {},
-						seved: {},
+						saved: {},
 					},
-					friends: {},
+					friends: {
+						receive: {},
+						saved: {},
+					},
 					id: geustId.id,
 					onlineStatus: Date.now(),
 				};

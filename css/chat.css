@@ -1,6 +1,6 @@
 body {
   position: relative;
-  width: 100vw;
+  width: var(--_w);
   display: flex;
   justify-content: center;
   background: linear-gradient(219.46deg, #110036 27.63%, #170059 100%),
@@ -16,7 +16,7 @@ body {
 body #chat-contaner {
   position: relative;
   width: 0;
-  height: 100vh;
+  height: var(--_h);
 }
 body.active #chat-contaner {
   width: var(--mn-chat-w);
@@ -122,7 +122,7 @@ body.active #chat-contaner {
   max-height: var(--chat-max-h);
   z-index: 10;
   bottom: 10px;
-  /* left: calc((100vw - var(--mn-chat-w)) / 2); */
+  /* left: calc((var(--_w) - var(--mn-chat-w)) / 2); */
 }
 .wapping footer .wrap {
   position: relative;

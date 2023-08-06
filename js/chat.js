@@ -36,13 +36,8 @@ let you, nm;
 	const auth = getAuth();
 	const db = getDatabase();
 
-	const dbRefInfo = ref(db, `users_data/info/${USER_ID}`);
-	const dbRefStatus = ref(db, `users_data/status/${USER_ID}`);
-	const dbRefFriends = ref(db, `users_data/friends/${USER_ID}`);
-	const dbRefImage = ref(db, `users_data/image/${USER_ID}`);
-	const dbRefChats = ref(db, `users_data/chats/${USER_ID}`);
 
-	setupFriends();
+	// setupFriends();
 
 	function getMessages({message, time, senderId, type, name}) {
 		you = senderId == myDtls.id;

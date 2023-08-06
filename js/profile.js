@@ -248,7 +248,7 @@ let currentSearchSelection = null; // for search user click detials
 				};
 
 				// add in friend's friends list
-				await update(ref(db, `users/${id}/friends`), {
+				await update(ref(db, `users/${id}/friends/saved`), {
 					[USER_ID]: {
 						about: data.info.about,
 						creationDate: data.info.creationDate,
@@ -265,7 +265,7 @@ let currentSearchSelection = null; // for search user click detials
 				});
 
 				// add in friends list
-				await update(child(dbRef, `friends`), {
+				await update(child(dbRef, `friends/receive`), {
 					[id]: friendInfo,
 				});
 
@@ -279,7 +279,7 @@ let currentSearchSelection = null; // for search user click detials
 					[d]: firstChat,
 				});
 
-				data.friends[id] = friendInfo;
+				data.friends.saved[id] = friendInfo;
 				
 
 				// upsh first chat in local

@@ -3,6 +3,14 @@
 //use cssRoot.style.setProperty("key", "value");
 const cssRoot = document.querySelector(':root');
 
+cssRoot.style.setProperty("--_w", window.innerWidth + `px`);
+cssRoot.style.setProperty("--_h", window.innerHeight + `px`);
+
+window.addEventListener("resize", () => {
+	cssRoot.style.setProperty("--_w", window.innerWidth + `px`);
+	cssRoot.style.setProperty("--_h", window.innerHeight + `px`);
+});
+
 // when run this app in mobile is return true
 const isMobile = localStorage.mobile || window.navigator.maxTouchPoints > 1;
 

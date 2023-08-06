@@ -7,9 +7,9 @@
 	font-family: Righteous;
 }
 :root {
-	--mn-chat-w: max(min(80vw, 80vh), min(400px, 100vw));
+	--mn-chat-w: max(min(80vw, 80vh), min(400px, var(--_w)));
 	/* --mn-chat-h: 694px; */
-	--mn-chat-h: 100vh;
+	--mn-chat-h: var(--_h);
 
 	--chat-header-h: 50px;
 	--chat-footer-h: 60px;
@@ -73,8 +73,8 @@
 
 body {
 	position: relative;
-	width: 100vw;
-	height: 100vh;
+	width: var(--_w);
+	height: var(--_h);
 	overflow: hidden;
 	user-select: none;
 	background: #fff;
@@ -83,7 +83,7 @@ body {
 #scroll-box {
 	position: relative;
 	width: var(--mn-chat-w);
-	height: 100vh;
+	height: var(--_h);
 	overflow-y: hidden;
 	overflow-x: scroll;
 	-ms-overflow-style: none; /* IE and Edge */
@@ -179,8 +179,8 @@ body {
 /* ------------ loding -------------- */
 #pageLoad {
 	position: fixed;
-	width: 100vw;
-	height: 100vh;
+	width: var(--_w);
+	height: var(--_h);
 	inset: 0;
 	background: #ffffff;
 	display: none;
