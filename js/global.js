@@ -2,8 +2,9 @@ const USER = getCookie('liveChatUser');
 if (!(USER && USER.id)) window.location.replace('../index.html');
 
 const USER_ID = getCookie('liveChatUser').id;
+const UPDATE_DELAY = 10 * 1000;
 let data = getDataFromLocalStorage('liveChatUserData');
-
+let user_active = true;
 
 // update local storage user data
 document.addEventListener(
@@ -11,6 +12,9 @@ document.addEventListener(
 	() => {
 		if (document.visibilityState == 'hidden') {
 			setDataFromLocalStorage('liveChatUserData', data);
+			user_active = false;
+		} else {
+			user_active = true;
 		}
 	},
 	false

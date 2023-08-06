@@ -29,110 +29,85 @@ window.onload = async () => {
 	pageLoad.classList.remove('active');
 
 	setInterval(async () => {
-		try {
-			const d = Date.now();
+		if (user_active) {
+			try {
+				const d = Date.now();
 
-			await update(dbRef, {
-				onlineStatus: d,
-			});
-
-			const borders = document.querySelectorAll('.contact-icon');
-			let index = 0;
-
-			// update my time in friends list
-			for (const key in data.friends.saved) {
-				await update(ref(db, `users/${key}/friends/saved/${USER_ID}`), {
+				await update(dbRef, {
 					onlineStatus: d,
 				});
 
-				// update online status in my chat list
-				const onSt = await get(ref(db, `users/${USER_ID}/friends/saved/${key}/onlineStatus`));
+				const borders = document.querySelectorAll('.contact-icon');
+				let index = 0;
 
-				const oldStatus = data.friends.saved[key].onlineStatus;
-				const newStatus = onSt.val();
+				// update my time in friends list
+				for (const key in data.friends.saved) {
+					await update(ref(db, `users/${key}/friends/saved/${USER_ID}`), {
+						onlineStatus: d,
+					});
 
-				data.friends.saved[key].onlineStatus = newStatus;
+					// update online status in my chat list
+					const onSt = await get(ref(db, `users/${USER_ID}/friends/saved/${key}/onlineStatus`));
 
-				if (newStatus - oldStatus > 60000 + 5000) {
-					borders[index].classList.add('online');
-				} else {
-					borders[index].classList.remove('online');
+					const oldStatus = data.friends.saved[key].onlineStatus;
+					const newStatus = onSt.val();
+
+					data.friends.saved[key].onlineStatus = newStatus;
+
+					if ((newStatus - oldStatus) > (UPDATE_DELAY - 5000)) {
+						borders[index].classList.add('online');
+					} else {
+						borders[index].classList.remove('online');
+					}
+					index++;
 				}
-				index++;
+
+				data.onlineStatus = d;
+
+				console.log('update time');
+			} catch (error) {
+				console.log(error);
 			}
-
-			data.onlineStatus = d;
-
-			console.log('update time');
-		} catch (error) {
-			console.log(error);
 		}
-	}, 60000);
+	}, UPDATE_DELAY);
 
 	try {
 		onChildAdded(child(dbRef, `friends/receive`), async (snapshot) => {
 			// updateChildFafences();
 			const val = snapshot.val();
-	
+
 			await update(child(dbRef, `friends/saved/`), {
 				[val.id]: val,
 			});
 
 			await remove(child(dbRef, `friends/receive/${val.id}`));
 			data.friends.saved[val.id] = val;
-	
-			console.log(val);
-	
-			console.log(snapshot.val());
+			setupFriends();
 		});
+
+		// update when any one message me
+		onChildAdded(child(dbRef, `chats/receive`), async (snapshot) => {
+			const object = snapshot.val();
+			let refr = snapshot.ref._path.pieces_;
+			refr = refr[refr.length - 1]; 
+			
+			for (const key in object) {
+				for (const k in object[key]) {
+					await update(child(dbRef, `chats/saved/${refr}/${key}`), {
+						[k]: object[key][k],
+					});
+					await remove(child(dbRef, `chats/receive/${refr}/${key}`));
 		
+					data.chats.receive[key] = {
+						[k]: object[key][k]
+					};
+				}
+			}
+			
+			setupFriends();
+		});
 	} catch (error) {
 		console.log(error);
-	}
-
-	// Friends Update Changes Realtime
-
-	// // Friends
-	// onValue(dbRefFriends, (snapshot) => {
-	//    data.friends = snapshot.val() || {};
-
-	// });
-
-	// // Info
-	// onValue(dbRefInfo, (snapshot) => {
-	//    data.info = snapshot.val();
-
-	// });
-
-	// // Images
-	// onValue(dbRefImage, (snapshot) => {
-	//    data.image = snapshot.val() || {};
-
-	// });
-
-	// // Status
-	// onValue(dbRefStatus, (snapshot) => {
-	//    data.status = snapshot.val() || {};
-
-	// });
-
-	// onChildAdded(dbRefChats, (snapshot) => {
-
-	//    updateChildFafences();
-	// });
-
-	function setupChatChaild(key) {
-		// Chat
-		try {
-			// const rf = ref(db, `users_data/chats/${USER_ID}/${key}`);
-			// onChildChanged(rf, (snapshot) => {
-			//    console.log(snapshot.val());
-			//    data.chats[key][getOptimizeDate().full] = snapshot.val() || {};
-			//    setupFriends();
-			// });
-		} catch (e) {
-			console.log(e);
-		}
 	}
 
 	/* -------------- default setup -------------- */
@@ -149,7 +124,6 @@ window.onload = async () => {
 	}
 
 	setupFriends();
-
 
 	// pointer events for mobile devices
 	if (isMobile) {
