@@ -116,23 +116,21 @@ window.onload = () => {
 
 			const userData = (await get(ref(db, `register_users/${u.user.uid}`))).val();
 
-			setCookie(
-				'liveChatUser',
-				{
-					date: userData.date,
-					id: userData.id,
-					os: userData.os,
-					name: userData.name,
-				},
-				30
-			);
+			setCookie('liveChatUser', userData, 30);
+
+			const dbRef = ref(db, `users/${userData.id}`);
+      
+			const dataExists = getDataFromLocalStorage('liveChatUserData');
+			if (!dataExists && dataExists != {}) {
+				setDataFromLocalStorage('liveChatUserData', (await get(dbRef)).val());
+			}
 
 			setTimeout(() => {
-			  window.location.replace("../html/home.html")
+				window.location.replace('../html/home.html');
 			}, 100);
 		} catch (error) {
-      console.log(error);
-    }
+			console.log(error);
+		}
 	});
 
 	signupButton.addEventListener('click', async () => {
@@ -144,9 +142,8 @@ window.onload = () => {
 			const date = Date.now();
 
 			if (user) {
-
 				const userDtls = getGuestId();
-        const dbRefInfo = ref(db, `users/${userDtls.id}`);
+				const dbRefInfo = ref(db, `users/${userDtls.id}`);
 
 				await set(ref(db, `register_users/${user.uid}`), {
 					...userDtls,
@@ -155,7 +152,7 @@ window.onload = () => {
 					password: `%${b10t36(date)}${stringToB64(allInputsData[4])}%${b10t36(date)}`,
 				});
 
-        const d = Date.now();
+				const d = Date.now();
 				const datas = {
 					info: {
 						about: '',
@@ -177,7 +174,7 @@ window.onload = () => {
 					},
 					id: userDtls.id,
 					onlineStatus: d,
-					profileStatis: d
+					profileStatis: d,
 				};
 
 				await update(dbRefInfo, datas);

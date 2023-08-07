@@ -18,14 +18,14 @@ window.onload = async () => {
 	const dbRef = ref(db, `users/${USER_ID}`);
 
 	// when local data is not available
-	if (!data) {
-		try {
-			data = (await get(dbRef)).val();
-			setupFriends();
-		} catch (e) {
-			location.reload();
-		}
-	}
+	// if (!data) {
+	// 	try {
+	// 		data = (await get(dbRef)).val();
+	// 		setupFriends();
+	// 	} catch (e) {
+	// 		location.reload();
+	// 	}
+	// }
 
 	// stop page loding
 	pageLoad.classList.remove('active');

@@ -75,6 +75,11 @@ window.onload = () => {
 				console.log('Data sended successfully');
 				location.replace('./html/home.html');
 			} else {
+				const dbRef = ref(db, `users/${geust.id}`);
+				const dataExists = getDataFromLocalStorage('liveChatUserData');
+				if (!dataExists && dataExists != {}) {
+					setDataFromLocalStorage('liveChatUserData', (await get(dbRef)).val());
+				}
 				// continue old guest
 				console.log('Continue with ols account');
 				location.replace('./html/home.html');
