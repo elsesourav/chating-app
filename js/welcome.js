@@ -19,73 +19,95 @@ window.onload = () => {
 	}
 
 	signupBtn.addEventListener('click', () => {
-		location.replace("./html/login.html");
-		setDataFromLocalStorage("userLoginType", "signup")
-	})
+		location.replace('./html/login.html');
+		setDataFromLocalStorage('userLoginType', 'signup');
+	});
 	loginBtn.addEventListener('click', () => {
-		location.replace("./html/login.html");
-		setDataFromLocalStorage("userLoginType", "login")
-	})
+		location.replace('./html/login.html');
+		setDataFromLocalStorage('userLoginType', 'login');
+	});
 
-	guestBtn.addEventListener('click', debounce(async () => {
-		const geust = getCookie('liveChatUser') || getGuestId();
+	guestBtn.addEventListener(
+		'click',
+		debounce(async () => {
+			const geust = getCookie('liveChatUser') || getGuestId();
 
-		// when no guest account exist then create a new one
+			// when no guest account exist then create a new one
 
-		try {
-			// database reference
-			const dbRefInfo = ref(db, `users/${geust.id}`);
+			try {
+				// database reference
+				const dbRefInfo = ref(db, `users/${geust.id}`);
 
-			const user = await get(dbRefInfo);
+				const user = await get(dbRefInfo);
 
-			if (!user.exists()) {
-				// create new guest
+				if (!user.exists()) {
+					// create new guest
 
-				const d = Date.now();
-				const datas = {
-					info: {
-						about: '',
-						creationDate: geust.date,
-						name: geust.name,
-						os: geust.os,
-					},
-					images: {
-						high: '',
-						low: '',
-					},
-					chats: {
-						receive: {},
-						saved: {},
-					},
-					friends: {
-						receive: {},
-						saved: {},
-					},
-					id: geust.id,
-					onlineStatus: d,
-					profileStatis: d
-				};
+					const d = Date.now();
+					const datas = {
+						info: {
+							about: '',
+							creationDate: geust.date,
+							name: geust.name,
+							os: geust.os,
+						},
+						images: {
+							high: '',
+							low: '',
+						},
+						chats: {
+							receive: {},
+							saved: {},
+						},
+						friends: {
+							receive: {},
+							saved: {},
+						},
+						id: geust.id,
+						onlineStatus: d,
+						profileStatis: d,
+					};
 
-				await update(dbRefInfo, datas);
+					await update(dbRefInfo, datas);
 
-				setCookie('liveChatUser', geust, 30);
+					setCookie('liveChatUser', geust, 30);
 
-				setDataFromLocalStorage('liveChatUserData', datas);
+					setDataFromLocalStorage('liveChatUserData', datas);
 
-				console.log('Data sended successfully');
-				location.replace('./html/home.html');
-			} else {
-				const dbRef = ref(db, `users/${geust.id}`);
-				const dataExists = getDataFromLocalStorage('liveChatUserData');
-				if (!dataExists && dataExists != {}) {
-					setDataFromLocalStorage('liveChatUserData', (await get(dbRef)).val());
+					console.log('Data sended successfully');
+					location.replace('./html/home.html');
+				} else {
+					const dbRef = ref(db, `users/${geust.id}`);
+					const dataExists = getDataFromLocalStorage('liveChatUserData');
+					if (!dataExists && dataExists != {}) {
+						const us = (await get(dbRef)).val();
+						setDataFromLocalStorage('liveChatUserData', {
+							id: us.id,
+							images: {
+								high: '',
+								low: '',
+							},
+							friends: us.friends || {
+								receive: {},
+								saved: {},
+							},
+							chats: us.chats || {
+								receive: {},
+								saved: {},
+							},
+							info: us.info,
+							onlineStatus: us.onlineStatus,
+							profileStatis: us.profileStatis,
+						});
+					}
+					// continue old guest
+					console.log('Continue with ols account');
+					location.replace('./html/home.html');
 				}
-				// continue old guest
-				console.log('Continue with ols account');
-				location.replace('./html/home.html');
+			} catch (error) {
+				console.log(error);
 			}
-		} catch (error) {
-			console.log(error);
-		}
-	}), 500);
+		}),
+		500
+	);
 };

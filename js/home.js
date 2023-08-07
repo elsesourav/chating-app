@@ -31,7 +31,7 @@ window.onload = async () => {
 	pageLoad.classList.remove('active');
 
 	setInterval(async () => {
-		if (user_active) {
+		if (user_active && data.friends) {
 			try {
 				const d = Date.now();
 
@@ -553,8 +553,10 @@ window.onload = async () => {
 
 	// setup chat friends list
 	function setupFriends() {
-		const isExsist = data.friends.saved || {};
-		const friendsLen = Object.keys(isExsist).length;
+		if(!data.friends) return;
+
+		const isExsist = (data.friends.saved) || {};
+		const friendsLen = Object.keys(data.friends.saved || {}).length;
 		if (friendsLen < 1) return;
 
 		// sorted by last message user z

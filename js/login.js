@@ -119,10 +119,28 @@ window.onload = () => {
 			setCookie('liveChatUser', userData, 30);
 
 			const dbRef = ref(db, `users/${userData.id}`);
-      
+
 			const dataExists = getDataFromLocalStorage('liveChatUserData');
 			if (!dataExists && dataExists != {}) {
-				setDataFromLocalStorage('liveChatUserData', (await get(dbRef)).val());
+				const us = (await get(dbRef)).val();
+				setDataFromLocalStorage('liveChatUserData', {
+					id: us.id,
+					images: {
+						high: '',
+						low: '',
+					},
+					friends: us.friends || {
+						receive: {},
+						saved: {},
+					},
+					chats: us.chats || {
+						receive: {},
+						saved: {},
+					},
+					info: us.info,
+					onlineStatus: us.onlineStatus,
+					profileStatis: us.profileStatis,
+				});
 			}
 
 			setTimeout(() => {
