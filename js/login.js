@@ -144,13 +144,45 @@ window.onload = () => {
 			const date = Date.now();
 
 			if (user) {
+
 				const userDtls = getGuestId();
+        const dbRefInfo = ref(db, `users/${userDtls.id}`);
+
 				await set(ref(db, `register_users/${user.uid}`), {
 					...userDtls,
 					email: allInputsData[3],
 					name: allInputsData[2],
 					password: `%${b10t36(date)}${stringToB64(allInputsData[4])}%${b10t36(date)}`,
 				});
+
+        const d = Date.now();
+				const datas = {
+					info: {
+						about: '',
+						creationDate: userDtls.date,
+						name: userDtls.name,
+						os: userDtls.os,
+					},
+					images: {
+						high: '',
+						low: '',
+					},
+					chats: {
+						receive: {},
+						saved: {},
+					},
+					friends: {
+						receive: {},
+						saved: {},
+					},
+					id: userDtls.id,
+					onlineStatus: d,
+					profileStatis: d
+				};
+
+				await update(dbRefInfo, datas);
+
+				setDataFromLocalStorage('liveChatUserData', datas);
 
 				a.show();
 				a.setMassage(`Hello <b>${allInputsData[2]}</b> your account has been created successfully`);
