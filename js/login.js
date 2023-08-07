@@ -160,7 +160,7 @@ window.onload = () => {
 					info: {
 						about: '',
 						creationDate: userDtls.date,
-						name: userDtls.name,
+						name: allInputsData[2],
 						os: userDtls.os,
 					},
 					images: {
