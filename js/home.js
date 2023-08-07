@@ -145,8 +145,8 @@ window.onload = async () => {
 		document.addEventListener(
 			'visibilitychange',
 			async () => {
-				user_active = true;
 				if (document.visibilityState != 'hidden') {
+					user_active = true;
 					get(child(dbRef, `friends/receive`), async (snapshot) => {
 						console.log(snapshot.val());
 						update_friends_receive(snapshot);
@@ -296,10 +296,20 @@ window.onload = async () => {
 		async () => {
 			createImageData();
 			try {
-				await update(child(dbRef, `images`), {
-					high: IMAGE_URL.high,
-					low: IMAGE_URL.low,
+				await update(dbRef, {
+					imageStatus: Date.now(),
+					images: {
+						high: IMAGE_URL.high,
+						low: IMAGE_URL.low,
+					},
 				});
+
+				for (const key in data.friends.saved) {
+					console.log(data.friends.saved[key]);
+					await update(ref(db, `users/${key}/friends/saved/${USER_ID}`), {
+						imageStatis: Date.now(),
+					});
+				}
 			} catch (error) {
 				console.log(error);
 			}
@@ -568,6 +578,7 @@ window.onload = async () => {
 		const box = document.querySelectorAll('.contact-box');
 		const iconEle = document.querySelectorAll('.contact-icon');
 		const image = document.querySelectorAll('.contect-img');
+		const contentDtls = document.querySelectorAll('.contact-datas');
 		const name = document.querySelectorAll('.contact-name');
 		const lastChatTime = document.querySelectorAll('.last-chat-time');
 		const lastChat = document.querySelectorAll('.last-chat');
@@ -607,7 +618,7 @@ window.onload = async () => {
 				noOfMsgEle[i].classList.add('active');
 			}
 
-			box[i].addEventListener('click', async () => {
+			contentDtls[i].addEventListener('click', async () => {
 				const isOnline = iconEle[i].classList.contains('online');
 
 				currentChatOpenId = friend.id;

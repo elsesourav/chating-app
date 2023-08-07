@@ -32,6 +32,7 @@ window.onload = () => {
 			if (!user.exists()) {
 				// create new guest
 
+				const d = Date.now();
 				const datas = {
 					info: {
 						about: '',
@@ -53,7 +54,8 @@ window.onload = () => {
 						saved: {},
 					},
 					id: geustId.id,
-					onlineStatus: Date.now(),
+					onlineStatus: d,
+					imageStatis: d
 				};
 
 				await update(dbRefInfo, datas);
