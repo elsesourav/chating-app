@@ -14,8 +14,10 @@ const scrollBox = ID('scroll-box');
 let inputlabel = true;
 
 inputDiv.on('click', () => {
-	let bodyMaxScroll = scrollBox.scrollWidth - scrollBox.clientWidth;
-	smoothScroll(scrollBox, 'scrollLeft', bodyMaxScroll, 100);
+	setTimeout(() => {
+		let bodyMaxScroll = scrollBox.scrollWidth - scrollBox.clientWidth;
+		smoothScroll(scrollBox, 'scrollLeft', bodyMaxScroll, 100);
+	}, 500);
 });
 
 inputDiv.on('input', () => {
