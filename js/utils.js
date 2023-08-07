@@ -352,7 +352,7 @@ function debounce(callback, delay = 1000) {
 }
 
 function clearLocal() {
-	data = undefined;
+	data = {};
 	deleteDataFromLocalStorage('liveChatUserData');
 	setCookie('liveChatUser', '', 0);
 	setTimeout(() => {
