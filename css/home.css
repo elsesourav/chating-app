@@ -18,31 +18,6 @@
 	background: #ffffff;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ------------ contacts list --------------- */
 #home-contaner #all-contacts {
 	position: relative;
@@ -72,7 +47,7 @@
 }
 #wrapContacts .contact-box::before {
 	position: absolute;
-	content: "";
+	content: '';
 	width: calc(100% - var(--contact-h));
 	height: 1px;
 	bottom: -0.5px;
@@ -131,14 +106,8 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background: linear-gradient(120deg, #ff00c7 0%, #51003f 100%),
-		linear-gradient(120deg, #0030ad 0%, #00071a 100%),
-		linear-gradient(180deg, #000346 0%, #ff0000 100%),
-		linear-gradient(60deg, #0029ff 0%, #aa0014 100%),
-		radial-gradient(100% 165% at 100% 100%, #ff00a8 0%, #00ff47 100%),
-		radial-gradient(100% 150% at 0% 0%, #fff500 0%, #51d500 100%);
-	background-blend-mode: overlay, color-dodge, overlay, overlay, difference,
-		normal;
+	background: linear-gradient(120deg, #ff00c7 0%, #51003f 100%), linear-gradient(120deg, #0030ad 0%, #00071a 100%), linear-gradient(180deg, #000346 0%, #ff0000 100%), linear-gradient(60deg, #0029ff 0%, #aa0014 100%), radial-gradient(100% 165% at 100% 100%, #ff00a8 0%, #00ff47 100%), radial-gradient(100% 150% at 0% 0%, #fff500 0%, #51d500 100%);
+	background-blend-mode: overlay, color-dodge, overlay, overlay, difference, normal;
 }
 .contact-box .contact-icon i {
 	font-size: 1.5rem;
@@ -223,3 +192,120 @@
 	font-family: Oswald;
 }
 
+/* -------------- profile view ---------------- */
+#profileViewBox {
+	position: fixed;
+	width: var(--_w);
+	height: var(--_h);
+	z-index: 12;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	background: rgba(0, 0, 0, 0.3);
+	backdrop-filter: blur(1px);
+}
+#profileViewBox.active {
+	display: flex;
+}
+#profileViewBox #profileView {
+	position: relative;
+	width: calc(var(--mn-chat-w) * 0.8);
+	height: min-content;
+	background: #ffffff;
+	border-radius: 10px;
+	outline: solid 5px #00000055;
+	overflow: hidden;
+}
+#profileViewBox #profileViewImage {
+	position: relative;
+	width: 100%;
+	height: calc(var(--mn-chat-w) * 0.8);
+	background: #000000;
+}
+#profileViewName {
+	position: absolute;
+	width: min-content;
+	height: auto;
+	padding: 6px 10px;
+	border-bottom-right-radius: 10px;
+	background: #ffffff88;
+	z-index: 2;
+}
+
+#profileViewImage .mn-img {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+#profileViewImage:hover {
+	background: #006eff;
+}
+#profileViewImage.active .mn-img,
+#profileViewImage .mn-i {
+	display: grid;
+}
+#profileViewImage .mn-img,
+#profileViewImage.active .mn-i {
+	display: none;
+}
+#profileViewImage .mn-i {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	display: grid;
+	place-items: center;
+	color: #ffffff;
+	transition: linear 300ms color;
+	font-size: 100px;
+	background: linear-gradient(120deg, #ff00c7 0%, #51003f 100%), linear-gradient(120deg, #0030ad 0%, #00071a 100%), linear-gradient(180deg, #000346 0%, #ff0000 100%), linear-gradient(60deg, #0029ff 0%, #aa0014 100%), radial-gradient(100% 165% at 100% 100%, #ff00a8 0%, #00ff47 100%), radial-gradient(100% 150% at 0% 0%, #fff500 0%, #51d500 100%);
+	background-blend-mode: overlay, color-dodge, overlay, overlay, difference, normal;
+}
+#profileViewId {
+	position: absolute;
+	background: #000000cc;
+	width: min-content;
+	display: flex;
+	padding: 5px 10px;
+	border-top-right-radius: 10px;
+	gap: 10px;
+	bottom: 0;
+	cursor: var(--pointer);
+}
+#profileViewId p {
+	font-weight: 900;
+	color: #ffffff;
+}
+#profileViewId span {
+	font-weight: 900;
+	font-family: Google;
+	color: #00f2ff;
+	transition: linear 200ms color;
+}
+#profileViewId i {
+	color: #00f2ff;
+	transition: linear 200ms color;
+}
+#profileViewId:hover span {
+	color: #aafbff;
+}
+#profileViewId:hover i {
+	color: #aafbff;
+}
+#profileViewBox #PVshowData {
+	position: relative;
+	padding: 6px;
+	height: auto;
+	background: #ffffff;
+}
+#profileViewImage #profileViewAbout {
+	position: relative;
+	gap: 5px;
+	margin: 5px;
+	display: inline;
+}
+#profileViewAbout i {
+	font-weight: 900;
+}
+#profileViewAbout #profileViewAboutValue {
+	display: inline;
+}

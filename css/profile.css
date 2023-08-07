@@ -275,6 +275,15 @@
 #profileInformation .option:first-child {
 	padding: 5px 20px;
 	width: min-content;
+	display: flex;
+}
+#profileInformation .option:first-child .input-box {
+	gap: 5px;
+	display: flex;
+	cursor: var(--pointer);
+}
+#profileInformation .option:first-child i {
+	color: #006eff;
 }
 #profileInformation .option .icon-box {
 	position: relative;
@@ -294,8 +303,8 @@
 }
 #profileInformation .option #userID {
 	color: #0029ff;
-	cursor: var(--pointer);
 }
+
 #profileInformation .option .input-box input {
 	position: relative;
 	outline: none;

@@ -48,17 +48,15 @@ window.onload = async () => {
 					const oldStatus = data.friends.saved[key].profileStatis;
 					const newStatus = ps.val();
 
-
 					if (newStatus - oldStatus > 0) {
-						console.log("Update Friend Profile");
+						console.log('Update Friend Profile');
 						const friend = (await get(ref(db, `users/${key}`))).val();
-						console.log(friend);
 
 						update(child(dbRef, `friends/saved/${key}`), {
 							images: friend.images,
 							about: friend.info.about,
 							name: friend.info.name,
-							profileStatis: newStatus
+							profileStatis: newStatus,
 						});
 
 						data.friends.saved[key].images = friend.images;
@@ -220,7 +218,6 @@ window.onload = async () => {
 	let bodyMaxScroll = scrollBox.scrollHeight - scrollBox.clientHeight;
 	document.body.classList.remove('active');
 
-
 	profileBack.on(() => {
 		smoothScroll(scrollBox, 'scrollLeft', -bodyMaxScroll, 100);
 		currentChatOpenId = 0;
@@ -360,8 +357,12 @@ window.onload = async () => {
 	});
 
 	// copy buttton
-	userID.addEventListener('click', async () => {
+	inProfileId.addEventListener('click', async () => {
 		await navigator.clipboard.writeText(userID.innerText);
+	});
+
+	profileViewId.addEventListener('click', async () => {
+		await navigator.clipboard.writeText(profileViewIdValue.innerText);
 	});
 
 	/* ------------ search in user datas  ----------------*/
@@ -629,6 +630,26 @@ window.onload = async () => {
 				noOfMsgEle[i].classList.add('active');
 			}
 
+
+			iconEle[i].addEventListener('click', () => {
+				profileViewBox.classList.add('active');
+				profileViewName.innerText = friend.name ? friend.name : 'Guest';
+				profileViewIdValue.innerText = friend.id;
+				profileViewAboutValue.innerText = friend.about;
+
+				if (friend.images.high) {
+					porfileViewSrc.src = friend.images.high;
+					profileViewImage.classList.add("active");
+				} else {
+					profileViewImage.classList.add("active");
+				}
+
+
+
+
+			})
+
+			// clidk friend body element
 			contentDtls[i].addEventListener('click', async () => {
 				const isOnline = iconEle[i].classList.contains('online');
 
@@ -665,6 +686,20 @@ window.onload = async () => {
 			});
 		});
 	}
+
+	let clickOver = false;
+
+	profileView.addEventListener('click', () => {
+		clickOver = true;
+	});
+
+	profileViewBox.addEventListener("click", () => {
+		if (!clickOver) {
+			profileViewBox.classList.remove('active');
+		}
+		clickOver = false;
+	})
+
 
 	const inputDiv = ID('input-div');
 	const scrollChatWrap = Q('#scroll-chat .wrap');
