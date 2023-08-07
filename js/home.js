@@ -297,7 +297,7 @@ window.onload = async () => {
 			createImageData();
 			try {
 				await update(dbRef, {
-					imageStatus: Date.now(),
+					profileStatis: Date.now(),
 					images: {
 						high: IMAGE_URL.high,
 						low: IMAGE_URL.low,
@@ -306,7 +306,7 @@ window.onload = async () => {
 
 				for (const key in data.friends.saved) {
 					console.log(data.friends.saved[key]);
-					await update(ref(db, `users/${key}/friends/saved/${USER_ID}`), {
+					await update(ref(db, `users/${USER_ID}/friends/saved/${key}`), {
 						imageStatis: Date.now(),
 					});
 				}

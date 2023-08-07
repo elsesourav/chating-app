@@ -55,7 +55,7 @@ window.onload = () => {
 					},
 					id: geustId.id,
 					onlineStatus: d,
-					imageStatis: d
+					profileStatis: d
 				};
 
 				await update(dbRefInfo, datas);
