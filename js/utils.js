@@ -427,6 +427,7 @@ function getAllMessages(friendId) {
 
 // get friend receive message length
 function getFriendReceiveMessageLength(friendId) {
+	if (!data.chats || !data.chats.receive) return 0;
 	let count = 0;
 	for (const key in data.chats.receive[friendId]) {
 		for (const k in data.chats.receive[friendId][key]) {

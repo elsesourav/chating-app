@@ -130,13 +130,13 @@ window.onload = () => {
 						low: '',
 					},
 					friends: us.friends || {
-						receive: {},
-						saved: {},
-					},
-					chats: us.chats || {
-						receive: {},
-						saved: {},
-					},
+            receive: us.friends.receive || {},
+            saved: us.friends.saved || {},
+          },
+          chats: us.chats || {
+            receive: us.chats.receive || {},
+            saved: us.chats.saved || {},
+          },
 					info: us.info,
 					onlineStatus: us.onlineStatus,
 					profileStatis: us.profileStatis,
