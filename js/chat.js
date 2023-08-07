@@ -9,7 +9,14 @@ if (isMobile) {
 
 const inputDiv = ID('input-div');
 const msgLvl = ID('msg-lvl');
+const scrollBox = ID('scroll-box');
+
 let inputlabel = true;
+
+inputDiv.on('click', () => {
+	let bodyMaxScroll = scrollBox.scrollWidth - scrollBox.clientWidth;
+	smoothScroll(scrollBox, 'scrollLeft', bodyMaxScroll, 100);
+});
 
 inputDiv.on('input', () => {
 	let val = inputDiv.innerText;
@@ -29,5 +36,4 @@ inputDiv.on('input', () => {
 // 	const auth = getAuth();
 // 	const db = getDatabase();
 
-	
 // })();
