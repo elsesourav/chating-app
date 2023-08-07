@@ -4,7 +4,7 @@ if (!(USER && USER.id)) window.location.replace('../index.html');
 const USER_ID = getCookie('liveChatUser').id;
 const UPDATE_DELAY = 10 * 1000;
 let data = getDataFromLocalStorage('liveChatUserData');
-let user_active = false;
+let user_active = true;
 
 let currentChatOpenId = 0;
 

@@ -42,6 +42,34 @@ window.onload = async () => {
 				const borders = document.querySelectorAll('.contact-icon');
 				let index = 0;
 
+				for (const key in data.friends.saved) {
+					const ps = await get(child(dbRef, `friends/saved/${key}/profileStatis`));
+
+					const oldStatus = data.friends.saved[key].profileStatis;
+					const newStatus = ps.val();
+
+
+					if (newStatus - oldStatus > 0) {
+						console.log("Update Friend Profile");
+						const friend = (await get(ref(db, `users/${key}`))).val();
+						console.log(friend);
+
+						update(child(dbRef, `friends/saved/${key}`), {
+							images: friend.images,
+							about: friend.info.about,
+							name: friend.info.name,
+							profileStatis: newStatus
+						});
+
+						data.friends.saved[key].images = friend.images;
+						data.friends.saved[key].about = friend.info.about;
+						data.friends.saved[key].name = friend.info.name;
+						data.friends.saved[key].profileStatis = newStatus;
+
+						setupFriends();
+					}
+				}
+
 				// update my time in friends list
 				for (const key in data.friends.saved) {
 					await update(ref(db, `users/${key}/friends/saved/${USER_ID}`), {
@@ -192,35 +220,6 @@ window.onload = async () => {
 	let bodyMaxScroll = scrollBox.scrollHeight - scrollBox.clientHeight;
 	document.body.classList.remove('active');
 
-	function setContacts() {
-		let str = '';
-		myDtls.contacts.forEach((e, i) => {
-			str += `
-            <div class="contact-box">
-               <div class="wrap">
-                  <div class="contact-icon">
-                     <span>
-                        <i class="sbi-user"></i>
-                        <img src="" class="contect-img" alt="contect image">
-                     </span>
-                  </div>
-                  <div class="contact-datas">
-                     <div class="contact-name-time">
-                        <div class="contact-name">Contact Name</div>
-                        <div class="last-chat-time">00:00</div>
-                     </div>
-                     <div class="last-chat-no-of-msg">
-                        <div class="last-chat">Last Chat</div>
-                        <div class="no-of-msg"><p>${Math.floor(Math.random() * 10) + 1}</p></div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-          `;
-		});
-		// wrapContacts.innerHTML = str;
-	}
-	// setContacts();
 
 	profileBack.on(() => {
 		smoothScroll(scrollBox, 'scrollLeft', -bodyMaxScroll, 100);
@@ -260,6 +259,12 @@ window.onload = async () => {
 				about: about,
 			});
 
+			for (const key in data.friends.saved) {
+				await update(ref(db, `users/${key}/friends/saved/${USER_ID}`), {
+					profileStatis: Date.now(),
+				});
+			}
+
 			data.info.name = name;
 			data.info.about = about;
 
@@ -280,6 +285,11 @@ window.onload = async () => {
 				high: '',
 				low: '',
 			});
+			for (const key in data.friends.saved) {
+				await update(ref(db, `users/${key}/friends/saved/${USER_ID}`), {
+					profileStatis: Date.now(),
+				});
+			}
 			data.images.high = '';
 			data.images.low = '';
 			profileImg.src = '';
@@ -305,9 +315,8 @@ window.onload = async () => {
 				});
 
 				for (const key in data.friends.saved) {
-					console.log(data.friends.saved[key]);
-					await update(ref(db, `users/${USER_ID}/friends/saved/${key}`), {
-						imageStatis: Date.now(),
+					await update(ref(db, `users/${key}/friends/saved/${USER_ID}`), {
+						profileStatis: Date.now(),
 					});
 				}
 			} catch (error) {
@@ -448,7 +457,7 @@ window.onload = async () => {
 		debounce(async () => {
 			if (!currentSearchSelection) return;
 			uploadProcess.classList.add('active');
-			const {id, images, info, onlineStatus} = currentSearchSelection;
+			const {id, images, info, onlineStatus, profileStatis} = currentSearchSelection;
 			console.log(data.friends);
 
 			try {
@@ -468,6 +477,7 @@ window.onload = async () => {
 					onlineStatus: onlineStatus,
 					lastChatTime: d,
 					lastMessage: firstChat.message,
+					profileStatis: profileStatis,
 					images: {
 						high: images.high,
 						low: images.low,
@@ -485,6 +495,7 @@ window.onload = async () => {
 						onlineStatus: data.onlineStatus,
 						lastChatTime: d,
 						lastMessage: firstChat.message,
+						profileStatis: data.profileStatis,
 						images: {
 							high: data.images.high,
 							low: data.images.low,
