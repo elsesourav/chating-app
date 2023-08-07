@@ -18,6 +18,15 @@ window.onload = () => {
 		document.head.append(`<style>* { pointer-events: none; }</style>`);
 	}
 
+	signupBtn.addEventListener('click', () => {
+		location.replace("./html/login.html");
+		setDataFromLocalStorage("userLoginType", "signup")
+	})
+	loginBtn.addEventListener('click', () => {
+		location.replace("./html/login.html");
+		setDataFromLocalStorage("userLoginType", "login")
+	})
+
 	guestBtn.addEventListener('click', debounce(async () => {
 		const geustId = getCookie('liveChatUser') || getGuestId();
 

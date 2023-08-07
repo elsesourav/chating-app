@@ -299,3 +299,13 @@ body.active #create-user-window {
   padding-left: 2px;
   text-decoration: none;
 }
+.sbi-arrow_back {
+  cursor: pointer;
+}
+#go-home {
+  cursor: pointer;
+}
+#go-home i {
+  font-size: 20px;
+  text-shadow: 0 0 1px #000000;
+}

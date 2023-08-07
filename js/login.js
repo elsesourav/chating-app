@@ -9,32 +9,6 @@ import { set, get, getDatabase, query, ref, update, orderByChild, equalTo } from
 
 
 
-function setCookie(cname, cvalue, exdays) {
-  const d = new Date();
-  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-  let expires = "expires=" + d.toUTCString();
-  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-function getCookie(cname) {
-  let name = cname + "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let ca = decodedCookie.split(';');
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
-
-
-
-
-
 
 window.onload = () => {
 
@@ -43,6 +17,21 @@ window.onload = () => {
   const analytics = getAnalytics(app);
   const auth = getAuth();
   const db = getDatabase();
+
+  const localType = getDataFromLocalStorage("userLoginType");
+
+  if (localType){
+    if (localType == "login") {
+      document.body.classList.add("active");
+    } else {
+      document.body.classList.remove("active");
+    }
+    deleteDataFromLocalStorage("userLoginType");
+  }
+
+  ID("go-home").on(() => {
+    window.location.replace("../index.html");
+  })
 
   const cover = document.querySelectorAll(".cover");
   const allInputs = document.querySelectorAll("input");
@@ -90,7 +79,6 @@ const a = new AlertHTML({
 
 
   const createOne = document.getElementById("create-one");
-  const goHome = document.getElementById("go-home");
   const loginButton = document.getElementById("login-button");
   const signupButton = document.getElementById("signup-button");
   const goLoginPag = document.getElementById("go-login-pag");
@@ -182,13 +170,13 @@ const a = new AlertHTML({
   })
 
   createOne.addEventListener("click", () => {
-    document.body.classList.toggle("active", false);
+    document.body.classList.remove("active");
   });
   loginWindowButton.addEventListener("click", () => {
-    document.body.classList.toggle("active", true);
+    document.body.classList.add("active");
   })
   goLoginPag.addEventListener("click", () => {
-    document.body.classList.toggle("active", true);
+    document.body.classList.add("active");
   })
 
 }

@@ -6,9 +6,6 @@ const cssRoot = document.querySelector(':root');
 cssRoot.style.setProperty('--_w', window.innerWidth + `px`);
 cssRoot.style.setProperty('--_h', window.innerHeight + `px`);
 
-window.addEventListener('resize', () => {
-	window.location.reload();
-});
 
 // when run this app in mobile is return true
 const isMobile = localStorage.mobile || window.navigator.maxTouchPoints > 1;
