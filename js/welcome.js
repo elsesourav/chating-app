@@ -28,13 +28,13 @@ window.onload = () => {
 	})
 
 	guestBtn.addEventListener('click', debounce(async () => {
-		const geustId = getCookie('liveChatUser') || getGuestId();
+		const geust = getCookie('liveChatUser') || getGuestId();
 
 		// when no guest account exist then create a new one
 
 		try {
 			// database reference
-			const dbRefInfo = ref(db, `users/${geustId.id}`);
+			const dbRefInfo = ref(db, `users/${geust.id}`);
 
 			const user = await get(dbRefInfo);
 
@@ -45,10 +45,9 @@ window.onload = () => {
 				const datas = {
 					info: {
 						about: '',
-						creationDate: geustId.date,
-						name: '',
-						os: geustId.os,
-						password: '',
+						creationDate: geust.date,
+						name: geust.name,
+						os: geust.os,
 					},
 					images: {
 						high: '',
@@ -62,14 +61,14 @@ window.onload = () => {
 						receive: {},
 						saved: {},
 					},
-					id: geustId.id,
+					id: geust.id,
 					onlineStatus: d,
 					profileStatis: d
 				};
 
 				await update(dbRefInfo, datas);
 
-				setCookie('liveChatUser', geustId, 30);
+				setCookie('liveChatUser', geust, 30);
 
 				setDataFromLocalStorage('liveChatUserData', datas);
 

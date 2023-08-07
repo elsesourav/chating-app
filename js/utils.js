@@ -319,6 +319,7 @@ function getGuestId() {
 		date: date,
 		id: b10to36(date).toUpperCase(),
 		os: getOperatingSystemName(),
+		name: "Guest"
 	};
 }
 

@@ -97,7 +97,7 @@ class AlertHTML {
             transform: scale(1);
           }
           ._-_a-box * {
-            font-family: "font32";
+            font-family: Righteous;
             font-size: 1rem;
             margin: 0;
             padding: 0;
@@ -144,7 +144,7 @@ class AlertHTML {
             backdrop-filter: blur(10px);
           }
           ._-_a-box ._-_a-inner ._-_a-message p {
-            font-family: "google";
+            font-family: Google;
           }
           ._-_a-box ._-_a-inner ._-_a-buttons {
             position: relative;
